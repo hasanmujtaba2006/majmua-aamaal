@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS for Render deployment
+// Enable CORS for Render
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -39,9 +39,10 @@ let gameState = {
 };
 
 io.on('connection', (socket) => {
-    // Send state immediately on join
+    // Send state immediately
     socket.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
 
+    // Handle Tap
     socket.on('increment', () => {
         if (gameState.currentCount < gameState.target) {
             gameState.currentCount++;
@@ -52,6 +53,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle Admin Actions
     socket.on('nextZikr', () => {
         if (gameState.currentIndex < zikrList.length - 1) {
             gameState.currentIndex++;
