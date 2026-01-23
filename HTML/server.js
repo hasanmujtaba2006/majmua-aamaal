@@ -26,13 +26,27 @@ const masterZikrList = [
     { id: "۱۰", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "فَسَهِّلْ یَا اِلٰهِیْ كُلَّ صَعْبٍ \n بِحُرْمَةِ سَیِّدِ الْاَبْرَارِ سَهِّلْ", bodyRoman: "Fa Sahhil Ya Ilahi Kulla Sa'bin \n Bi Hurmati Sayyidil Abrari Sahhil", target: 111, isUrduBody: false },
     { id: "۱۱", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا صِدِّیْقُ یَا عُمَرْ \n یَا عُثْمَانُ یَا حَیْدَرْ \n دَفْعِ شَرْ کُن خَیْر آوَرْ \n یَا شَبِّیْرُ یَا شَبَّرْ", bodyRoman: "Ya Siddiqu Ya 'Umar \n Ya 'Uthmanu Ya Haydar \n Daf'e Shar Kun Khair Aawar \n Ya Shabbiru Ya Shabbar", target: 111, isUrduBody: false },
     { id: "۱۲", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا حَضْرَتْ سُلْطَانْ شَیْخْ سَیِّدْ شَاهْ عَبْدَ الْقَادِرْ جِیْلَانِیْ شَیْئًا لِلّٰہِ اَلْمَدَدْ", bodyRoman: "Ya Hazrat Sultan Sheikh Sayyid Shah Abdul Qadir Jilani Shay'an Lillah Al-Madad", target: 111, isUrduBody: false },
+    
+    // --- URDU FONT (Kasheeda) START ---
     { id: "۱۳", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "ماہمہ محتاج تو حاجت روا \n المددیا غوث اعظم سیدا", bodyRoman: "Ma Hama Muhtaje Tu Hajat Rawa \n Al-Madad Ya Ghaus-e-Azam Sayyida", target: 111, isUrduBody: true },
     { id: "۱۴", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "مشکلات بے عدد داریم ما \n المدد یا غوث اعظم پیرِ ما", bodyRoman: "Mushkilat Be 'Adad Dareem Ma \n Al-Madad Ya Ghaus-e-Azam Peer-e-Ma", target: 111, isUrduBody: true },
+    // --- URDU FONT END ---
+
     { id: "۱۵", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "يَا حَضْرَتْ شيْخْ مُحْيَ الدِّيْنْ مُشْكِلْ كُشَا بِالْخَيْر", bodyRoman: "Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair", target: 111, isUrduBody: false },
+    
+    // --- URDU FONT (Kasheeda) START ---
     { id: "۱۶", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر", bodyRoman: "Imdad Kun Imdad Kun \n Az Band-e-Gham Azad Kun \n Dar Din-o-Dunya Shad Kun \n Ya Ghaus-e-Azam Dastagir", target: 111, isUrduBody: true },
+    // --- URDU FONT END ---
+
+    // Zikr 17 = Arabic Font
     { id: "۱۷", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یا حَضْرَتْ غَوثْ! اَغِثْنَا بِاذْنِ اللّٰهِ تَعَالٰی", bodyRoman: "Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala", target: 111, isUrduBody: false },
+    
     { id: "۱۸", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "خُذْ يَدِيْ يَا شَاہِ جِيلَاں خُذْ يَدِيْ \n شَيئًا للّٰهِ أَنْتَ نُورٌ اَحْمَدِيْ", bodyRoman: "Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi \n Shay'an Lillah Anta Nurun Ahmadi", target: 111, isUrduBody: false },
-    { id: "۱۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "طفیل حضرت دستگیردشمن ہووےزیر", bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer", target: 111, isUrduBody: false },
+    
+    // --- URDU FONT (Kasheeda) START ---
+    { id: "۱۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "طفیل حضرت دستگیردشمن ہووےزیر", bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer", target: 111, isUrduBody: true },
+    // --- URDU FONT END ---
+
     { id: "!", titleUrdu: "ہدایات", titleEng: "Instructions", bodyText: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)", bodyRoman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.", target: 1, type: 'instruction' },
     { id: "۲۱", titleUrdu: "دُرُودِ غوثیہ (آخر)", titleEng: "Durood Ghousia (Final)", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِ وَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", bodyRoman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim", target: 111, isUrduBody: false }
 ];
@@ -40,11 +54,8 @@ const masterZikrList = [
 const sessions = {};
 
 io.on('connection', (socket) => {
-    
-    // 1. Send Active Sessions
     socket.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
 
-    // 2. Create Session
     socket.on('createSession', (sessionName) => {
         const sessionId = "room_" + Math.random().toString(36).substr(2, 9);
         sessions[sessionId] = { name: sessionName || "Khatm Session", currentIndex: 0, currentCount: 0, isFinished: false };
@@ -53,7 +64,6 @@ io.on('connection', (socket) => {
         io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
     });
 
-    // 3. Join Session
     socket.on('joinSession', (sessionId) => {
         if (sessions[sessionId]) {
             socket.join(sessionId);
@@ -63,7 +73,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 4. Auto-Rejoin
     socket.on('reJoinSession', (sessionId) => {
         if (sessions[sessionId]) {
             socket.join(sessionId);
@@ -73,7 +82,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 5. Increment
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) {
@@ -91,7 +99,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 6. Admin Controls
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
@@ -140,7 +147,6 @@ function getSessionState(sessionId) {
         target: masterZikrList[session.currentIndex].target,
         isFinished: session.isFinished,
         sessionName: session.name,
-        // --- ADDED THIS FLAG ---
         isLast: session.currentIndex === masterZikrList.length - 1
     };
 }

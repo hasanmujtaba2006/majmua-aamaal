@@ -19,8 +19,17 @@
             --special-bg: rgba(255, 215, 0, 0.1);
         }
 
-        @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
-        @font-face { font-family: 'Jameel Noori Nastaleeq'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
+        /* 1. ARABIC FONT */
+        @font-face { 
+            font-family: 'Al Qalam Quran'; 
+            src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); 
+        }
+        
+        /* 2. URDU FONT (KASHEEDA) */
+        @font-face { 
+            font-family: 'Jameel Noori Nastaleeq Kasheeda'; 
+            src: url('Jameel Noori Nastaleeq Kasheeda.ttf') format('truetype'); 
+        }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -95,11 +104,19 @@
         .zikr-subtitle { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
 
         #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; }
+        
         #arabic-body {
             font-family: 'Al Qalam Quran', serif; font-size: 2.6rem; line-height: 1.6;
             color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-line;
         }
-        .urdu-font { font-family: 'Jameel Noori Nastaleeq', serif !important; font-size: 2.0rem !important; line-height: 2.2 !important; }
+        
+        /* UPDATED: Uses Kasheeda Font */
+        .urdu-font { 
+            font-family: 'Jameel Noori Nastaleeq Kasheeda', serif !important; 
+            font-size: 2.0rem !important; 
+            line-height: 2.2 !important; 
+        }
+        
         #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; }
         .special-mode .title-box { background: var(--special-bg); border: 2px solid var(--gold); }
 
@@ -224,7 +241,6 @@
     let currentSessionId = null;
     let pendingAction = null;
 
-    // Elements
     const lobbyScreen = document.getElementById('lobby-screen');
     const appScreen = document.getElementById('app-screen');
     const adminSection = document.getElementById('admin-create-section');
@@ -253,7 +269,6 @@
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
     circle.style.strokeDashoffset = circumference;
 
-    // --- CONNECTION HANDLERS ---
     socket.on('connect', () => {
         statusDots.forEach(dot => dot.classList.add('status-online'));
         if (currentSessionId) {
@@ -279,7 +294,6 @@
         }
     });
 
-    // --- INIT ---
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.has('admin');
 
@@ -291,7 +305,6 @@
         reciterSection.classList.remove('hidden');
     }
 
-    // --- LOBBY ---
     socket.on('sessionList', (sessions) => {
         sessionsList.innerHTML = "";
         if (sessions.length === 0) {
@@ -321,7 +334,6 @@
         socket.emit('createSession', name);
     }
 
-    // --- APP LOGIC ---
     function updateUI(data) {
         if (data.zikr) {
             zikrNum.innerText = data.zikr.id;
@@ -348,7 +360,6 @@
         
         countDisplay.innerText = data.currentCount;
         
-        // Ring
         if(data.target <= 0) { 
             circle.style.strokeDashoffset = 0; 
         } else {
@@ -359,7 +370,7 @@
 
         if (data.isFinished) {
             tapBtn.disabled = true;
-            // CHECK THE FLAG FROM SERVER
+            // UPDATED LOGIC HERE
             if (data.isLast) {
                 tapBtn.innerText = "COMPLETED";
             } else {
@@ -417,7 +428,6 @@
         playSound();
     }
 
-    // Modal & Audio
     const modal = document.getElementById('custom-modal');
     const modalText = document.getElementById('modal-text');
     const modalConfirmBtn = document.getElementById('modal-confirm-btn');
