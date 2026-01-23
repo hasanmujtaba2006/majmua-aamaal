@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS for Render deployment
+// Enable CORS for Render
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -16,103 +16,103 @@ const io = new Server(server, {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATA: Zikr List (Full Roman Text) ---
+// --- DATA: Zikr List (Numbered) ---
 const zikrList = [
     {
         arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
-        roman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim",
+        roman: "1. Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim",
         target: 111
     },
     {
         arabic: "سُبْحَانَ اللّٰہِ وَالْحَمْدُ لِلّٰہِ وَلَا اِلٰهَ اِلَّا اللّٰہُ وَاللّٰہُ اَکْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ اِلَّابِاللّٰہِ الْعَلِیِّ الْعَظِیْمِ",
-        roman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil 'Aliyyil 'Azeem",
+        roman: "2. SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil 'Aliyyil 'Azeem",
         target: 111
     },
     {
         arabic: "اَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۝ وَوَضَعْنَا عَنكَ وِزْرَكَ ۝ الَّذِىْۤ أَنقَضَ ظَهْرَكَ ۝وَرَفَعْنَا لَكَ ذِكْرَكَ ۝ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ فَإِذَا فَرَغْتَ فَانْصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَبْ",
-        roman: "Alam Nashrah Laka Sadrak. Wa Wada'na 'Anka Wizrak. Allazi Anqada Zahrak. Wa Rafa'na Laka Zikrak. Fa Inna Ma'al 'Usri Yusra. Inna Ma'al 'Usri Yusra. Fa Iza Faraghta Fansab. Wa Ila Rabbika Farghab.",
+        roman: "3. Surah Alam Nashrah (Recite Full Surah):\nAlam Nashrah Laka Sadrak. Wa Wada'na 'Anka Wizrak...",
         target: 111
     },
     {
         arabic: "قُلْ هُوَ اللّٰهُ أَحَدٌ ۝ اَللّٰهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
-        roman: "Qul Huwa Allahu Ahad. Allahu As-Samad. Lam Yalid Wa Lam Yulad. Wa Lam Yakun Lahu Kufuwan Ahad.",
+        roman: "4. Surah Ikhlas (Recite Full Surah):\nQul Huwa Allahu Ahad. Allahu As-Samad...",
         target: 111
     },
     {
         arabic: "یَا بَاقِی اَنْتَ الْبَاقِی \n یَا شَافِی اَنْتَ الشَّافِی \n یَا کَافِی اَنْتَ الْکَافِی",
-        roman: "Ya Baqi Antal Baqi \n Ya Shafi Antal Shafi \n Ya Kafi Antal Kafi",
+        roman: "5. Ya Baqi Antal Baqi \n Ya Shafi Antal Shafi \n Ya Kafi Antal Kafi",
         target: 111
     },
     {
         arabic: "یَا رَسُوْلَ اللّٰہِ اُنْظُرْ حَالَنَا \n یَا حَبِیْبَ اللّٰہِ اِسْمَعْ قَالَنَا \n اِنَّنِی فِی بَحْرِ ھَمٍّ مُّغْرَقٌ \n خُذْ یَدِی سَہِّلْ لَنَا اَشْکَالَنَا",
-        roman: "Ya Rasulallahi Unzur Halana \n Ya Habibal Lahi Isma' Qalana \n Innani Fi Bahri Hammin Mughraqun \n Khuz Yadi Sahhil Lana Ashkalana",
+        roman: "6. Ya Rasulallahi Unzur Halana \n Ya Habibal Lahi Isma' Qalana \n Innani Fi Bahri Hammin Mughraqun \n Khuz Yadi Sahhil Lana Ashkalana",
         target: 111
     },
     {
         arabic: "یَا حَبِیْبَ الْاِلٰـہِ خُذْ بِیَدِیْ \n مَا لِعَجْزِیْ سِوَاکَ مُسْتَنَدِیْ",
-        roman: "Ya Habibal Ilahi Khuz Biyadi \n Ma Li'ajzi Siwaka Mustanadi",
+        roman: "7. Ya Habibal Ilahi Khuz Biyadi \n Ma Li'ajzi Siwaka Mustanadi",
         target: 111
     },
     {
         arabic: "فَسَهِّلْ یَا اِلٰهِیْ كُلَّ صَعْبٍ \n بِحُرْمَةِ سَیِّدِ الْاَبْرَارِ سَهِّلْ",
-        roman: "Fa Sahhil Ya Ilahi Kulla Sa'bin \n Bi Hurmati Sayyidil Abrari Sahhil",
+        roman: "8. Fa Sahhil Ya Ilahi Kulla Sa'bin \n Bi Hurmati Sayyidil Abrari Sahhil",
         target: 111
     },
     {
         arabic: "یَا صِدِّیْقُ یَا عُمَرْ \n یَا عُثْمَانُ یَا حَیْدَرْ \n دَفْعِ شَرْ کُن خَیْر آوَرْ \n یَا شَبِّیْرُ یَا شَبَّرْ",
-        roman: "Ya Siddiqu Ya 'Umar \n Ya 'Uthmanu Ya Haydar \n Daf'e Shar Kun Khair Aawar \n Ya Shabbiru Ya Shabbar",
+        roman: "9. Ya Siddiqu Ya 'Umar \n Ya 'Uthmanu Ya Haydar \n Daf'e Shar Kun Khair Aawar \n Ya Shabbiru Ya Shabbar",
         target: 111
     },
     {
         arabic: "یَا حَضْرَتْ سُلْطَانْ شَیْخْ سَیِّدْ شَاهْ عَبْدَ الْقَادِرْ جِیْلَانِیْ شَیْئًا لِلّٰہِ اَلْمَدَدْ",
-        roman: "Ya Hazrat Sultan Sheikh Sayyid Shah Abdul Qadir Jilani Shay'an Lillah Al-Madad",
+        roman: "10. Ya Hazrat Sultan Sheikh Sayyid Shah Abdul Qadir Jilani Shay'an Lillah Al-Madad",
         target: 111
     },
     {
         arabic: "ماہمہ محتاج تو حاجت روا \n المددیا غوث اعظم سیدا",
-        roman: "Ma Hama Muhtaje Tu Hajat Rawa \n Al-Madad Ya Ghaus-e-Azam Sayyida",
+        roman: "11. Ma Hama Muhtaje Tu Hajat Rawa \n Al-Madad Ya Ghaus-e-Azam Sayyida",
         target: 111
     },
     {
         arabic: "مشکلات بے عدد داریم ما \n المدد یا غوث اعظم پیرِ ما",
-        roman: "Mushkilat Be 'Adad Dareem Ma \n Al-Madad Ya Ghaus-e-Azam Peer-e-Ma",
+        roman: "12. Mushkilat Be 'Adad Dareem Ma \n Al-Madad Ya Ghaus-e-Azam Peer-e-Ma",
         target: 111
     },
     {
         arabic: "يَا حَضْرَتْ شيْخْ مُحْيَ الدِّيْنْ مُشْكِلْ كُشَا بِالْخَيْر",
-        roman: "Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair",
+        roman: "13. Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair",
         target: 111
     },
     {
         arabic: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر",
-        roman: "Imdad Kun Imdad Kun \n Az Band-e-Gham Azad Kun \n Dar Din-o-Dunya Shad Kun \n Ya Ghaus-e-Azam Dastagir",
+        roman: "14. Imdad Kun Imdad Kun \n Az Band-e-Gham Azad Kun \n Dar Din-o-Dunya Shad Kun \n Ya Ghaus-e-Azam Dastagir",
         target: 111
     },
     {
         arabic: "یا حَضْرَتْ غَوثْ! اَغِثْنَا بِاذْنِ اللّٰهِ تَعَالٰی",
-        roman: "Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala",
+        roman: "15. Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala",
         target: 111
     },
     {
         arabic: "خُذْ يَدِيْ يَا شَاہِ جِيلَاں خُذْ يَدِيْ \n شَيئًا للّٰهِ أَنْتَ نُورٌ اَحْمَدِيْ",
-        roman: "Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi \n Shay'an Lillah Anta Nurun Ahmadi",
+        roman: "16. Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi \n Shay'an Lillah Anta Nurun Ahmadi",
         target: 111
     },
     {
         arabic: "طفیل حضرت دستگیردشمن ہووےزیر",
-        roman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer",
+        roman: "17. Tufail-e-Hazrat Dastagir Dushman Howe Zer",
         target: 111
     },
     // Message Slide
     {
         arabic: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)",
-        roman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.",
+        roman: "Step 18: Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.",
         target: 1
     },
     // Final Zikr
     {
         arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
-        roman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim",
+        roman: "19. Allahumma Salli 'Ala Sayyidina Wa Nabiyyina... (Durood Ghousia Final)",
         target: 111
     }
 ];
@@ -137,7 +137,6 @@ io.on('connection', (socket) => {
     // Handle Tap
     socket.on('increment', () => {
         const currentTarget = zikrList[gameState.currentIndex].target;
-        
         if (gameState.currentCount < currentTarget) {
             gameState.currentCount++;
             if (gameState.currentCount >= currentTarget) {
@@ -165,7 +164,8 @@ io.on('connection', (socket) => {
                 target: nextZikr.target
             });
         } else {
-            io.emit('sessionComplete', "Khatm Sharif Completed! Dua Time.");
+            // --- UPDATED SUCCESS MESSAGE HERE ---
+            io.emit('sessionComplete', "Subhanallah you have successfully completed Qatam-e-Qadriya");
         }
     });
 

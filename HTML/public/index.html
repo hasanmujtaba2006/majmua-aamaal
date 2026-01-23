@@ -18,7 +18,6 @@
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
 
-        /* CUSTOM FONT LOADING */
         @font-face {
             font-family: 'Al Qalam Quran';
             src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype');
@@ -30,12 +29,10 @@
             margin: 0;
             min-height: 100vh;
             color: var(--text-main);
-            
-            /* SCROLL & REFRESH ENABLED */
-            display: block; /* changed from flex to block to allow natural scroll */
+            display: block;
             padding: 20px 0;
-            overflow-y: auto; /* Allow vertical scrolling */
-            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .glass-card {
@@ -49,8 +46,6 @@
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             text-align: center;
-            
-            /* Centering Logic for Block Layout */
             margin: 40px auto; 
             display: flex;
             flex-direction: column;
@@ -65,7 +60,6 @@
             letter-spacing: 2px; 
         }
 
-        /* ZIKR CONTAINER */
         #zikr-container {
             width: 100%;
             min-height: 150px;
@@ -81,10 +75,9 @@
             box-sizing: border-box;
         }
 
-        /* ARABIC TEXT - UPDATED FONT */
         #arabic-text {
-            font-family: 'Al Qalam Quran', serif; /* Using your uploaded font */
-            font-size: 2.4rem; /* Slightly larger for this specific font */
+            font-family: 'Al Qalam Quran', serif;
+            font-size: 2.4rem;
             line-height: 2.2;
             color: #ffffff;
             margin-bottom: 15px;
@@ -93,7 +86,6 @@
             white-space: pre-line;
         }
 
-        /* ROMAN TEXT */
         #roman-text {
             font-family: 'Outfit', sans-serif;
             font-size: 1.2rem;
@@ -103,7 +95,6 @@
             white-space: pre-line;
         }
 
-        /* PROGRESS RING */
         .progress-container {
             position: relative;
             width: 160px;
@@ -131,7 +122,6 @@
             color: #aaa;
         }
 
-        /* BUTTON */
         #tap-btn {
             width: 100%;
             background: var(--btn-gradient);
@@ -145,7 +135,7 @@
             box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2);
             transition: transform 0.1s;
             -webkit-tap-highlight-color: transparent;
-            margin-bottom: 20px; /* Space at bottom for scrolling */
+            margin-bottom: 20px;
         }
         #tap-btn:active { transform: scale(0.96); }
         #tap-btn:disabled { background: #4b5563; box-shadow: none; }
@@ -157,9 +147,8 @@
             100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); }
         }
 
-        #status-msg { margin-top: 15px; height: 20px; font-size: 0.9rem; color: var(--gold); }
+        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
 
-        /* ADMIN */
         #admin-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .admin-controls { display: flex; gap: 10px; }
         .admin-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; }
@@ -309,13 +298,19 @@
         }
     });
 
+    // --- FINAL MESSAGE UPDATE ---
     socket.on('sessionComplete', (msg) => {
         arabicText.innerText = "الْحَمْدُ لِلَّٰهِ";
-        romanText.innerText = msg;
+        romanText.innerText = ""; // Clear Roman text
         countDisplay.innerText = "✓";
         circle.style.strokeDashoffset = 0;
         tapBtn.style.display = 'none';
-        statusMsg.innerText = "Session Closed.";
+        
+        // This displays the message sent from server
+        statusMsg.innerText = msg; 
+        statusMsg.style.color = "#38ef7d"; // Make it green for success
+        statusMsg.style.fontSize = "1.3rem";
+        
         playSound('complete');
     });
 
