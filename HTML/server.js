@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS so the app works on Render
+// Enable CORS for Render deployment
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -14,7 +14,7 @@ const io = new Server(server, {
     }
 });
 
-// Serve static files from the 'public' folder
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- DATA & STATE ---
@@ -38,29 +38,20 @@ let gameState = {
     isFinished: false
 };
 
-// --- SOCKET CONNECTION ---
 io.on('connection', (socket) => {
-    console.log('A user connected');
-
-    // Send current state to the new user immediately
+    // Send state immediately on join
     socket.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
 
-    // Handle Increment (Reciter clicks)
     socket.on('increment', () => {
         if (gameState.currentCount < gameState.target) {
             gameState.currentCount++;
-            
-            // Check if finished
             if (gameState.currentCount >= gameState.target) {
                 gameState.isFinished = true;
             }
-
-            // Broadcast new count to ALL users
             io.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
         }
     });
 
-    // Handle Next Zikr (Admin clicks)
     socket.on('nextZikr', () => {
         if (gameState.currentIndex < zikrList.length - 1) {
             gameState.currentIndex++;
@@ -68,12 +59,10 @@ io.on('connection', (socket) => {
             gameState.isFinished = false;
             io.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
         } else {
-            // End of Session
             io.emit('sessionComplete', "Khatm Sharif Completed!");
         }
     });
 
-    // Handle Reset (Admin clicks)
     socket.on('resetCurrent', () => {
         gameState.currentCount = 0;
         gameState.isFinished = false;
