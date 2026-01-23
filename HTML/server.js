@@ -5,6 +5,8 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
+
+// Enable CORS so the app works on Render
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -12,11 +14,10 @@ const io = new Server(server, {
     }
 });
 
-// Serve static files from the 'public' directory
+// Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- DATA & STATE ---
-// Standard Khatme Qadirya Zikr List (You can edit these strings)
 const zikrList = [
     "Durood Sharif (Start) - 111 times",
     "Subhanallahi Wal Hamdu Lillahi... - 111 times",
