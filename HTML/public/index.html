@@ -60,6 +60,7 @@
             width: 12px; height: 12px; border-radius: 50%;
             background: #4b5563; /* Grey = Disconnected */
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: background 0.3s;
         }
         .status-online { background: #38ef7d !important; box-shadow: 0 0 10px #38ef7d !important; }
 
@@ -216,7 +217,8 @@
     </div>
 </div>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
 <script>
     const socket = io();
     let currentSessionId = null;
@@ -270,8 +272,7 @@
     });
 
     socket.on('sessionError', (msg) => {
-        console.error(msg); // Log instead of alert loop
-        // Only alert if we think we are in a session
+        console.error(msg); 
         if(currentSessionId) {
             alert(msg);
             location.reload();
@@ -410,7 +411,7 @@
         playSound();
     }
 
-    // Modal & Audio (Same as before)
+    // Modal & Audio
     const modal = document.getElementById('custom-modal');
     const modalText = document.getElementById('modal-text');
     const modalConfirmBtn = document.getElementById('modal-confirm-btn');
