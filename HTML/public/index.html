@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khatme Qadirya</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Scheherazade+New:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364);
             --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --gold: #FFD700;
             --text-main: #ffffff;
+            --text-muted: #cfcfcf;
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
 
@@ -30,9 +32,9 @@
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
             width: 90%;
-            max-width: 420px;
+            max-width: 450px; /* Slightly wider for full text */
             padding: 30px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
@@ -43,12 +45,12 @@
         }
 
         h1 { margin: 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { font-size: 0.8rem; color: #ccc; margin-bottom: 20px; }
+        .subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
 
-        /* ZIKR BOX */
+        /* ZIKR CONTAINER */
         #zikr-container {
             width: 100%;
-            min-height: 120px;
+            min-height: 140px;
             background: rgba(0, 0, 0, 0.25);
             border-radius: 20px;
             padding: 20px;
@@ -60,21 +62,25 @@
             align-items: center;
         }
 
+        /* ARABIC TEXT STYLING */
         #arabic-text {
-            /* Fallback fonts included */
-            font-family: 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 1.6rem;
+            /* Priority: Al Qalam (if installed), then Scheherazade New (Web), then Generic */
+            font-family: 'Al Qalam Quran Majeed Web', 'Scheherazade New', serif;
+            font-size: 2.2rem; /* Increased Arabic Size */
             line-height: 1.8;
             color: #ffffff;
             margin-bottom: 15px;
             direction: rtl;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
+        /* ROMAN TEXT STYLING */
         #roman-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem;
+            font-size: 1.1rem; /* Increased Roman Size */
+            line-height: 1.4;
             color: var(--gold);
-            font-weight: 300;
+            font-weight: 400;
         }
 
         /* PROGRESS RING */
@@ -245,13 +251,14 @@
 
     // --- Socket Handling ---
     socket.on('updateState', (data) => {
-        // Safe check to prevent errors if data is missing
         if (data.zikr) {
             arabicText.innerText = data.zikr.arabic;
             romanText.innerText = data.zikr.roman;
+            // Handle spacing for multi-line strings
+            romanText.style.whiteSpace = "pre-line"; 
+            arabicText.style.whiteSpace = "pre-line";
+            
             targetDisplay.innerText = "Target: " + data.target;
-        } else {
-            console.error("Zikr data missing in response", data);
         }
         
         countDisplay.innerText = data.currentCount;
