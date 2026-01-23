@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khatme Qadirya</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Scheherazade+New:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Amiri+Quran&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364);
@@ -14,6 +14,15 @@
             --text-main: #ffffff;
             --text-muted: #cfcfcf;
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        /* If you have the file 'MuhammadiQuranic.ttf', 
+           upload it to your HTML/public folder to use it.
+           Otherwise, it will use 'Amiri Quran' which looks very similar.
+        */
+        @font-face {
+            font-family: 'MuhammadiQuranic Regular';
+            src: url('MuhammadiQuranic.ttf') format('truetype');
         }
 
         body {
@@ -34,7 +43,7 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             width: 90%;
-            max-width: 450px; /* Slightly wider for full text */
+            max-width: 450px;
             padding: 30px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
@@ -50,7 +59,7 @@
         /* ZIKR CONTAINER */
         #zikr-container {
             width: 100%;
-            min-height: 140px;
+            min-height: 150px;
             background: rgba(0, 0, 0, 0.25);
             border-radius: 20px;
             padding: 20px;
@@ -62,25 +71,27 @@
             align-items: center;
         }
 
-        /* ARABIC TEXT STYLING */
+        /* ARABIC TEXT */
         #arabic-text {
-            /* Priority: Al Qalam (if installed), then Scheherazade New (Web), then Generic */
-            font-family: 'Al Qalam Quran Majeed Web', 'Scheherazade New', serif;
-            font-size: 2.2rem; /* Increased Arabic Size */
-            line-height: 1.8;
+            /* Priority: MuhammadiQuranic (if local file exists) -> Amiri Quran (Web) -> Serif */
+            font-family: 'MuhammadiQuranic Regular', 'Amiri Quran', serif;
+            font-size: 2.2rem;
+            line-height: 2.0;
             color: #ffffff;
             margin-bottom: 15px;
             direction: rtl;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            white-space: pre-line; /* Handle new lines */
         }
 
-        /* ROMAN TEXT STYLING */
+        /* ROMAN TEXT */
         #roman-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem; /* Increased Roman Size */
-            line-height: 1.4;
+            font-size: 1.3rem; /* Increased Size */
+            line-height: 1.5;
             color: var(--gold);
             font-weight: 400;
+            white-space: pre-line; /* Handle new lines */
         }
 
         /* PROGRESS RING */
@@ -254,10 +265,6 @@
         if (data.zikr) {
             arabicText.innerText = data.zikr.arabic;
             romanText.innerText = data.zikr.roman;
-            // Handle spacing for multi-line strings
-            romanText.style.whiteSpace = "pre-line"; 
-            arabicText.style.whiteSpace = "pre-line";
-            
             targetDisplay.innerText = "Target: " + data.target;
         }
         

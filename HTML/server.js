@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS for Render
+// Enable CORS for Render deployment
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -16,7 +16,7 @@ const io = new Server(server, {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATA: Zikr List (Full Text) ---
+// --- DATA: Zikr List (Full Roman Text) ---
 const zikrList = [
     {
         arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
@@ -106,7 +106,7 @@ const zikrList = [
     // Message Slide
     {
         arabic: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)",
-        roman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time). Tap to continue.",
+        roman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.",
         target: 1
     },
     // Final Zikr
@@ -124,6 +124,7 @@ let gameState = {
 };
 
 io.on('connection', (socket) => {
+    // Send state immediately
     const currentZikr = zikrList[gameState.currentIndex];
     if (currentZikr) {
         socket.emit('updateState', { 
@@ -133,8 +134,10 @@ io.on('connection', (socket) => {
         });
     }
 
+    // Handle Tap
     socket.on('increment', () => {
         const currentTarget = zikrList[gameState.currentIndex].target;
+        
         if (gameState.currentCount < currentTarget) {
             gameState.currentCount++;
             if (gameState.currentCount >= currentTarget) {
@@ -148,6 +151,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle Admin controls
     socket.on('nextZikr', () => {
         if (gameState.currentIndex < zikrList.length - 1) {
             gameState.currentIndex++;
