@@ -51,7 +51,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
+
+        /* STATUS INDICATOR */
+        #connection-status {
+            position: absolute; top: 15px; right: 15px;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #4b5563; /* Grey = Disconnected */
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .status-online { background: #38ef7d !important; box-shadow: 0 0 10px #38ef7d !important; }
 
         h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
 
@@ -140,6 +150,7 @@
 
 <div class="glass-card" id="lobby-screen">
     <h1>Khatme Qadirya</h1>
+    <div id="connection-status"></div>
     
     <div id="admin-create-section" class="hidden">
         <p style="color:#ccc; margin-bottom:10px;">Admin Mode</p>
@@ -156,6 +167,7 @@
 </div>
 
 <div class="glass-card hidden" id="app-screen">
+    <div id="connection-status" class="status-online"></div>
     <div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div>
     <h1>Khatme Qadirya</h1>
 
@@ -210,7 +222,7 @@
     let currentSessionId = null;
     let pendingAction = null;
 
-    // --- ELEMENTS ---
+    // Elements
     const lobbyScreen = document.getElementById('lobby-screen');
     const appScreen = document.getElementById('app-screen');
     const adminSection = document.getElementById('admin-create-section');
@@ -218,6 +230,7 @@
     const sessionsList = document.getElementById('sessions-list');
     const sessionNameInput = document.getElementById('session-name-input');
     const sessionTitleDisplay = document.getElementById('session-title-display');
+    const statusDots = document.querySelectorAll('#connection-status');
 
     const zikrNum = document.getElementById('zikr-num');
     const titleUrdu = document.getElementById('zikr-title-urdu');
@@ -238,16 +251,34 @@
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
     circle.style.strokeDashoffset = circumference;
 
-    // --- AUTO-REJOIN LOGIC ---
+    // --- CONNECTION HANDLERS ---
     socket.on('connect', () => {
-        // If we have a session ID but lost connection, try to rejoin automatically
+        statusDots.forEach(dot => dot.classList.add('status-online'));
         if (currentSessionId) {
-            console.log("Reconnecting to session:", currentSessionId);
+            console.log("Reconnecting...");
             socket.emit('reJoinSession', currentSessionId);
         }
     });
 
-    // --- INITIALIZATION ---
+    socket.on('disconnect', () => {
+        statusDots.forEach(dot => dot.classList.remove('status-online'));
+    });
+
+    socket.on('forceExit', (msg) => {
+        alert(msg);
+        location.reload();
+    });
+
+    socket.on('sessionError', (msg) => {
+        console.error(msg); // Log instead of alert loop
+        // Only alert if we think we are in a session
+        if(currentSessionId) {
+            alert(msg);
+            location.reload();
+        }
+    });
+
+    // --- INIT ---
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.has('admin');
 
@@ -259,7 +290,7 @@
         reciterSection.classList.remove('hidden');
     }
 
-    // --- SOCKET LISTENERS ---
+    // --- LOBBY ---
     socket.on('sessionList', (sessions) => {
         sessionsList.innerHTML = "";
         if (sessions.length === 0) {
@@ -284,38 +315,12 @@
         updateUI(data.state);
     });
 
-    socket.on('forceExit', (msg) => {
-        alert(msg);
-        location.reload();
-    });
-
-    socket.on('sessionError', (msg) => {
-        alert(msg);
-        location.reload();
-    });
-
-    // --- ACTIONS ---
     function createSession() {
         const name = sessionNameInput.value.trim() || "Khatm Session";
         socket.emit('createSession', name);
     }
 
-    function handleUserTap() {
-        if(!currentSessionId) return;
-        initAudio();
-        socket.emit('increment', currentSessionId);
-        
-        // Visual Feedback (Button Press)
-        tapBtn.style.transform = "scale(0.95)";
-        setTimeout(() => tapBtn.style.transform = "scale(1)", 100);
-
-        if (navigator.vibrate) navigator.vibrate(15);
-        playSound();
-    }
-
-    // --- UI UPDATER ---
-    socket.on('updateState', (data) => updateUI(data));
-
+    // --- APP LOGIC ---
     function updateUI(data) {
         if (data.zikr) {
             zikrNum.innerText = data.zikr.id;
@@ -377,6 +382,8 @@
         }
     }
 
+    socket.on('updateState', updateUI);
+
     socket.on('sessionComplete', (msg) => {
         titleUrdu.innerText = "ختمِ قادریہ مکمل";
         titleEng.innerText = "Session Closed";
@@ -390,7 +397,20 @@
         playSound();
     });
 
-    // --- MODAL ---
+    function handleUserTap() {
+        if(!currentSessionId) {
+            alert("Connection lost. Reloading...");
+            location.reload();
+            return;
+        }
+        initAudio();
+        socket.emit('increment', currentSessionId);
+        
+        if (navigator.vibrate) navigator.vibrate(15);
+        playSound();
+    }
+
+    // Modal & Audio (Same as before)
     const modal = document.getElementById('custom-modal');
     const modalText = document.getElementById('modal-text');
     const modalConfirmBtn = document.getElementById('modal-confirm-btn');
@@ -415,7 +435,6 @@
         closeModal();
     };
 
-    // --- AUDIO ---
     let audioCtx = null;
     let hasBeeped = false;
 
