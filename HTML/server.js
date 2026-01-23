@@ -12,7 +12,7 @@ const io = new Server(server, {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATA ---
+// --- MASTER DATA ---
 const masterZikrList = [
     { id: "۱", titleUrdu: "دُرُودِ غوثیہ", titleEng: "Durood Ghousia", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِ وَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", bodyRoman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim", target: 111, isUrduBody: false },
     { id: "۲", titleUrdu: "تیسرا کلمہ", titleEng: "Third Kalima", bodyText: "سُبْحَانَ اللّٰہِ وَالْحَمْدُ لِلّٰہِ وَلَا اِلٰهَ اِلَّا اللّٰہُ وَاللّٰہُ اَکْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ اِلَّابِاللّٰہِ الْعَلِیِّ الْعَظِیْمِ", bodyRoman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil 'Aliyyil 'Azeem", target: 111, isUrduBody: false },
@@ -30,12 +30,9 @@ const masterZikrList = [
     { id: "۱۴", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "مشکلات بے عدد داریم ما \n المدد یا غوث اعظم پیرِ ما", bodyRoman: "Mushkilat Be 'Adad Dareem Ma \n Al-Madad Ya Ghaus-e-Azam Peer-e-Ma", target: 111, isUrduBody: true },
     { id: "۱۵", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "يَا حَضْرَتْ شيْخْ مُحْيَ الدِّيْنْ مُشْكِلْ كُشَا بِالْخَيْر", bodyRoman: "Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair", target: 111, isUrduBody: false },
     { id: "۱۶", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر", bodyRoman: "Imdad Kun Imdad Kun \n Az Band-e-Gham Azad Kun \n Dar Din-o-Dunya Shad Kun \n Ya Ghaus-e-Azam Dastagir", target: 111, isUrduBody: true },
-    
-    // ZIKR 17 - UPDATED FONT TO ARABIC (isUrduBody: false)
     { id: "۱۷", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یا حَضْرَتْ غَوثْ! اَغِثْنَا بِاذْنِ اللّٰهِ تَعَالٰی", bodyRoman: "Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala", target: 111, isUrduBody: false },
-    
     { id: "۱۸", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "خُذْ يَدِيْ يَا شَاہِ جِيلَاں خُذْ يَدِيْ \n شَيئًا للّٰهِ أَنْتَ نُورٌ اَحْمَدِيْ", bodyRoman: "Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi \n Shay'an Lillah Anta Nurun Ahmadi", target: 111, isUrduBody: false },
-    { id: "۱۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "طفیل حضرت دستگیردشمن ہووےزیر", bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer", target: 111, isUrduBody: true },
+    { id: "۱۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "طفیل حضرت دستگیردشمن ہووےزیر", bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer", target: 111, isUrduBody: false },
     { id: "!", titleUrdu: "ہدایات", titleEng: "Instructions", bodyText: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)", bodyRoman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.", target: 1, type: 'instruction' },
     { id: "۲۱", titleUrdu: "دُرُودِ غوثیہ (آخر)", titleEng: "Durood Ghousia (Final)", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِ وَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", bodyRoman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim", target: 111, isUrduBody: false }
 ];
@@ -44,8 +41,10 @@ const sessions = {};
 
 io.on('connection', (socket) => {
     
+    // 1. Send Active Sessions
     socket.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
 
+    // 2. Create Session
     socket.on('createSession', (sessionName) => {
         const sessionId = "room_" + Math.random().toString(36).substr(2, 9);
         sessions[sessionId] = { name: sessionName || "Khatm Session", currentIndex: 0, currentCount: 0, isFinished: false };
@@ -54,31 +53,31 @@ io.on('connection', (socket) => {
         io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
     });
 
+    // 3. Join Session
     socket.on('joinSession', (sessionId) => {
         if (sessions[sessionId]) {
             socket.join(sessionId);
             socket.emit('joinedSession', { sessionId, isAdmin: false, state: getSessionState(sessionId) });
         } else {
-            socket.emit('sessionError', "Session not found.");
+            socket.emit('sessionError', "This session no longer exists. Please refresh.");
         }
     });
 
-    // Auto-Rejoin Logic
+    // 4. Auto-Rejoin
     socket.on('reJoinSession', (sessionId) => {
         if (sessions[sessionId]) {
             socket.join(sessionId);
-            // Confirm rejoin with latest state
             socket.emit('updateState', getSessionState(sessionId));
         } else {
-            // Force reload if server forgot session (Restarted)
-            socket.emit('forceExit', "Session has expired (Server Restarted). Please create/join new.");
+            socket.emit('forceExit', "Session expired or invalid.");
         }
     });
 
+    // 5. Increment
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) {
-            socket.emit('forceExit', "Session Disconnected. Reloading...");
+            socket.emit('forceExit', "Session Disconnected.");
             return;
         }
 
@@ -88,11 +87,11 @@ io.on('connection', (socket) => {
             if (session.currentCount >= currentTarget) {
                 session.isFinished = true;
             }
-            // Send update to EVERYONE in the room
             io.to(sessionId).emit('updateState', getSessionState(sessionId));
         }
     });
 
+    // 6. Admin Controls
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
@@ -140,7 +139,9 @@ function getSessionState(sessionId) {
         currentCount: session.currentCount,
         target: masterZikrList[session.currentIndex].target,
         isFinished: session.isFinished,
-        sessionName: session.name
+        sessionName: session.name,
+        // --- ADDED THIS FLAG ---
+        isLast: session.currentIndex === masterZikrList.length - 1
     };
 }
 
