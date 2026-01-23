@@ -41,10 +41,10 @@ const sessions = {};
 
 io.on('connection', (socket) => {
     
-    // 1. Send Active Sessions
+    // Send list
     socket.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
 
-    // 2. Create Session
+    // Create Session
     socket.on('createSession', (sessionName) => {
         const sessionId = "room_" + Math.random().toString(36).substr(2, 9);
         sessions[sessionId] = { name: sessionName || "Khatm Session", currentIndex: 0, currentCount: 0, isFinished: false };
@@ -53,22 +53,32 @@ io.on('connection', (socket) => {
         io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
     });
 
-    // 3. Join Session
+    // Join Session (Fixed with re-join support)
     socket.on('joinSession', (sessionId) => {
         if (sessions[sessionId]) {
             socket.join(sessionId);
             socket.emit('joinedSession', { sessionId, isAdmin: false, state: getSessionState(sessionId) });
         } else {
-            socket.emit('sessionError', "This session no longer exists. Please refresh.");
+            socket.emit('sessionError', "Session not found or ended.");
         }
     });
 
-    // 4. Increment (With FIX for server restarts)
+    // Re-Join (New Handler for auto-reconnect)
+    socket.on('reJoinSession', (sessionId) => {
+        if (sessions[sessionId]) {
+            socket.join(sessionId);
+            // Don't emit joinedSession fully, just ensure room membership
+            socket.emit('updateState', getSessionState(sessionId));
+        } else {
+            socket.emit('sessionError', "Session expired. Please restart.");
+        }
+    });
+
+    // Increment
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) {
-            // CRITICAL FIX: If server restarted, session is gone. Tell client to exit.
-            socket.emit('forceExit', "Session expired or invalid.");
+            socket.emit('sessionError', "Session invalid. Reloading...");
             return;
         }
 
@@ -82,7 +92,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 5. Admin Controls
+    // Next Zikr
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
@@ -97,6 +107,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Reset
     socket.on('resetCurrent', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
@@ -105,6 +116,7 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
 
+    // Restart
     socket.on('restartSession', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
@@ -114,13 +126,11 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
 
-    // 6. END SESSION (New)
+    // End Session
     socket.on('endSession', (sessionId) => {
         if (sessions[sessionId]) {
-            delete sessions[sessionId]; // Remove from memory
-            // Kick everyone out
-            io.to(sessionId).emit('forceExit', "The Admin has ended this session.");
-            // Update lobby for others
+            delete sessions[sessionId];
+            io.to(sessionId).emit('forceExit', "Session Ended by Admin.");
             io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
         }
     });

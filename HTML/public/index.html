@@ -118,9 +118,8 @@
         #admin-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
         .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
-        
-        .btn-restart { background: #ff9f43 !important; color: #fff !important; flex: 1 1 45%; }
-        .btn-end { background: var(--danger) !important; color: #fff !important; flex: 1 1 45%; }
+        .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
+        .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
 
         /* MODAL */
         #custom-modal {
@@ -211,7 +210,7 @@
     let currentSessionId = null;
     let pendingAction = null;
 
-    // Elements
+    // --- ELEMENTS ---
     const lobbyScreen = document.getElementById('lobby-screen');
     const appScreen = document.getElementById('app-screen');
     const adminSection = document.getElementById('admin-create-section');
@@ -239,7 +238,16 @@
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
     circle.style.strokeDashoffset = circumference;
 
-    // Init
+    // --- AUTO-REJOIN LOGIC ---
+    socket.on('connect', () => {
+        // If we have a session ID but lost connection, try to rejoin automatically
+        if (currentSessionId) {
+            console.log("Reconnecting to session:", currentSessionId);
+            socket.emit('reJoinSession', currentSessionId);
+        }
+    });
+
+    // --- INITIALIZATION ---
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.has('admin');
 
@@ -251,11 +259,11 @@
         reciterSection.classList.remove('hidden');
     }
 
-    // Lobby
+    // --- SOCKET LISTENERS ---
     socket.on('sessionList', (sessions) => {
         sessionsList.innerHTML = "";
         if (sessions.length === 0) {
-            sessionsList.innerHTML = "<div style='color:#999; margin-top:10px;'>No active sessions.<br>Waiting for Admin...</div>";
+            sessionsList.innerHTML = "<div style='color:#999; margin-top:10px;'>No active sessions.<br>Waiting for Admin to start...</div>";
             return;
         }
         sessions.forEach(s => {
@@ -276,7 +284,6 @@
         updateUI(data.state);
     });
 
-    // Forced Exit (When Admin Ends Session or Server Restarts)
     socket.on('forceExit', (msg) => {
         alert(msg);
         location.reload();
@@ -284,15 +291,31 @@
 
     socket.on('sessionError', (msg) => {
         alert(msg);
-        location.reload(); // Force reload to refresh session list
+        location.reload();
     });
 
+    // --- ACTIONS ---
     function createSession() {
         const name = sessionNameInput.value.trim() || "Khatm Session";
         socket.emit('createSession', name);
     }
 
-    // App Logic
+    function handleUserTap() {
+        if(!currentSessionId) return;
+        initAudio();
+        socket.emit('increment', currentSessionId);
+        
+        // Visual Feedback (Button Press)
+        tapBtn.style.transform = "scale(0.95)";
+        setTimeout(() => tapBtn.style.transform = "scale(1)", 100);
+
+        if (navigator.vibrate) navigator.vibrate(15);
+        playSound();
+    }
+
+    // --- UI UPDATER ---
+    socket.on('updateState', (data) => updateUI(data));
+
     function updateUI(data) {
         if (data.zikr) {
             zikrNum.innerText = data.zikr.id;
@@ -334,6 +357,7 @@
             tapBtn.classList.remove('pulsing');
             tapBtn.style.background = "#4b5563";
             statusMsg.innerText = "Target Reached! Waiting for Admin...";
+            
             if (!hasBeeped) {
                 initAudio();
                 playSound();
@@ -344,6 +368,7 @@
             tapBtn.disabled = false;
             if (data.target === 1) tapBtn.innerText = "DONE / NEXT";
             else tapBtn.innerText = "TAP";
+            
             tapBtn.style.display = 'block';
             tapBtn.classList.add('pulsing');
             tapBtn.style.background = "var(--btn-gradient)";
@@ -351,8 +376,6 @@
             hasBeeped = false;
         }
     }
-
-    socket.on('updateState', updateUI);
 
     socket.on('sessionComplete', (msg) => {
         titleUrdu.innerText = "ختمِ قادریہ مکمل";
@@ -367,19 +390,7 @@
         playSound();
     });
 
-    function handleUserTap() {
-        if(!currentSessionId) {
-            alert("No active session! Reloading...");
-            location.reload();
-            return;
-        }
-        initAudio();
-        socket.emit('increment', currentSessionId);
-        if (navigator.vibrate) navigator.vibrate(15);
-        playSound();
-    }
-
-    // Modal
+    // --- MODAL ---
     const modal = document.getElementById('custom-modal');
     const modalText = document.getElementById('modal-text');
     const modalConfirmBtn = document.getElementById('modal-confirm-btn');
@@ -390,7 +401,7 @@
         if (action === 'reset') modalText.innerText = "Reset current count to 0?";
         else if (action === 'next') modalText.innerText = "Move to Next Zikr?";
         else if (action === 'restart') modalText.innerText = "Restart ENTIRE session?";
-        else if (action === 'end') modalText.innerText = "Delete this session completely?";
+        else if (action === 'end') modalText.innerText = "End and Delete this session?";
     }
 
     function closeModal() { modal.style.display = 'none'; pendingAction = null; }
@@ -404,6 +415,7 @@
         closeModal();
     };
 
+    // --- AUDIO ---
     let audioCtx = null;
     let hasBeeped = false;
 
