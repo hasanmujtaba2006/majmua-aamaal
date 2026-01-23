@@ -16,7 +16,7 @@ const io = new Server(server, {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATA: Zikr List (Split & Renumbered) ---
+// --- DATA: Structured Zikr List ---
 const zikrList = [
     {
         id: "۱",
@@ -32,6 +32,7 @@ const zikrList = [
         titleUrdu: "تیسرا کلمہ",
         titleEng: "Third Kalima",
         bodyText: "سُبْحَانَ اللّٰہِ وَالْحَمْدُ لِلّٰہِ وَلَا اِلٰهَ اِلَّا اللّٰہُ وَاللّٰہُ اَکْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ اِلَّابِاللّٰہِ الْعَلِیِّ الْعَظِیْمِ",
+        titleEng: "Third Kalima",
         bodyRoman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil 'Aliyyil 'Azeem",
         target: 111,
         isUrduBody: false
@@ -54,11 +55,11 @@ const zikrList = [
         target: 111,
         isUrduBody: false
     },
-    // --- SPLIT SECTION START ---
+    // --- UPDATED ASMA-UL-HUSNA (No Part Numbers) ---
     {
         id: "۵",
-        titleUrdu: "اَسْمَاءُ الْحُسْنٰی (حصہ اول)",
-        titleEng: "Asma-ul-Husna (Part 1)",
+        titleUrdu: "اَسْمَاءُ الْحُسْنٰی",
+        titleEng: "Asma-ul-Husna",
         bodyText: "یَا بَاقِی اَنْتَ الْبَاقِی",
         bodyRoman: "Ya Baqi Antal Baqi",
         target: 111,
@@ -66,8 +67,8 @@ const zikrList = [
     },
     {
         id: "۶",
-        titleUrdu: "اَسْمَاءُ الْحُسْنٰی (حصہ دوم)",
-        titleEng: "Asma-ul-Husna (Part 2)",
+        titleUrdu: "اَسْمَاءُ الْحُسْنٰی",
+        titleEng: "Asma-ul-Husna",
         bodyText: "یَا شَافِی اَنْتَ الشَّافِی",
         bodyRoman: "Ya Shafi Antal Shafi",
         target: 111,
@@ -75,14 +76,14 @@ const zikrList = [
     },
     {
         id: "۷",
-        titleUrdu: "اَسْمَاءُ الْحُسْنٰی (حصہ سوم)",
-        titleEng: "Asma-ul-Husna (Part 3)",
+        titleUrdu: "اَسْمَاءُ الْحُسْنٰی",
+        titleEng: "Asma-ul-Husna",
         bodyText: "یَا کَافِی اَنْتَ الْکَافِی",
         bodyRoman: "Ya Kafi Antal Kafi",
         target: 111,
         isUrduBody: false
     },
-    // --- SPLIT SECTION END ---
+    // ---------------------------------------------
     {
         id: "۸",
         titleUrdu: "اِسْتِغَاثَہ",
@@ -183,13 +184,14 @@ const zikrList = [
         isUrduBody: false
     },
     {
+        // --- UPDATED FONT SETTING FOR ZIKR 19 (ID 17 in previous count) ---
         id: "۱۹",
         titleUrdu: "اِسْتِغَاثَہ",
         titleEng: "Istighasah",
         bodyText: "طفیل حضرت دستگیردشمن ہووےزیر",
         bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer",
         target: 111,
-        isUrduBody: true
+        isUrduBody: false // Changed from true to false (Uses Arabic Font)
     },
     {
         id: "!",
