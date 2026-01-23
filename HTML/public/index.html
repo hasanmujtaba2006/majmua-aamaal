@@ -245,7 +245,10 @@
     const tapBtn = document.getElementById('tap-btn');
     const statusMsg = document.getElementById('status-msg');
     const adminPanel = document.getElementById('admin-panel');
-    const mainCard = document.querySelector('#app-screen .glass-card');
+    
+    // --- FIX: Correct Selector for mainCard ---
+    // Using appScreen since it IS the card container for the app view
+    const mainCard = document.getElementById('app-screen'); 
 
     const circle = document.querySelector('.progress-ring__circle');
     const radius = circle.r.baseVal.value;
@@ -337,6 +340,7 @@
                 arabicBody.classList.remove('urdu-font');
             }
 
+            // Fixed Logic using corrected mainCard (appScreen)
             if (data.zikr.type === 'instruction') {
                 mainCard.classList.add('special-mode');
                 progressWrapper.style.display = 'none';
