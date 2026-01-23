@@ -14,61 +14,167 @@ const io = new Server(server, {
     }
 });
 
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATA & STATE ---
+// --- DATA: Zikr List with Arabic & Roman ---
 const zikrList = [
-    "Durood Sharif (Start) - 111 times",
-    "Subhanallahi Wal Hamdu Lillahi... - 111 times",
-    "Allahu Akbar - 111 times",
-    "Ya Hayyu Ya Qayyum - 111 times",
-    "Ya Qadiyal Hajat - 111 times",
-    "Ya Rafial Darajat - 111 times",
-    "Ya Dafial Bala - 111 times",
-    "Ya Mujeebal Dawat - 111 times",
-    "Ya Hallal Mushkilat - 111 times",
-    "Durood Sharif (End) - 111 times"
+    {
+        arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
+        roman: "Allahumma Salli Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa Aalihil Kirami Wabnihil Kareemi Wa Barik Wa Sallim",
+        target: 111
+    },
+    {
+        arabic: "سُبْحَانَ اللّٰہِ وَالْحَمْدُ لِلّٰہِ وَلَا اِلٰهَ اِلَّا اللّٰہُ وَاللّٰہُ اَکْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ اِلَّابِاللّٰہِ الْعَلِیِّ الْعَظِیْمِ",
+        roman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil Aliyyil Azeem",
+        target: 111
+    },
+    {
+        arabic: "اَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۝ وَوَضَعْنَا عَنكَ وِزْرَكَ ۝ الَّذِىْۤ أَنقَضَ ظَهْرَكَ ۝وَرَفَعْنَا لَكَ ذِكْرَكَ ۝ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ فَإِذَا فَرَغْتَ فَانْصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَبْ",
+        roman: "Surah Alam Nashrah (Recite Full Surah)",
+        target: 111
+    },
+    {
+        arabic: "قُلْ هُوَ اللّٰهُ أَحَدٌ ۝ اَللّٰهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+        roman: "Surah Ikhlas (Recite Full Surah)",
+        target: 111
+    },
+    {
+        arabic: "یَا بَاقِی اَنْتَ الْبَاقِی \n یَا شَافِی اَنْتَ الشَّافِی \n یَا کَافِی اَنْتَ الْکَافِی",
+        roman: "Ya Baqi Antal Baqi, Ya Shafi Antal Shafi, Ya Kafi Antal Kafi",
+        target: 111
+    },
+    {
+        arabic: "یَا رَسُوْلَ اللّٰہِ اُنْظُرْ حَالَنَا \n یَا حَبِیْبَ اللّٰہِ اِسْمَعْ قَالَنَا \n اِنَّنِی فِی بَحْرِ ھَمٍّ مُّغْرَقٌ \n خُذْ یَدِی سَہِّلْ لَنَا اَشْکَالَنَا",
+        roman: "Ya Rasulallahi Unzur Halana, Ya Habibal Lahi Isma' Qalana, Innani Fi Bahri Hammin Mughraqun, Khuz Yadi Sahhil Lana Ashkalana",
+        target: 111
+    },
+    {
+        arabic: "یَا حَبِیْبَ الْاِلٰـہِ خُذْ بِیَدِیْ \n مَا لِعَجْزِیْ سِوَاکَ مُسْتَنَدِیْ",
+        roman: "Ya Habibal Ilahi Khuz Biyadi, Ma Li'ajzi Siwaka Mustanadi",
+        target: 111
+    },
+    {
+        arabic: "فَسَهِّلْ یَا اِلٰهِیْ كُلَّ صَعْبٍ \n بِحُرْمَةِ سَیِّدِ الْاَبْرَارِ سَهِّلْ",
+        roman: "Fa Sahhil Ya Ilahi Kulla Sa'bin, Bi Hurmati Sayyidil Abrari Sahhil",
+        target: 111
+    },
+    {
+        arabic: "یَا صِدِّیْقُ یَا عُمَرْ \n یَا عُثْمَانُ یَا حَیْدَرْ \n دَفْعِ شَرْ کُن خَیْر آوَرْ \n یَا شَبِّیْرُ یَا شَبَّرْ",
+        roman: "Ya Siddiqu Ya Umar, Ya Uthmanu Ya Haydar, Daf'e Shar Kun Khair Aawar, Ya Shabbiru Ya Shabbar",
+        target: 111
+    },
+    {
+        arabic: "یَا حَضْرَتْ سُلْطَانْ شَیْخْ سَیِّدْ شَاهْ عَبْدَ الْقَادِرْ جِیْلَانِیْ شَیْئًا لِلّٰہِ اَلْمَدَدْ",
+        roman: "Ya Hazrat Sultan Sheikh Sayyid Shah Abdul Qadir Jilani Shay'an Lillah Al-Madad",
+        target: 111
+    },
+    {
+        arabic: "ماہمہ محتاج تو حاجت روا \n المددیا غوث اعظم سیدا",
+        roman: "Ma Hama Muhtaje Tu Hajat Rawa, Al-Madad Ya Ghaus-e-Azam Sayyida",
+        target: 111
+    },
+    {
+        arabic: "مشکلات بے عدد داریم ما \n المدد یا غوث اعظم پیرِ ما",
+        roman: "Mushkilat Be 'Adad Dareem Ma, Al-Madad Ya Ghaus-e-Azam Peer-e-Ma",
+        target: 111
+    },
+    {
+        arabic: "يَا حَضْرَتْ شيْخْ مُحْيَ الدِّيْنْ مُشْكِلْ كُشَا بِالْخَيْر",
+        roman: "Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair",
+        target: 111
+    },
+    {
+        arabic: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر",
+        roman: "Imdad Kun Imdad Kun, Az Band-e-Gham Azad Kun, Dar Din-o-Dunya Shad Kun, Ya Ghaus-e-Azam Dastagir",
+        target: 111
+    },
+    {
+        arabic: "یا حَضْرَتْ غَوثْ! اَغِثْنَا بِاذْنِ اللّٰهِ تَعَالٰی",
+        roman: "Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala",
+        target: 111
+    },
+    {
+        arabic: "خُذْ يَدِيْ يَا شَاہِ جِيلَاں خُذْ يَدِيْ \n شَيئًا للّٰهِ أَنْتَ نُورٌ اَحْمَدِيْ",
+        roman: "Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi, Shay'an Lillah Anta Nurun Ahmadi",
+        target: 111
+    },
+    {
+        arabic: "طفیل حضرت دستگیردشمن ہووےزیر",
+        roman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer",
+        target: 111
+    },
+    // --- The Message Break ---
+    {
+        arabic: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)",
+        roman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time). Tap to continue when done.",
+        target: 1 // Admin moves next or user taps once to confirm
+    },
+    // --- Ending Zikr ---
+    {
+        arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
+        roman: "Allahumma Salli Ala Sayyidina Wa Nabiyyina... (Durood Ghousia)",
+        target: 111
+    }
 ];
 
 let gameState = {
     currentIndex: 0,
     currentCount: 0,
-    target: 111,
     isFinished: false
 };
 
 io.on('connection', (socket) => {
-    // Send state immediately
-    socket.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
+    // Send current Zikr object (contains arabic, roman, target)
+    const currentZikr = zikrList[gameState.currentIndex];
+    
+    socket.emit('updateState', { 
+        ...gameState, 
+        zikr: currentZikr,
+        target: currentZikr.target 
+    });
 
-    // Handle Tap
     socket.on('increment', () => {
-        if (gameState.currentCount < gameState.target) {
+        const currentTarget = zikrList[gameState.currentIndex].target;
+        
+        if (gameState.currentCount < currentTarget) {
             gameState.currentCount++;
-            if (gameState.currentCount >= gameState.target) {
+            if (gameState.currentCount >= currentTarget) {
                 gameState.isFinished = true;
             }
-            io.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
+            io.emit('updateState', { 
+                ...gameState, 
+                zikr: zikrList[gameState.currentIndex],
+                target: currentTarget 
+            });
         }
     });
 
-    // Handle Admin Actions
     socket.on('nextZikr', () => {
         if (gameState.currentIndex < zikrList.length - 1) {
             gameState.currentIndex++;
             gameState.currentCount = 0;
             gameState.isFinished = false;
-            io.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
+            
+            const nextZikr = zikrList[gameState.currentIndex];
+            io.emit('updateState', { 
+                ...gameState, 
+                zikr: nextZikr,
+                target: nextZikr.target
+            });
         } else {
-            io.emit('sessionComplete', "Khatm Sharif Completed!");
+            io.emit('sessionComplete', "Khatm Sharif Completed! Dua Time.");
         }
     });
 
     socket.on('resetCurrent', () => {
         gameState.currentCount = 0;
         gameState.isFinished = false;
-        io.emit('updateState', { ...gameState, zikrText: zikrList[gameState.currentIndex] });
+        const currentZikr = zikrList[gameState.currentIndex];
+        io.emit('updateState', { 
+            ...gameState, 
+            zikr: currentZikr,
+            target: currentZikr.target
+        });
     });
 });
 
