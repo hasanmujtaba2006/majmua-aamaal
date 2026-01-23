@@ -60,7 +60,7 @@
 
         h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* HEADER SECTION: Number & Title */
+        /* HEADER SECTION */
         .zikr-header {
             width: 100%;
             display: flex;
@@ -74,32 +74,33 @@
         .zikr-badge {
             background: var(--gold);
             color: #0F2027;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Al Qalam Quran', serif;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
+        /* FIXED: TITLE FONT JAMEEL NOORI */
         .zikr-title {
             font-family: 'Jameel Noori Nastaleeq', serif;
             font-size: 2.2rem;
             color: #ffffff;
-            line-height: 1.4;
+            line-height: 1.6;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
         }
 
         .zikr-subtitle {
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             color: var(--text-muted);
-            margin-top: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -112,10 +113,11 @@
             padding: 10px;
         }
 
+        /* FIXED: ARABIC LINE SPACING REDUCED */
         #arabic-body {
-            font-family: 'Al Qalam Quran', serif; /* Default */
-            font-size: 2.5rem;
-            line-height: 2.0;
+            font-family: 'Al Qalam Quran', serif; 
+            font-size: 2.6rem;
+            line-height: 1.6; /* Decreased from 2.2 */
             color: #ffffff;
             margin-bottom: 15px;
             direction: rtl;
@@ -136,13 +138,11 @@
             white-space: pre-line;
         }
 
-        /* Special Section Style */
         .special-mode {
             background: var(--special-bg);
             border: 2px solid var(--gold);
         }
 
-        /* CONTROLS */
         .progress-container {
             position: relative;
             width: 160px;
@@ -196,7 +196,6 @@
 
         #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
 
-        /* ADMIN */
         #admin-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
         .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
@@ -272,7 +271,6 @@
         circle.style.strokeDashoffset = offset;
     }
 
-    // Audio & Vibration
     let audioCtx = null;
     let hasBeeped = false;
 
@@ -316,10 +314,8 @@
         playSound('tap');
     }
 
-    // --- SOCKET LOGIC ---
     socket.on('updateState', (data) => {
         if (data.zikr) {
-            // Update Text
             zikrNum.innerText = data.zikr.id;
             titleUrdu.innerText = data.zikr.titleUrdu;
             titleEng.innerText = data.zikr.titleEng;
@@ -327,14 +323,12 @@
             romanBody.innerText = data.zikr.bodyRoman;
             targetDisplay.innerText = "Target: " + data.target;
 
-            // 1. Font Switching (Urdu vs Arabic)
             if (data.zikr.isUrduBody) {
                 arabicBody.classList.add('urdu-font');
             } else {
                 arabicBody.classList.remove('urdu-font');
             }
 
-            // 2. Special Section (Instructions)
             if (data.zikr.type === 'instruction') {
                 mainCard.classList.add('special-mode');
                 progressWrapper.style.display = 'none';
@@ -347,7 +341,6 @@
         countDisplay.innerText = data.currentCount;
         setProgress(data.currentCount, data.target);
 
-        // State: Completed
         if (data.isFinished) {
             tapBtn.disabled = true;
             tapBtn.innerText = "COMPLETED";
@@ -365,7 +358,6 @@
             tapBtn.disabled = false;
             if (data.target === 1) tapBtn.innerText = "DONE / NEXT";
             else tapBtn.innerText = "TAP";
-            
             tapBtn.style.display = 'block';
             tapBtn.classList.add('pulsing');
             tapBtn.style.background = "var(--btn-gradient)";
@@ -379,17 +371,14 @@
         titleEng.innerText = "Session Closed";
         arabicBody.innerText = "الْحَمْدُ لِلَّٰهِ";
         romanBody.innerText = "";
-        progressWrapper.style.display = 'block'; // Show checkmark inside ring
+        progressWrapper.style.display = 'block'; 
         countDisplay.innerText = "✓";
         tapBtn.style.display = 'none';
-        
         statusMsg.innerText = msg; 
         statusMsg.style.color = "#38ef7d";
-        
         playSound('complete');
     });
 
-    // --- Admin ---
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('admin')) {
         adminPanel.style.display = 'block';
