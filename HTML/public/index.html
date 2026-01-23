@@ -105,12 +105,17 @@
 
         #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; }
         
+        /* UPDATED FONT SIZE HERE */
         #arabic-body {
-            font-family: 'Al Qalam Quran', serif; font-size: 2.6rem; line-height: 1.6;
-            color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-line;
+            font-family: 'Al Qalam Quran', serif; 
+            font-size: 2.0rem; /* Reduced from 2.6rem */
+            line-height: 1.6;
+            color: #ffffff; 
+            margin-bottom: 15px; 
+            direction: rtl; 
+            white-space: pre-line;
         }
         
-        /* UPDATED: Uses Kasheeda Font */
         .urdu-font { 
             font-family: 'Jameel Noori Nastaleeq Kasheeda', serif !important; 
             font-size: 2.0rem !important; 
@@ -370,13 +375,11 @@
 
         if (data.isFinished) {
             tapBtn.disabled = true;
-            // UPDATED LOGIC HERE
             if (data.isLast) {
                 tapBtn.innerText = "COMPLETED";
             } else {
                 tapBtn.innerText = "Next Zikr";
             }
-            
             tapBtn.classList.remove('pulsing');
             tapBtn.style.background = "#4b5563";
             statusMsg.innerText = "Target Reached! Waiting for Admin...";
