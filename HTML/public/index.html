@@ -233,7 +233,7 @@
     let audioCtx = null;
     let hasBeeped = false; 
 
-    // 1. Initialize Audio (Must happen on first interaction)
+    // 1. Initialize Audio
     function initAudio() {
         if (!audioCtx) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -287,7 +287,7 @@
         socket.emit('increment');
         
         // Instant feedback
-        vibratePhone(15); // Tiny vibration
+        vibratePhone(15); 
         playSound('tap');
     }
 
@@ -302,7 +302,11 @@
         if (data.isFinished) {
             // FINISHED
             tapBtn.disabled = true;
-            tapBtn.innerText = "COMPLETED";
+            
+            // --- CHANGE IS HERE ---
+            tapBtn.innerText = "COMPLETED"; 
+            // ----------------------
+            
             tapBtn.classList.remove('pulsing');
             tapBtn.style.background = "#4b5563"; // Grey
             statusMsg.innerText = "Target Reached! Waiting for Admin...";
@@ -310,7 +314,7 @@
             if (!hasBeeped) {
                 initAudio();
                 playSound('complete');
-                vibratePhone([200, 100, 200, 100, 500]); // Heavy Vibration
+                vibratePhone([200, 100, 200, 100, 500]); 
                 hasBeeped = true;
             }
         } else {
