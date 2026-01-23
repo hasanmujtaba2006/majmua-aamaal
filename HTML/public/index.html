@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khatme Qadirya</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Gulzar&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -19,14 +19,10 @@
             --special-bg: rgba(255, 215, 0, 0.1);
         }
 
-        /* FONTS */
+        /* 1. Custom Arabic Font (If uploaded) */
         @font-face {
             font-family: 'Al Qalam Quran';
             src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype');
-        }
-        @font-face {
-            font-family: 'Jameel Noori Nastaleeq';
-            src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype');
         }
 
         body {
@@ -48,17 +44,17 @@
             border: 1px solid var(--glass-border);
             width: 90%;
             max-width: 500px;
-            padding: 40px 20px;
+            padding: 30px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             text-align: center;
-            margin: 20px auto; 
+            margin: 30px auto; 
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+        h1 { margin: 0 0 25px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
 
         /* HEADER SECTION */
         .zikr-header {
@@ -67,42 +63,58 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 15px;
         }
 
+        /* Number Badge */
         .zikr-badge {
             background: var(--gold);
             color: #0F2027;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Al Qalam Quran', serif;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            margin-bottom: 15px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            margin-bottom: -25px; /* Overlap with box */
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 3px solid #0F2027;
         }
 
-        /* FIXED: TITLE FONT JAMEEL NOORI */
+        /* NEW TITLE BOX STYLE */
+        .title-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3); /* Subtle Gold Border */
+            border-radius: 20px;
+            padding: 30px 20px 15px 20px; /* Top padding for badge overlap */
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        /* URDU TITLE FONT: GULZAR */
         .zikr-title {
-            font-family: 'Jameel Noori Nastaleeq', serif;
-            font-size: 2.2rem;
+            font-family: 'Gulzar', serif; /* Best web font for titles */
+            font-size: 2.0rem; /* Large size */
             color: #ffffff;
             line-height: 1.6;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
             margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
         }
 
         .zikr-subtitle {
             font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
-            color: var(--text-muted);
+            font-size: 0.9rem;
+            color: var(--gold);
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 500;
         }
 
         /* BODY SECTION */
@@ -113,36 +125,38 @@
             padding: 10px;
         }
 
-        /* FIXED: ARABIC LINE SPACING REDUCED */
         #arabic-body {
             font-family: 'Al Qalam Quran', serif; 
             font-size: 2.6rem;
-            line-height: 1.6; /* Decreased from 2.2 */
+            line-height: 1.6;
             color: #ffffff;
             margin-bottom: 15px;
             direction: rtl;
             white-space: pre-line;
         }
 
+        /* For Urdu Body text (Istighasah lines) */
         .urdu-font {
-            font-family: 'Jameel Noori Nastaleeq', serif !important;
-            font-size: 2.0rem !important;
-            line-height: 2.2 !important;
+            font-family: 'Gulzar', serif !important;
+            font-size: 1.8rem !important;
+            line-height: 2.0 !important;
         }
 
         #roman-body {
             font-family: 'Outfit', sans-serif;
             font-size: 1.1rem;
-            color: var(--gold);
+            color: #e0e0e0;
             line-height: 1.5;
             white-space: pre-line;
+            font-style: italic;
         }
 
-        .special-mode {
+        .special-mode .title-box {
             background: var(--special-bg);
             border: 2px solid var(--gold);
         }
 
+        /* PROGRESS RING */
         .progress-container {
             position: relative;
             width: 160px;
@@ -170,6 +184,7 @@
             color: #aaa;
         }
 
+        /* BUTTON */
         #tap-btn {
             width: 100%;
             background: var(--btn-gradient);
@@ -210,8 +225,11 @@
 
     <div class="zikr-header">
         <div class="zikr-badge" id="zikr-num">1</div>
-        <div class="zikr-title" id="zikr-title-urdu">Loading...</div>
-        <div class="zikr-subtitle" id="zikr-title-eng">Connecting</div>
+        
+        <div class="title-box">
+            <div class="zikr-title" id="zikr-title-urdu">Loading...</div>
+            <div class="zikr-subtitle" id="zikr-title-eng">Connecting</div>
+        </div>
     </div>
 
     <div id="zikr-body-container">
@@ -314,6 +332,7 @@
         playSound('tap');
     }
 
+    // --- SOCKET LOGIC ---
     socket.on('updateState', (data) => {
         if (data.zikr) {
             zikrNum.innerText = data.zikr.id;
@@ -323,6 +342,7 @@
             romanBody.innerText = data.zikr.bodyRoman;
             targetDisplay.innerText = "Target: " + data.target;
 
+            // Apply 'Gulzar' Font if marked as Urdu body
             if (data.zikr.isUrduBody) {
                 arabicBody.classList.add('urdu-font');
             } else {
@@ -374,8 +394,10 @@
         progressWrapper.style.display = 'block'; 
         countDisplay.innerText = "✓";
         tapBtn.style.display = 'none';
+        
         statusMsg.innerText = msg; 
         statusMsg.style.color = "#38ef7d";
+        
         playSound('complete');
     });
 
