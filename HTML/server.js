@@ -16,16 +16,16 @@ const io = new Server(server, {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- DATA: Zikr List with Arabic & Roman ---
+// --- DATA: Zikr List (Arabic & Roman) ---
 const zikrList = [
     {
         arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
-        roman: "Allahumma Salli Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa Aalihil Kirami Wabnihil Kareemi Wa Barik Wa Sallim",
+        roman: "Allahumma Salli Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami...",
         target: 111
     },
     {
         arabic: "سُبْحَانَ اللّٰہِ وَالْحَمْدُ لِلّٰہِ وَلَا اِلٰهَ اِلَّا اللّٰہُ وَاللّٰہُ اَکْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ اِلَّابِاللّٰہِ الْعَلِیِّ الْعَظِیْمِ",
-        roman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil Aliyyil Azeem",
+        roman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar...",
         target: 111
     },
     {
@@ -45,7 +45,7 @@ const zikrList = [
     },
     {
         arabic: "یَا رَسُوْلَ اللّٰہِ اُنْظُرْ حَالَنَا \n یَا حَبِیْبَ اللّٰہِ اِسْمَعْ قَالَنَا \n اِنَّنِی فِی بَحْرِ ھَمٍّ مُّغْرَقٌ \n خُذْ یَدِی سَہِّلْ لَنَا اَشْکَالَنَا",
-        roman: "Ya Rasulallahi Unzur Halana, Ya Habibal Lahi Isma' Qalana, Innani Fi Bahri Hammin Mughraqun, Khuz Yadi Sahhil Lana Ashkalana",
+        roman: "Ya Rasulallahi Unzur Halana, Ya Habibal Lahi Isma' Qalana...",
         target: 111
     },
     {
@@ -60,7 +60,7 @@ const zikrList = [
     },
     {
         arabic: "یَا صِدِّیْقُ یَا عُمَرْ \n یَا عُثْمَانُ یَا حَیْدَرْ \n دَفْعِ شَرْ کُن خَیْر آوَرْ \n یَا شَبِّیْرُ یَا شَبَّرْ",
-        roman: "Ya Siddiqu Ya Umar, Ya Uthmanu Ya Haydar, Daf'e Shar Kun Khair Aawar, Ya Shabbiru Ya Shabbar",
+        roman: "Ya Siddiqu Ya Umar, Ya Uthmanu Ya Haydar...",
         target: 111
     },
     {
@@ -85,7 +85,7 @@ const zikrList = [
     },
     {
         arabic: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر",
-        roman: "Imdad Kun Imdad Kun, Az Band-e-Gham Azad Kun, Dar Din-o-Dunya Shad Kun, Ya Ghaus-e-Azam Dastagir",
+        roman: "Imdad Kun Imdad Kun, Az Band-e-Gham Azad Kun...",
         target: 111
     },
     {
@@ -103,13 +103,13 @@ const zikrList = [
         roman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer",
         target: 111
     },
-    // --- The Message Break ---
+    // Message Slide
     {
         arabic: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)",
-        roman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time). Tap to continue when done.",
-        target: 1 // Admin moves next or user taps once to confirm
+        roman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time). Tap to continue.",
+        target: 1
     },
-    // --- Ending Zikr ---
+    // Final Zikr
     {
         arabic: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ",
         roman: "Allahumma Salli Ala Sayyidina Wa Nabiyyina... (Durood Ghousia)",
@@ -124,18 +124,17 @@ let gameState = {
 };
 
 io.on('connection', (socket) => {
-    // Send current Zikr object (contains arabic, roman, target)
-    const currentZikr = zikrList[gameState.currentIndex];
-    
-    socket.emit('updateState', { 
-        ...gameState, 
-        zikr: currentZikr,
-        target: currentZikr.target 
-    });
+    // Send state immediately
+    if (zikrList[gameState.currentIndex]) {
+        socket.emit('updateState', { 
+            ...gameState, 
+            zikr: zikrList[gameState.currentIndex],
+            target: zikrList[gameState.currentIndex].target 
+        });
+    }
 
     socket.on('increment', () => {
         const currentTarget = zikrList[gameState.currentIndex].target;
-        
         if (gameState.currentCount < currentTarget) {
             gameState.currentCount++;
             if (gameState.currentCount >= currentTarget) {
@@ -154,12 +153,10 @@ io.on('connection', (socket) => {
             gameState.currentIndex++;
             gameState.currentCount = 0;
             gameState.isFinished = false;
-            
-            const nextZikr = zikrList[gameState.currentIndex];
             io.emit('updateState', { 
                 ...gameState, 
-                zikr: nextZikr,
-                target: nextZikr.target
+                zikr: zikrList[gameState.currentIndex],
+                target: zikrList[gameState.currentIndex].target
             });
         } else {
             io.emit('sessionComplete', "Khatm Sharif Completed! Dua Time.");
@@ -169,11 +166,10 @@ io.on('connection', (socket) => {
     socket.on('resetCurrent', () => {
         gameState.currentCount = 0;
         gameState.isFinished = false;
-        const currentZikr = zikrList[gameState.currentIndex];
         io.emit('updateState', { 
             ...gameState, 
-            zikr: currentZikr,
-            target: currentZikr.target
+            zikr: zikrList[gameState.currentIndex],
+            target: zikrList[gameState.currentIndex].target
         });
     });
 });

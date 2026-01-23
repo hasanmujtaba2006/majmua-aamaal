@@ -9,10 +9,8 @@
         :root {
             --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364);
             --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.1);
             --gold: #FFD700;
             --text-main: #ffffff;
-            --text-muted: #cfcfcf;
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
 
@@ -26,14 +24,13 @@
             justify-content: center;
             color: var(--text-main);
             overflow: hidden;
-            direction: ltr; /* Layout direction */
         }
 
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             width: 90%;
             max-width: 420px;
             padding: 30px 20px;
@@ -46,15 +43,15 @@
         }
 
         h1 { margin: 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
+        .subtitle { font-size: 0.8rem; color: #ccc; margin-bottom: 20px; }
 
-        /* Zikr Box */
+        /* ZIKR BOX */
         #zikr-container {
             width: 100%;
             min-height: 120px;
             background: rgba(0, 0, 0, 0.25);
             border-radius: 20px;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 25px;
             border: 1px solid rgba(255, 215, 0, 0.1);
             display: flex;
@@ -64,22 +61,23 @@
         }
 
         #arabic-text {
-            font-family: 'Amiri', serif;
+            /* Fallback fonts included */
+            font-family: 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.6rem;
-            line-height: 1.6;
+            line-height: 1.8;
             color: #ffffff;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             direction: rtl;
         }
 
         #roman-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--gold);
             font-weight: 300;
         }
 
-        /* Progress Ring */
+        /* PROGRESS RING */
         .progress-container {
             position: relative;
             width: 160px;
@@ -106,7 +104,7 @@
             color: #aaa;
         }
 
-        /* Button */
+        /* BUTTON */
         #tap-btn {
             width: 100%;
             background: var(--btn-gradient);
@@ -133,7 +131,7 @@
 
         #status-msg { margin-top: 15px; height: 20px; font-size: 0.9rem; color: var(--gold); }
 
-        /* Admin */
+        /* ADMIN */
         #admin-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .admin-controls { display: flex; gap: 10px; }
         .admin-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; }
@@ -147,8 +145,8 @@
     <div class="subtitle">Live Global Session</div>
 
     <div id="zikr-container">
-        <div id="arabic-text">Loading...</div>
-        <div id="roman-text">...</div>
+        <div id="arabic-text">...</div>
+        <div id="roman-text">Connecting...</div>
     </div>
 
     <div class="progress-container">
@@ -193,7 +191,7 @@
 
     function setProgress(current, target) {
         if(target <= 0) {
-            circle.style.strokeDashoffset = 0; // Full circle for info slides
+            circle.style.strokeDashoffset = 0; 
             return;
         }
         const percent = Math.min(current / target, 1);
@@ -247,15 +245,16 @@
 
     // --- Socket Handling ---
     socket.on('updateState', (data) => {
-        // Update Texts
-        arabicText.innerText = data.zikr.arabic;
-        romanText.innerText = data.zikr.roman;
+        // Safe check to prevent errors if data is missing
+        if (data.zikr) {
+            arabicText.innerText = data.zikr.arabic;
+            romanText.innerText = data.zikr.roman;
+            targetDisplay.innerText = "Target: " + data.target;
+        } else {
+            console.error("Zikr data missing in response", data);
+        }
         
-        // Update Count
         countDisplay.innerText = data.currentCount;
-        targetDisplay.innerText = "Target: " + data.target;
-        
-        // Update Ring
         setProgress(data.currentCount, data.target);
 
         // Finished State
@@ -274,14 +273,11 @@
             }
         } else {
             tapBtn.disabled = false;
-            
-            // Special text for the "Surah Yasin" instruction slide
             if (data.target === 1) {
                 tapBtn.innerText = "DONE";
             } else {
                 tapBtn.innerText = "TAP";
             }
-            
             tapBtn.classList.add('pulsing');
             tapBtn.style.background = "var(--btn-gradient)";
             statusMsg.innerText = "";
