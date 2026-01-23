@@ -14,17 +14,16 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --gold: #FFD700;
             --text-main: #ffffff;
+            --text-muted: #cfcfcf;
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            --special-bg: rgba(255, 215, 0, 0.15); /* Background for Surah Yaseen section */
+            --special-bg: rgba(255, 215, 0, 0.1);
         }
 
-        /* 1. Arabic Font (Al Qalam) */
+        /* FONTS */
         @font-face {
             font-family: 'Al Qalam Quran';
             src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype');
         }
-
-        /* 2. Urdu Font (Jameel Noori) - Upload this file! */
         @font-face {
             font-family: 'Jameel Noori Nastaleeq';
             src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype');
@@ -48,82 +47,102 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             width: 90%;
-            max-width: 450px;
-            padding: 30px 20px;
+            max-width: 500px;
+            padding: 40px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             text-align: center;
-            margin: 40px auto; 
+            margin: 20px auto; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: background 0.3s;
         }
 
-        h1 { 
-            margin: 0 0 20px 0; 
-            font-size: 1.5rem; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-        }
+        h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* ZIKR CONTAINER */
-        #zikr-container {
+        /* HEADER SECTION: Number & Title */
+        .zikr-header {
             width: 100%;
-            min-height: 150px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            box-sizing: border-box;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
         }
 
-        /* DEFAULT ARABIC FONT */
-        #arabic-text {
-            font-family: 'Al Qalam Quran', serif; 
-            font-size: 2.4rem;
-            line-height: 2.2;
+        .zikr-badge {
+            background: var(--gold);
+            color: #0F2027;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Al Qalam Quran', serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .zikr-title {
+            font-family: 'Jameel Noori Nastaleeq', serif;
+            font-size: 2.2rem;
+            color: #ffffff;
+            line-height: 1.4;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .zikr-subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* BODY SECTION */
+        #zikr-body-container {
+            width: 100%;
+            min-height: 100px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        #arabic-body {
+            font-family: 'Al Qalam Quran', serif; /* Default */
+            font-size: 2.5rem;
+            line-height: 2.0;
             color: #ffffff;
             margin-bottom: 15px;
             direction: rtl;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
             white-space: pre-line;
         }
 
-        /* CLASS FOR URDU FONT */
         .urdu-font {
             font-family: 'Jameel Noori Nastaleeq', serif !important;
-            font-size: 2.0rem !important; /* Nastaleeq often needs slightly smaller size */
-            line-height: 2.5 !important;
+            font-size: 2.0rem !important;
+            line-height: 2.2 !important;
         }
 
-        #roman-text {
+        #roman-body {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.2rem;
-            line-height: 1.6;
+            font-size: 1.1rem;
             color: var(--gold);
-            font-weight: 400;
+            line-height: 1.5;
             white-space: pre-line;
-            text-align: center;
         }
 
-        /* SPECIAL SECTION STYLING (Surah Yaseen) */
-        .special-section {
-            background: var(--special-bg) !important;
-            border: 2px solid var(--gold) !important;
-            padding: 40px 20px !important;
-        }
-        .special-section #arabic-text {
-            color: var(--gold);
-            font-weight: bold;
+        /* Special Section Style */
+        .special-mode {
+            background: var(--special-bg);
+            border: 2px solid var(--gold);
         }
 
+        /* CONTROLS */
         .progress-container {
             position: relative;
             width: 160px;
@@ -168,7 +187,6 @@
         }
         #tap-btn:active { transform: scale(0.96); }
         #tap-btn:disabled { background: #4b5563; box-shadow: none; }
-        
         .pulsing { animation: pulse 2s infinite; }
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.4); }
@@ -176,14 +194,13 @@
             100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); }
         }
 
-        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); white-space: pre-wrap; }
+        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
 
+        /* ADMIN */
         #admin-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
-        .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 100px; }
-        
-        /* Restart Button (Orange) */
-        .btn-restart { background: #ff9f43 !important; color: #fff !important; margin-top: 10px; width: 100%; flex: 100%; }
+        .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
+        .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
 
     </style>
 </head>
@@ -192,9 +209,15 @@
 <div class="glass-card" id="main-card">
     <h1>Khatme Qadirya</h1>
 
-    <div id="zikr-container">
-        <div id="arabic-text">...</div>
-        <div id="roman-text">Connecting...</div>
+    <div class="zikr-header">
+        <div class="zikr-badge" id="zikr-num">1</div>
+        <div class="zikr-title" id="zikr-title-urdu">Loading...</div>
+        <div class="zikr-subtitle" id="zikr-title-eng">Connecting</div>
+    </div>
+
+    <div id="zikr-body-container">
+        <div id="arabic-body">...</div>
+        <div id="roman-body">...</div>
     </div>
 
     <div class="progress-container" id="progress-wrapper">
@@ -224,9 +247,11 @@
     
     // UI Elements
     const mainCard = document.getElementById('main-card');
-    const zikrContainer = document.getElementById('zikr-container');
-    const arabicText = document.getElementById('arabic-text');
-    const romanText = document.getElementById('roman-text');
+    const zikrNum = document.getElementById('zikr-num');
+    const titleUrdu = document.getElementById('zikr-title-urdu');
+    const titleEng = document.getElementById('zikr-title-eng');
+    const arabicBody = document.getElementById('arabic-body');
+    const romanBody = document.getElementById('roman-body');
     const countDisplay = document.getElementById('count-display');
     const targetDisplay = document.getElementById('target-display');
     const progressWrapper = document.getElementById('progress-wrapper');
@@ -234,7 +259,6 @@
     const statusMsg = document.getElementById('status-msg');
     const adminPanel = document.getElementById('admin-panel');
 
-    // Progress Ring Logic
     const circle = document.querySelector('.progress-ring__circle');
     const radius = circle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
@@ -242,10 +266,7 @@
     circle.style.strokeDashoffset = circumference;
 
     function setProgress(current, target) {
-        if(target <= 0) {
-            circle.style.strokeDashoffset = 0; 
-            return;
-        }
+        if(target <= 0) { circle.style.strokeDashoffset = 0; return; }
         const percent = Math.min(current / target, 1);
         const offset = circumference - percent * circumference;
         circle.style.strokeDashoffset = offset;
@@ -295,35 +316,38 @@
         playSound('tap');
     }
 
-    // --- Socket Handling ---
+    // --- SOCKET LOGIC ---
     socket.on('updateState', (data) => {
         if (data.zikr) {
-            arabicText.innerText = data.zikr.arabic;
-            romanText.innerText = data.zikr.roman;
+            // Update Text
+            zikrNum.innerText = data.zikr.id;
+            titleUrdu.innerText = data.zikr.titleUrdu;
+            titleEng.innerText = data.zikr.titleEng;
+            arabicBody.innerText = data.zikr.bodyText;
+            romanBody.innerText = data.zikr.bodyRoman;
             targetDisplay.innerText = "Target: " + data.target;
 
-            // 1. Handle Urdu Font Logic
-            if (data.zikr.isUrdu) {
-                arabicText.classList.add('urdu-font');
+            // 1. Font Switching (Urdu vs Arabic)
+            if (data.zikr.isUrduBody) {
+                arabicBody.classList.add('urdu-font');
             } else {
-                arabicText.classList.remove('urdu-font');
+                arabicBody.classList.remove('urdu-font');
             }
 
-            // 2. Handle "Instruction Slide" (Surah Yaseen) Styling
+            // 2. Special Section (Instructions)
             if (data.zikr.type === 'instruction') {
-                mainCard.classList.add('glass-card'); // Ensure base class
-                zikrContainer.classList.add('special-section');
-                progressWrapper.style.display = 'none'; // Hide progress ring
+                mainCard.classList.add('special-mode');
+                progressWrapper.style.display = 'none';
             } else {
-                zikrContainer.classList.remove('special-section');
-                progressWrapper.style.display = 'block'; // Show progress ring
+                mainCard.classList.remove('special-mode');
+                progressWrapper.style.display = 'block';
             }
         }
         
         countDisplay.innerText = data.currentCount;
         setProgress(data.currentCount, data.target);
 
-        // Finished State
+        // State: Completed
         if (data.isFinished) {
             tapBtn.disabled = true;
             tapBtn.innerText = "COMPLETED";
@@ -339,13 +363,10 @@
             }
         } else {
             tapBtn.disabled = false;
-            // Special text for instructions
-            if (data.target === 1) {
-                tapBtn.innerText = "DONE / NEXT";
-            } else {
-                tapBtn.innerText = "TAP";
-            }
-            tapBtn.style.display = 'block'; // Ensure visible
+            if (data.target === 1) tapBtn.innerText = "DONE / NEXT";
+            else tapBtn.innerText = "TAP";
+            
+            tapBtn.style.display = 'block';
             tapBtn.classList.add('pulsing');
             tapBtn.style.background = "var(--btn-gradient)";
             statusMsg.innerText = "";
@@ -353,18 +374,17 @@
         }
     });
 
-    // --- Session Complete ---
     socket.on('sessionComplete', (msg) => {
-        arabicText.innerText = "الْحَمْدُ لِلَّٰهِ";
-        romanText.innerText = "";
+        titleUrdu.innerText = "ختمِ قادریہ مکمل";
+        titleEng.innerText = "Session Closed";
+        arabicBody.innerText = "الْحَمْدُ لِلَّٰهِ";
+        romanBody.innerText = "";
+        progressWrapper.style.display = 'block'; // Show checkmark inside ring
         countDisplay.innerText = "✓";
-        circle.style.strokeDashoffset = 0;
         tapBtn.style.display = 'none';
-        progressWrapper.style.display = 'block';
         
         statusMsg.innerText = msg; 
         statusMsg.style.color = "#38ef7d";
-        statusMsg.style.fontSize = "1.3rem";
         
         playSound('complete');
     });
@@ -375,11 +395,10 @@
         adminPanel.style.display = 'block';
     }
 
-    function resetCount() { if(confirm("Reset this counter to 0?")) socket.emit('resetCurrent'); }
+    function resetCount() { if(confirm("Reset this counter?")) socket.emit('resetCurrent'); }
     function nextZikr() { if(confirm("Move to next Zikr?")) socket.emit('nextZikr'); }
-    function restartSession() { if(confirm("⚠ WARNING: This will restart the ENTIRE session for everyone. Are you sure?")) socket.emit('restartSession'); }
+    function restartSession() { if(confirm("Restart the ENTIRE session?")) socket.emit('restartSession'); }
 
-    // Initial Unlock
     document.body.addEventListener('click', initAudio, { once: true });
     document.body.addEventListener('touchstart', initAudio, { once: true });
 
