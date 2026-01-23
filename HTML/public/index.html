@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khatme Qadirya</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Amiri+Quran&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -18,9 +18,10 @@
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
 
+        /* CUSTOM FONT LOADING */
         @font-face {
-            font-family: 'MuhammadiQuranic Regular';
-            src: url('MuhammadiQuranic.ttf') format('truetype');
+            font-family: 'Al Qalam Quran';
+            src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype');
         }
 
         body {
@@ -30,14 +31,11 @@
             min-height: 100vh;
             color: var(--text-main);
             
-            /* FIX 2: Layout changed to allow scrolling */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 0; /* Add padding so top/bottom isn't cut off when scrolling */
-            box-sizing: border-box; 
-            /* Removed 'overflow: hidden' to allow scrolling */
+            /* SCROLL & REFRESH ENABLED */
+            display: block; /* changed from flex to block to allow natural scroll */
+            padding: 20px 0;
+            overflow-y: auto; /* Allow vertical scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
         }
 
         .glass-card {
@@ -51,21 +49,21 @@
             border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             text-align: center;
+            
+            /* Centering Logic for Block Layout */
+            margin: 40px auto; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: auto; /* Helps with centering when zooming */
         }
 
         h1 { 
-            margin: 0 0 20px 0; /* Added bottom margin since subtitle is gone */
+            margin: 0 0 20px 0; 
             font-size: 1.5rem; 
             color: var(--gold); 
             text-transform: uppercase; 
             letter-spacing: 2px; 
         }
-
-        /* Subtitle CSS removed */
 
         /* ZIKR CONTAINER */
         #zikr-container {
@@ -80,14 +78,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box; /* Ensures padding doesn't break width */
+            box-sizing: border-box;
         }
 
-        /* ARABIC TEXT */
+        /* ARABIC TEXT - UPDATED FONT */
         #arabic-text {
-            font-family: 'MuhammadiQuranic Regular', 'Amiri Quran', serif;
-            font-size: 2.2rem;
-            line-height: 2.0;
+            font-family: 'Al Qalam Quran', serif; /* Using your uploaded font */
+            font-size: 2.4rem; /* Slightly larger for this specific font */
+            line-height: 2.2;
             color: #ffffff;
             margin-bottom: 15px;
             direction: rtl;
@@ -98,8 +96,8 @@
         /* ROMAN TEXT */
         #roman-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.3rem;
-            line-height: 1.5;
+            font-size: 1.2rem;
+            line-height: 1.6;
             color: var(--gold);
             font-weight: 400;
             white-space: pre-line;
@@ -111,7 +109,7 @@
             width: 160px;
             height: 160px;
             margin-bottom: 25px;
-            flex-shrink: 0; /* Prevents shrinking on small screens */
+            flex-shrink: 0;
         }
         .progress-ring__circle {
             transition: stroke-dashoffset 0.35s;
@@ -147,6 +145,7 @@
             box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2);
             transition: transform 0.1s;
             -webkit-tap-highlight-color: transparent;
+            margin-bottom: 20px; /* Space at bottom for scrolling */
         }
         #tap-btn:active { transform: scale(0.96); }
         #tap-btn:disabled { background: #4b5563; box-shadow: none; }
@@ -171,6 +170,7 @@
 
 <div class="glass-card">
     <h1>Khatme Qadirya</h1>
+
     <div id="zikr-container">
         <div id="arabic-text">...</div>
         <div id="roman-text">Connecting...</div>
