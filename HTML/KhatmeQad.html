@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Khatme Qadirya</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0f172a;
+  color: #fff;
+}
+
+.app-container {
+  max-width: 420px;
+  margin: auto;
+  padding: 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dhikr-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.active {
+  outline: 2px solid #22d3ee;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+.count-tag {
+  background: #16a34a;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.arabic-text {
+  margin: 14px 0;
+  font-size: 20px;
+  direction: rtl;
+  text-align: center;
+}
+
+.tasbih-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  background: #2563eb;
+  color: white;
+}
+
+.tasbih-btn:disabled {
+  background: #334155;
+}
+
+.counter {
+  text-align: center;
+  margin-top: 6px;
+  color: #a5f3fc;
+}
+
+.reset-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  background: #dc2626;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app-container">
+<header>
+  <h1>Khatme Qadirya</h1>
+  <p>ختم قادریہ</p>
+</header>
+
+<section class="dhikr-card active" id="zikr0">
+  <div class="meta"><span class="count-tag">10 Times</span><h3>Durood</h3></div>
+  <p class="arabic-text">اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ</p>
+  <button class="tasbih-btn" onclick="tap(0)">Tap</button>
+  <div class="counter" id="c0">0 / 10</div>
+</section>
+
+<section class="dhikr-card" id="zikr1">
+  <div class="meta"><span class="count-tag">10 Times</span><h3>Kalima</h3></div>
+  <p class="arabic-text">سُبْحَانَ اللهِ وَالْحَمْدُ لِلَّهِ</p>
+  <button class="tasbih-btn" onclick="tap(1)">Tap</button>
+  <div class="counter" id="c1">0 / 10</div>
+</section>
+
+<section class="dhikr-card" id="zikr2">
+  <div class="meta"><span class="count-tag">10 Times</span><h3>Asma</h3></div>
+  <p class="arabic-text">يَا بَاقِي أَنْتَ الْبَاقِي</p>
+  <button class="tasbih-btn" onclick="tap(2)">Tap</button>
+  <div class="counter" id="c2">0 / 10</div>
+</section>
+
+<section class="dhikr-card" id="zikr3">
+  <div class="meta"><span class="count-tag">10 Times</span><h3>Istighatha</h3></div>
+  <p class="arabic-text">يَا رَسُولَ اللَّهِ انْظُرُ حَالَنَا</p>
+  <button class="tasbih-btn" onclick="tap(3)">Tap</button>
+  <div class="counter" id="c3">0 / 10</div>
+</section>
+
+<button class="reset-btn" onclick="resetAll()">🔁 Reset All Zikr</button>
+</div>
+
+<!-- Soft Sound -->
+<audio id="clickSound">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5c8b6c3e18.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const MAX = 10;
+let counts = JSON.parse(localStorage.getItem("zikr")) || [0,0,0,0];
+
+function save() {
+  localStorage.setItem("zikr", JSON.stringify(counts));
+}
+
+function tap(i) {
+  if (counts[i] >= MAX) return;
+
+  // sound
+  document.getElementById("clickSound").play();
+
+  // vibration
+  if (navigator.vibrate) navigator.vibrate(30);
+
+  counts[i]++;
+  save();
+  updateUI(i);
+
+  if (counts[i] === MAX) {
+    document.querySelectorAll(".tasbih-btn")[i].disabled = true;
+    document.getElementById("zikr"+i).classList.remove("active");
+
+    let next = i + 1;
+    if (document.getElementById("zikr"+next)) {
+      document.getElementById("zikr"+next).classList.add("active");
+      document.getElementById("zikr"+next)
+        .scrollIntoView({behavior:"smooth",block:"center"});
+    }
+  }
+}
+
+function updateUI(i) {
+  document.getElementById("c"+i).innerText = counts[i]+" / "+MAX;
+}
+
+function resetAll() {
+  if (!confirm("Reset all zikr?")) return;
+  counts = [0,0,0,0];
+  save();
+  location.reload();
+}
+
+// restore state
+counts.forEach((_,i)=>updateUI(i));
+</script>
+
+</body>
+</html>

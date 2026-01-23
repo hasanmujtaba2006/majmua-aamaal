@@ -1,0 +1,25 @@
+div{
+    height: 100px;
+    width: 300px;
+    border: 2px dotted black;
+    display: inline-block;
+    background-color: brown;
+    border-radius: 10px;
+}
+
+div:hover{
+    position: relative;
+    top: 20px;
+    background-color: red;
+    border: 2px solid black;
+}
+
+#box1{
+    background-image: url("About Us.png");
+    background-size: cover;
+    position: relative;
+}
+
+#box:hover{
+    top: 20px;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khatme Qadirya Counter</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        #zikr-display { font-size: 1.5rem; font-weight: bold; margin: 20px 0; color: #007bff; min-height: 60px; }
+        
+        /* Counter Styles */
+        #count-display { font-size: 4rem; font-weight: bold; margin: 10px 0; }
+        .target { font-size: 1.2rem; color: #777; }
+        
+        /* Button Styles */
+        button { border: none; padding: 15px 30px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: 0.2s; margin: 10px; }
+        #tap-btn { background: #28a745; color: white; width: 100%; height: 150px; font-size: 2rem; box-shadow: 0 6px 0 #218838; }
+        #tap-btn:active { transform: translateY(6px); box-shadow: none; }
+        #tap-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        /* Admin Panel */
+        #admin-panel { display: none; margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px; }
+        .admin-btn { background: #dc3545; color: white; font-size: 1rem; padding: 10px 20px; }
+        .next-btn { background: #007bff; }
+
+        /* Status */
+        #status-msg { font-weight: bold; color: #d9534f; height: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Khatme Qadirya</h1>
+    
+    <div id="zikr-display">Loading Zikr...</div>
+    
+    <div class="target">Target: 111</div>
+    <div id="count-display">0</div>
+    
+    <div id="status-msg"></div>
+
+    <button id="tap-btn" onclick="sendCount()">TAP TO COUNT</button>
+
+    <div id="admin-panel">
+        <h3>Admin Controls</h3>
+        <p>Only use if you are leading the Zikr.</p>
+        <button class="admin-btn" onclick="resetCount()">Reset Current</button>
+        <button class="admin-btn next-btn" onclick="nextZikr()">Start Next Zikr >></button>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    
+    const tapBtn = document.getElementById('tap-btn');
+    const countDisplay = document.getElementById('count-display');
+    const zikrDisplay = document.getElementById('zikr-display');
+    const statusMsg = document.getElementById('status-msg');
+    const adminPanel = document.getElementById('admin-panel');
+
+    // Check if user is Admin (simple check via URL, e.g., site.com/?admin=true)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('admin')) {
+        adminPanel.style.display = 'block';
+    }
+
+    // Receive Updates from Server
+    socket.on('updateState', (data) => {
+        zikrDisplay.innerText = data.zikrText;
+        countDisplay.innerText = data.currentCount;
+        
+        // Logic to stop counting when 111 is reached
+        if (data.isFinished) {
+            tapBtn.disabled = true;
+            tapBtn.style.background = "#6c757d";
+            tapBtn.innerText = "COMPLETED";
+            statusMsg.innerText = "Target Reached! Waiting for Admin...";
+        } else {
+            tapBtn.disabled = false;
+            tapBtn.style.background = "#28a745";
+            tapBtn.innerText = "TAP TO COUNT";
+            statusMsg.innerText = "";
+        }
+    });
+
+    socket.on('sessionComplete', (msg) => {
+        zikrDisplay.innerText = msg;
+        countDisplay.innerText = "✓";
+        tapBtn.style.display = 'none';
+        statusMsg.innerText = "MashaAllah, Khatm Completed.";
+    });
+
+    // --- User Actions ---
+    function sendCount() {
+        socket.emit('increment');
+    }
+
+    // --- Admin Actions ---
+    function resetCount() {
+        if(confirm("Are you sure you want to reset the count to 0?")) {
+            socket.emit('resetCurrent');
+        }
+    }
+
+    function nextZikr() {
+        if(confirm("Move to the Next Zikr?")) {
+            socket.emit('nextZikr');
+        }
+    }
+</script>
+
+</body>
+</html>

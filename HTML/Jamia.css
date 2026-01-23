@@ -1,0 +1,228 @@
+body{
+    background-color: white;
+    align-content: center;
+    text-align: center;
+}
+
+h4{
+    text-decoration: underline;
+    color: transparent;
+    font-size: large;
+    margin: auto;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+h4:hover{
+    color: white;
+    transition: 0.5s;
+}
+
+img{
+    height: 150px;
+    width: 300px;
+}
+
+.button{
+    height: 100px;
+    width: 300px;
+    background-color: aquamarine;
+    border-radius: 10px;
+    margin: auto;
+    margin-bottom: 20px;
+    border: 2px solid rgb(61, 59, 59);
+    box-shadow: 2px 4px 2px -2px rgba(0, 0, 0, 0.8);
+}
+
+#b1{
+    background-image: url("Founder Message.png");
+    background-size: cover;
+    border-color: #543d11;
+}
+
+#t1{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t1:hover{
+    background-color: rgba(84, 61, 17,0.8);
+    transition: 0.5s;   
+}
+
+#b2{
+    background-image: url("M D Message.png");
+    background-size: cover;
+    border-color: #2f4193;
+}
+
+#t2{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t2:hover{
+    background-color: rgba(47, 65, 147,0.8);
+    transition: 0.5s;   
+}
+
+#b3{
+    background-image: url("About Us.png");
+    background-size: cover;
+    border-color: #184f34;
+}
+
+#t3{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t3:hover{
+    background-color: rgba(24, 79, 52,0.8);
+    transition: 0.5s;   
+}
+
+#b4{
+    background-image: url("Student Panel.png");
+    background-size: cover;
+    border-color: #475e82;
+}
+
+#t4{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t4:hover{
+    background-color: rgba(71, 94, 130,0.8); 
+    transition: 0.5s;  
+}
+
+#b5{
+    background-image: url("Notice Board.png");
+    background-size: cover;
+    border-color: #161516;
+}
+
+#t5{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t5:hover{
+    background-color: rgba(22, 21, 22,0.8);
+    transition: 0.5s;   
+}
+
+#b6{
+    background-image: url("Gallery.png");
+    background-size: cover;
+    border-color: #682931;
+}
+
+#t6{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t6:hover{
+    background-color: rgba(104, 41, 49,0.8);
+    transition: 0.5s;   
+}
+
+#b7{
+    background-image: url("Our Apps.png");
+    background-size: cover;
+    border-color: #80653e;
+}
+
+#t7{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t7:hover{
+    background-color: rgba(128, 101, 62,0.8);
+    transition: 0.5s;   
+}
+
+#b8{
+    background-image: url("Our Website.png");
+    background-size: cover;
+    border-color: #251f23;
+}
+
+#t8{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t8:hover{
+    background-color: rgba(37, 31, 35,0.8); 
+    transition: 0.5s;  
+}
+
+#b9{
+    background-image: url("Syllabus.png");
+    background-size: cover;
+    border-color: #03b7cb;
+}
+
+#t9{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t9:hover{
+    background-color: rgba(3, 183, 203,0.8);
+    transition: 0.5s;   
+}
+
+#b10{
+    background-image: url("Conract Us.png");
+    background-size: cover;
+    border-color: #122d3f;
+
+}
+
+#t10{
+    height: 100px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: transparent;
+    line-height: 100px;
+}
+
+#t10:active{
+    background-color: rgba(28, 71, 100,0.8);
+    transition: 0.5s;   
+}
+

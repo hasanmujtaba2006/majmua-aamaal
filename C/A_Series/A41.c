@@ -1,0 +1,18 @@
+#include<stdio.h>
+
+int main(){
+    int n;
+    printf("Enter a number : ");
+    scanf("%d",&n);
+
+    printf("The Factorials till %d are : \n",n);
+
+    int fact = 1;
+
+    for (int i=1;i<=n;i++){
+        fact = fact*i;
+        printf("%d\n",fact);
+    }
+
+    return 0;
+}
