@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khatme Qadirya</title>
+    
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0F2027">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Gulzar&display=swap" rel="stylesheet">
     
     <style>
@@ -33,6 +40,9 @@
             padding: 20px 0;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            /* Prevent text selection for app-like feel */
+            user-select: none; 
+            -webkit-tap-highlight-color: transparent;
         }
 
         .hidden { display: none !important; }
@@ -70,7 +80,7 @@
         /* LOBBY & INPUTS */
         .input-field {
             width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold);
-            background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px;
+            background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none;
         }
         
         /* Main Home Buttons */
@@ -108,14 +118,14 @@
         #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; }
         #arabic-body {
             font-family: 'Al Qalam Quran', serif; font-size: 2.0rem; line-height: 1.6;
-            color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-line;
+            color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-line; user-select: text;
         }
         .urdu-font { 
             font-family: 'Jameel Noori Nastaleeq Kasheeda', serif !important; 
             font-size: 2.0rem !important; 
             line-height: 2.2 !important; 
         }
-        #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; }
+        #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; user-select: text; }
         
         .special-mode .title-box { background: var(--special-bg); border: 2px solid var(--gold); }
 
@@ -308,7 +318,7 @@
     const tapBtn = document.getElementById('tap-btn');
     const statusMsg = document.getElementById('status-msg');
     const adminPanel = document.getElementById('admin-panel');
-    const mainCard = document.getElementById('app-screen'); // Corrected selector logic
+    const mainCard = document.getElementById('app-screen'); 
 
     const circle = document.querySelector('.progress-ring__circle');
     const radius = circle.r.baseVal.value;
@@ -404,9 +414,6 @@
 
     function initiateJoin(sessionId) {
         selectedSessionIdForJoin = sessionId;
-        // Open Password Modal (even if empty, just to confirm)
-        // Or strictly ask only if required? Backend doesn't tell us if pass required for security.
-        // We will assume UI flow asks for password always, user leaves empty if none.
         document.getElementById('password-modal').style.display = 'flex';
         joinPassInput.value = "";
         joinPassInput.focus();
@@ -584,6 +591,14 @@
     document.body.addEventListener('click', initAudio, { once: true });
     document.body.addEventListener('touchstart', initAudio, { once: true });
 
+    // --- PWA SERVICE WORKER ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('Service Worker registered'))
+            .catch(err => console.log('Service Worker failed', err));
+        });
+    }
 </script>
 
 </body>
