@@ -30,40 +30,19 @@ const masterZikrList = [
     { id: "۱۰", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "فَسَهِّلْ یَا اِلٰهِیْ كُلَّ صَعْبٍ \n بِحُرْمَةِ سَیِّدِ الْاَبْرَارِ سَهِّلْ", bodyRoman: "Fa Sahhil Ya Ilahi Kulla Sa'bin \n Bi Hurmati Sayyidil Abrari Sahhil", target: 111, isUrduBody: false },
     { id: "۱۱", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا صِدِّیْقُ یَا عُمَرْ \n یَا عُثْمَانُ یَا حَیْدَرْ \n دَفْعِ شَرْ کُن خَیْر آوَرْ \n یَا شَبِّیْرُ یَا شَبَّرْ", bodyRoman: "Ya Siddiqu Ya 'Umar \n Ya 'Uthmanu Ya Haydar \n Daf'e Shar Kun Khair Aawar \n Ya Shabbiru Ya Shabbar", target: 111, isUrduBody: false },
     { id: "۱۲", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا حَضْرَتْ سُلْطَانْ شَیْخْ سَیِّدْ شَاهْ عَبْدَ الْقَادِرْ جِیْلَانِیْ شَیْئًا لِلّٰہِ اَلْمَدَدْ", bodyRoman: "Ya Hazrat Sultan Sheikh Sayyid Shah Abdul Qadir Jilani Shay'an Lillah Al-Madad", target: 111, isUrduBody: false },
-    
-    // Urdu Fonts (Kasheeda)
     { id: "۱۳", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "ماہمہ محتاج تو حاجت روا \n المددیا غوث اعظم سیدا", bodyRoman: "Ma Hama Muhtaje Tu Hajat Rawa \n Al-Madad Ya Ghaus-e-Azam Sayyida", target: 111, isUrduBody: true },
     { id: "۱۴", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "مشکلات بے عدد داریم ما \n المدد یا غوث اعظم پیرِ ما", bodyRoman: "Mushkilat Be 'Adad Dareem Ma \n Al-Madad Ya Ghaus-e-Azam Peer-e-Ma", target: 111, isUrduBody: true },
-    
     { id: "۱۵", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "يَا حَضْرَتْ شيْخْ مُحْيَ الدِّيْنْ مُشْكِلْ كُشَا بِالْخَيْر", bodyRoman: "Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair", target: 111, isUrduBody: false },
-    
-    // Urdu Font
     { id: "۱۶", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر", bodyRoman: "Imdad Kun Imdad Kun \n Az Band-e-Gham Azad Kun \n Dar Din-o-Dunya Shad Kun \n Ya Ghaus-e-Azam Dastagir", target: 111, isUrduBody: true },
-    
-    // Arabic Font
     { id: "۱۷", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یا حَضْرَتْ غَوثْ! اَغِثْنَا بِاذْنِ اللّٰهِ تَعَالٰی", bodyRoman: "Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala", target: 111, isUrduBody: false },
-    
     { id: "۱۸", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "خُذْ يَدِيْ يَا شَاہِ جِيلَاں خُذْ يَدِيْ \n شَيئًا للّٰهِ أَنْتَ نُورٌ اَحْمَدِيْ", bodyRoman: "Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi \n Shay'an Lillah Anta Nurun Ahmadi", target: 111, isUrduBody: false },
-    
-    // Urdu Font
     { id: "۱۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "طفیل حضرت دستگیردشمن ہووےزیر", bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer", target: 111, isUrduBody: true },
-    
-    // --- UPDATED INSTRUCTION SLIDE WITH LINKS ---
-    { 
-        id: "!", 
-        titleUrdu: "ہدایات", 
-        titleEng: "Instructions", 
-        bodyText: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)", 
-        bodyRoman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.", 
-        target: 1, 
-        type: 'instruction',
-        // New Links Added Here
-        links: [
+    { id: "!", titleUrdu: "ہدایات", titleEng: "Instructions", bodyText: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)", bodyRoman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.", target: 1, type: 'instruction',
+      links: [
             { label: "📖 Read Surah Yaseen", url: "https://www.canva.com/design/DAG3UUK4M0U/5DVUkBQ8TjJWAQr1FZYSVA/view?utm_content=DAG3UUK4M0U&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h15ec808d26" },
             { label: "📖 Read Qasida Gausiya", url: "https://www.canva.com/design/DAG5nxskMQQ/XzjXiS63lpiphmzvHLJSBA/view?utm_content=DAG5nxskMQQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha522bd0d05" }
         ]
     },
-    
     { id: "۲۱", titleUrdu: "دُرُودِ غوثیہ (آخر)", titleEng: "Durood Ghousia (Final)", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِ وَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", bodyRoman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim", target: 111, isUrduBody: false }
 ];
 
@@ -89,27 +68,56 @@ setInterval(() => {
         }
     });
     if (sessionRemoved) {
-        io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
+        // Send list without passwords
+        const publicSessions = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
+        io.emit('sessionList', publicSessions);
     }
 }, CLEANUP_INTERVAL);
 
 io.on('connection', (socket) => {
-    socket.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
+    
+    // Send list (Hide passwords)
+    const publicSessions = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
+    socket.emit('sessionList', publicSessions);
 
-    socket.on('createSession', (sessionName) => {
+    // --- CREATE SESSION (Admin) ---
+    socket.on('createSession', (data) => {
+        const { name, password } = data; // Accept password
         const sessionId = "room_" + Math.random().toString(36).substr(2, 9);
-        sessions[sessionId] = { name: sessionName || "Khatm Session", currentIndex: 0, currentCount: 0, isFinished: false, lastActive: Date.now() };
+        
+        sessions[sessionId] = { 
+            name: name || "Khatm Session", 
+            password: password || "", // Store password
+            currentIndex: 0, 
+            currentCount: 0, 
+            isFinished: false,
+            lastActive: Date.now() 
+        };
+
         socket.join(sessionId);
         socket.emit('joinedSession', { sessionId, isAdmin: true, state: getSessionState(sessionId) });
-        io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
+        
+        // Broadcast new list (exclude password)
+        const updatedList = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
+        io.emit('sessionList', updatedList);
     });
 
-    socket.on('joinSession', (sessionId) => {
-        if (sessions[sessionId]) {
+    // --- JOIN SESSION (Reciter) ---
+    socket.on('joinSession', (data) => {
+        const { sessionId, password } = data;
+        const session = sessions[sessionId];
+
+        if (session) {
+            // Check Password
+            if (session.password && session.password !== password) {
+                socket.emit('sessionError', "Incorrect Password.");
+                return;
+            }
+
             socket.join(sessionId);
             socket.emit('joinedSession', { sessionId, isAdmin: false, state: getSessionState(sessionId) });
         } else {
-            socket.emit('sessionError', "This session no longer exists. Please refresh.");
+            socket.emit('sessionError', "This session no longer exists.");
         }
     });
 
@@ -176,7 +184,8 @@ io.on('connection', (socket) => {
         if (sessions[sessionId]) {
             delete sessions[sessionId];
             io.to(sessionId).emit('forceExit', "Session Ended by Admin.");
-            io.emit('sessionList', Object.keys(sessions).map(id => ({ id, name: sessions[id].name })));
+            const updatedList = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
+            io.emit('sessionList', updatedList);
         }
     });
 });
