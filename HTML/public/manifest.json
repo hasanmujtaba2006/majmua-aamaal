@@ -1,41 +1,42 @@
 {
   "name": "Khatme Qadirya Digital",
   "short_name": "Khatme Qadirya",
-  "description": "A real-time collaborative Zikr counter for groups. Join sessions, recite together, and track progress globally.",
+  "description": "A real-time collaborative Zikr counter for spiritual gatherings. Join sessions, recite together, and track progress globally.",
   "id": "/",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F2027",
   "theme_color": "#FFD700",
   "orientation": "portrait",
+  "categories": ["lifestyle", "productivity", "social"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "screenshots": [
     {
       "src": "screenshot.png",
-      "sizes": "1080x1920",
+      "sizes": "1920x1080", 
       "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Main Zikr Screen"
+      "form_factor": "wide",
+      "label": "Khatme Qadirya App"
     },
     {
       "src": "screenshot.png",
-      "sizes": "1080x1920",
+      "sizes": "1331x586",
       "type": "image/png",
-      "form_factor": "wide",
-      "label": "Desktop View"
+      "form_factor": "narrow",
+      "label": "Mobile View"
     }
   ]
 }
