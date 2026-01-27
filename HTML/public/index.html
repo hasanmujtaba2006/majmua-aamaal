@@ -166,18 +166,41 @@
         }
         .footer-sig span { color: var(--danger); } 
 
-        /* MODAL */
-        #custom-modal, #password-modal {
+        /* MODAL COMMON STYLES */
+        #custom-modal, #password-modal, #instruction-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000;
+            background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000;
         }
         .modal-content {
-            background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 80%; max-width: 300px;
+            background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px;
+            max-height: 80vh; overflow-y: auto;
         }
         .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
         .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
         .modal-confirm { background: var(--gold); color: #000; }
         .modal-cancel { background: #4b5563; color: white; }
+
+        /* INSTRUCTION MODAL SPECIFIC */
+        .instr-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .instr-section:last-child { border-bottom: none; }
+        .urdu-text {
+            font-family: 'Jameel Noori Nastaleeq', serif;
+            font-size: 1.2rem;
+            line-height: 2.0;
+            text-align: right;
+            color: var(--gold);
+            direction: rtl;
+        }
+        .eng-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: left;
+            color: #e0e0e0;
+        }
+        .instr-title {
+            font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; text-decoration: underline; text-decoration-color: var(--gold);
+        }
 
         /* Back Button */
         .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
@@ -257,6 +280,39 @@
     Created with <span>&hearts;</span> by Hasan Mujtaba
 </div>
 
+<div id="instruction-modal">
+    <div class="modal-content" style="text-align: left;">
+        
+        <div class="instr-section">
+            <div class="urdu-text">
+                <div class="instr-title">ایپ استعمال کرنے کی ہدایات</div>
+                🔹 جو شخص ذکر کی مجلس شروع کرنا چاہے، وہ Create Group پر کلک کرے۔<br>
+                🔹 مجلس کے لیے ایک نام درج کرے اور ایک Password بنائے۔<br>
+                🔹 یہی شخص امیرِ مجلس ہوگا اور ذکر کا آغاز کرے گا۔<br><br>
+                🔹 جو افراد اس مجلس میں شامل ہونا چاہیں، وہ Join Group پر کلک کریں۔<br>
+                🔹 امیرِ مجلس کی طرف سے دیا گیا Password درج کریں۔<br>
+                🔹 Password درست ہونے پر آپ مجلس میں شامل ہو جائیں گے
+                اور سب لوگ ایک ساتھ ذکر و اذکار پڑھ سکیں گے۔
+            </div>
+        </div>
+
+        <div class="instr-section">
+            <div class="eng-text">
+                <div class="instr-title">App Usage Instructions</div>
+                🔹 The person who wants to start the Zikr session should tap <b>Create Group</b>.<br>
+                🔹 Enter a Group Name and create a Password for the session.<br>
+                🔹 This person will be the Ameer-e-Majlis and will start the Zikr.<br><br>
+                🔹 Those who want to join the session should tap <b>Join Group</b>.<br>
+                🔹 Enter the Password provided by the Ameer-e-Majlis.<br>
+                🔹 Once the password is verified, you will join the session
+                and everyone can perform Zikr together.
+            </div>
+        </div>
+
+        <button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button>
+    </div>
+</div>
+
 <div id="custom-modal">
     <div class="modal-content">
         <h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3>
@@ -287,12 +343,13 @@
     let availableSessions = [];
     let selectedSessionIdForJoin = null;
 
-    // Elements - Define all potentially used elements
+    // Elements
     const landingScreen = document.getElementById('landing-screen');
     const createScreen = document.getElementById('create-screen');
     const joinScreen = document.getElementById('join-screen');
     const appScreen = document.getElementById('app-screen');
     const footerSig = document.querySelector('.footer-sig');
+    const instructionModal = document.getElementById('instruction-modal'); // New Modal
 
     const createName = document.getElementById('create-name');
     const createPass = document.getElementById('create-pass');
@@ -314,8 +371,6 @@
     const tapBtn = document.getElementById('tap-btn');
     const statusMsg = document.getElementById('status-msg');
     const adminPanel = document.getElementById('admin-panel');
-    
-    // SAFE SELECTOR for the App Card
     const appCardElement = document.getElementById('app-screen'); 
 
     const circle = document.querySelector('.progress-ring__circle');
@@ -325,6 +380,16 @@
     if(circle) {
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
         circle.style.strokeDashoffset = circumference;
+    }
+
+    // --- INSTRUCTION MODAL LOGIC ---
+    // Show instruction modal on load
+    window.addEventListener('load', () => {
+        if(instructionModal) instructionModal.style.display = 'flex';
+    });
+
+    function closeInstructions() {
+        if(instructionModal) instructionModal.style.display = 'none';
     }
 
     // --- NAVIGATION ---
