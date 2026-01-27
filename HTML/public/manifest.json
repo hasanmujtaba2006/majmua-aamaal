@@ -8,7 +8,7 @@
   "background_color": "#0F2027",
   "theme_color": "#FFD700",
   "orientation": "portrait",
-  "categories": ["lifestyle", "social"],
+  "categories": ["lifestyle", "productivity"],
   "icons": [
     {
       "src": "icon-192.png",

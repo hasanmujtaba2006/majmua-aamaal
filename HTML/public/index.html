@@ -343,7 +343,7 @@
     let availableSessions = [];
     let selectedSessionIdForJoin = null;
 
-    // Elements
+    // Elements - Safe references
     const landingScreen = document.getElementById('landing-screen');
     const createScreen = document.getElementById('create-screen');
     const joinScreen = document.getElementById('join-screen');
@@ -501,6 +501,7 @@
     // --- APP LOGIC (SAFE VERSION) ---
     function updateUI(data) {
         if (data.zikr) {
+            // Safe updates: Only update if element exists
             if(zikrNum) zikrNum.innerText = data.zikr.id;
             if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu;
             if(titleEng) titleEng.innerText = data.zikr.titleEng;
@@ -508,6 +509,7 @@
             if(romanBody) romanBody.innerText = data.zikr.bodyRoman;
             if(targetDisplay) targetDisplay.innerText = "Target: " + data.target;
 
+            // Links
             if(linksContainer) {
                 linksContainer.innerHTML = "";
                 if (data.zikr.links) {
@@ -522,6 +524,7 @@
                 }
             }
 
+            // Font Logic
             if(arabicBody) {
                 if (data.zikr.isUrduBody) {
                     arabicBody.classList.add('urdu-font');
@@ -530,31 +533,35 @@
                 }
             }
 
-            if (data.zikr.type === 'instruction') {
-                if(appCardElement) appCardElement.classList.add('special-mode');
-                if(progressWrapper) progressWrapper.style.display = 'none';
-            } else {
-                if(appCardElement) appCardElement.classList.remove('special-mode');
-                if(progressWrapper) progressWrapper.style.display = 'block';
+            // Style - SAFE SELECTOR CHECK
+            const appCard = document.getElementById('app-screen');
+            if (appCard) {
+                if (data.zikr.type === 'instruction') {
+                    appCard.classList.add('special-mode');
+                    if(progressWrapper) progressWrapper.style.display = 'none';
+                } else {
+                    appCard.classList.remove('special-mode');
+                    if(progressWrapper) progressWrapper.style.display = 'block';
+                }
             }
         }
         
         if(countDisplay) countDisplay.innerText = data.currentCount;
         
+        // Ring Animation
+        const circle = document.querySelector('.progress-ring__circle');
         if(circle && data.target > 0) { 
-            const percent = Math.min(data.currentCount / data.target, 1);
-            const offset = circumference - percent * circumference;
-            circle.style.strokeDashoffset = offset;
+             const radius = circle.r.baseVal.value;
+             const circumference = radius * 2 * Math.PI;
+             const percent = Math.min(data.currentCount / data.target, 1);
+             const offset = circumference - percent * circumference;
+             circle.style.strokeDashoffset = offset;
         }
 
         if (data.isFinished) {
             if(tapBtn) {
                 tapBtn.disabled = true;
-                if (data.isLast) {
-                    tapBtn.innerText = "COMPLETED";
-                } else {
-                    tapBtn.innerText = "Next Zikr";
-                }
+                tapBtn.innerText = data.isLast ? "COMPLETED" : "Next Zikr";
                 tapBtn.classList.remove('pulsing');
                 tapBtn.style.background = "#4b5563";
             }
@@ -569,9 +576,7 @@
         } else {
             if(tapBtn) {
                 tapBtn.disabled = false;
-                if (data.target === 1) tapBtn.innerText = "DONE / NEXT";
-                else tapBtn.innerText = "TAP";
-                
+                tapBtn.innerText = (data.target === 1) ? "DONE / NEXT" : "TAP";
                 tapBtn.style.display = 'block';
                 tapBtn.classList.add('pulsing');
                 tapBtn.style.background = "var(--btn-gradient)";
