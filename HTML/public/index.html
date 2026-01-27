@@ -349,7 +349,7 @@
     const joinScreen = document.getElementById('join-screen');
     const appScreen = document.getElementById('app-screen');
     const footerSig = document.querySelector('.footer-sig');
-    const instructionModal = document.getElementById('instruction-modal'); // New Modal
+    const instructionModal = document.getElementById('instruction-modal'); 
 
     const createName = document.getElementById('create-name');
     const createPass = document.getElementById('create-pass');
@@ -383,7 +383,6 @@
     }
 
     // --- INSTRUCTION MODAL LOGIC ---
-    // Show instruction modal on load
     window.addEventListener('load', () => {
         if(instructionModal) instructionModal.style.display = 'flex';
     });
@@ -509,7 +508,6 @@
             if(romanBody) romanBody.innerText = data.zikr.bodyRoman;
             if(targetDisplay) targetDisplay.innerText = "Target: " + data.target;
 
-            // Links
             if(linksContainer) {
                 linksContainer.innerHTML = "";
                 if (data.zikr.links) {
@@ -524,7 +522,6 @@
                 }
             }
 
-            // Font Logic
             if(arabicBody) {
                 if (data.zikr.isUrduBody) {
                     arabicBody.classList.add('urdu-font');
@@ -533,7 +530,6 @@
                 }
             }
 
-            // Style - uses Safe Selector
             if (data.zikr.type === 'instruction') {
                 if(appCardElement) appCardElement.classList.add('special-mode');
                 if(progressWrapper) progressWrapper.style.display = 'none';

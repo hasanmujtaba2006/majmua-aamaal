@@ -8,28 +8,28 @@
   "background_color": "#0F2027",
   "theme_color": "#FFD700",
   "orientation": "portrait",
-  "categories": ["lifestyle", "productivity", "social"],
+  "categories": ["lifestyle", "social"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "screenshots": [
     {
       "src": "screenshot.png",
-      "sizes": "1920x1080", 
+      "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Khatme Qadirya App"
+      "label": "Desktop View"
     },
     {
       "src": "screenshot.png",
