@@ -18,10 +18,18 @@
         @font-face { font-family: 'Jameel Noori Nastaleeq Kasheeda'; src: url('Jameel Noori Nastaleeq Kasheeda.ttf') format('truetype'); }
         body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); margin: 0; min-height: 100vh; color: var(--text-main); display: block; padding: 20px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; user-select: none; -webkit-tap-highlight-color: transparent; }
         .hidden { display: none !important; }
+        
+        /* HEADER WIDGETS */
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
+        
         #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
+        
+        /* PRAYER TIME WIDGET (NEW) */
+        #prayer-badge { position: fixed; top: 20px; right: 65px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255, 215, 0, 0.5); padding: 7px 15px; border-radius: 50px; color: #fff; font-size: 0.85rem; z-index: 100; backdrop-filter: blur(5px); display: none; }
+        #prayer-badge span { color: var(--gold); font-weight: bold; margin-left: 5px; }
+
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         #connection-status { position: absolute; top: 15px; right: 15px; width: 12px; height: 12px; border-radius: 50%; background: #4b5563; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: background 0.3s; }
@@ -86,6 +94,7 @@
     <div class="live-dot"></div>
     <div class="live-text"><span id="live-count">1</span> Online</div>
 </div>
+<div id="prayer-badge">Next: <span id="next-prayer">Loading...</span></div>
 <div id="settings-badge" onclick="showSettings()">⚙️</div>
 
 <div class="glass-card" id="landing-screen">
@@ -216,7 +225,7 @@
 <script>
     const socket = io();
     let currentSessionId = null;
-    let currentSessionPass = ""; // Store password for sharing
+    let currentSessionPass = ""; 
     let pendingAction = null;
     let availableSessions = [];
     let selectedSessionIdForJoin = null;
@@ -230,6 +239,8 @@
     const instructionModal = document.getElementById('instruction-modal'); 
     const liveCountElement = document.getElementById('live-count');
     const vibToggleBtn = document.getElementById('vib-toggle-btn');
+    const prayerBadge = document.getElementById('prayer-badge');
+    const nextPrayerSpan = document.getElementById('next-prayer');
 
     const createName = document.getElementById('create-name');
     const createPass = document.getElementById('create-pass');
@@ -258,28 +269,85 @@
     const circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
 
-    // --- AUTO-JOIN LOGIC (LINK PARSER) ---
+    // --- PRAYER TIME LOGIC ---
+    function initPrayerTimes() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => fetchPrayerData(pos.coords.latitude, pos.coords.longitude),
+                () => fetchPrayerData(28.3670, 79.4304) // Fallback: Bareilly
+            );
+        } else {
+            fetchPrayerData(28.3670, 79.4304); // Fallback: Bareilly
+        }
+    }
+
+    function fetchPrayerData(lat, lng) {
+        const date = Math.floor(Date.now() / 1000);
+        fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=2`)
+            .then(res => res.json())
+            .then(data => updatePrayerBadge(data.data.timings))
+            .catch(err => console.error("Prayer API Error:", err));
+    }
+
+    function updatePrayerBadge(timings) {
+        const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        const now = new Date();
+        let nextPrayer = null;
+        let nextTime = null;
+
+        for (let p of prayers) {
+            const timeStr = timings[p];
+            const [hours, minutes] = timeStr.split(':');
+            const prayerDate = new Date();
+            prayerDate.setHours(hours, minutes, 0);
+
+            if (prayerDate > now) {
+                nextPrayer = p;
+                nextTime = formatTime(timeStr);
+                break;
+            }
+        }
+
+        // If all prayers passed, show Fajr next day
+        if (!nextPrayer) {
+            nextPrayer = 'Fajr';
+            nextTime = formatTime(timings['Fajr']);
+        }
+
+        if(prayerBadge && nextPrayerSpan) {
+            nextPrayerSpan.innerText = `${nextPrayer} ${nextTime}`;
+            prayerBadge.style.display = 'block';
+        }
+    }
+
+    function formatTime(time24) {
+        let [h, m] = time24.split(':');
+        let suffix = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return `${h}:${m} ${suffix}`;
+    }
+
     window.addEventListener('load', () => {
-        // Handle instructions
+        // Init Prayer Times
+        initPrayerTimes();
+
         if(!window.location.search) {
             if(instructionModal) instructionModal.style.display = 'flex';
         }
         updateVibBtn();
 
-        // Check for share link
         const params = new URLSearchParams(window.location.search);
         const joinId = params.get('join');
         const joinPass = params.get('pass');
 
         if(joinId) {
-            if(instructionModal) instructionModal.style.display = 'none'; // Skip help if joining via link
+            if(instructionModal) instructionModal.style.display = 'none'; 
             console.log("Auto-joining session:", joinId);
             selectedSessionIdForJoin = joinId;
             socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
         }
     });
 
-    // --- SETTINGS LOGIC ---
     function showSettings() { document.getElementById('settings-modal').style.display='flex'; }
     function toggleVibration() {
         vibrationEnabled = !vibrationEnabled;
@@ -291,14 +359,12 @@
         else { vibToggleBtn.innerText = "OFF"; vibToggleBtn.style.background = "#ef4444"; }
     }
 
-    // --- SOLO MODE LOGIC ---
     function startSoloMode() {
         const name = "My Personal Zikr";
         const password = "solo_" + Math.random().toString(36).substr(2,5);
         socket.emit('createSession', { name, password });
     }
 
-    // --- SHARE LOGIC ---
     function shareSession() {
         if(!currentSessionId) return;
         const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`;
@@ -312,17 +378,15 @@
     function closeInstructions() { if(instructionModal) instructionModal.style.display = 'none'; }
     socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
 
-    // --- NAVIGATION ---
     function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
     function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
     function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
     function hideAll() { if(landingScreen) landingScreen.classList.add('hidden'); if(createScreen) createScreen.classList.add('hidden'); if(joinScreen) joinScreen.classList.add('hidden'); if(appScreen) appScreen.classList.add('hidden'); }
 
-    // --- SOCKET EVENTS ---
     socket.on('connect', () => { statusDots.forEach(dot => dot.classList.add('status-online')); if (currentSessionId) { socket.emit('reJoinSession', currentSessionId); } });
     socket.on('disconnect', () => { statusDots.forEach(dot => dot.classList.remove('status-online')); });
     socket.on('forceExit', (msg) => { alert(msg); window.location.href = "/"; });
-    socket.on('sessionError', (msg) => { alert(msg); window.location.href = "/"; }); // Redirect clean on error
+    socket.on('sessionError', (msg) => { alert(msg); window.location.href = "/"; }); 
     socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
     
     socket.on('joinedSession', (data) => { 
@@ -337,7 +401,7 @@
     function createSession() { 
         const name = createName.value.trim() || "Khatm Session"; 
         const password = createPass.value.trim(); 
-        currentSessionPass = password; // Save for sharing
+        currentSessionPass = password; 
         socket.emit('createSession', { name, password }); 
     }
 
