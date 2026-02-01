@@ -5,14 +5,21 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
-// Serve files (Double check paths)
+// Serve files (tries both paths)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'HTML/public')));
 
+// --- DATA STORAGE ---
 let sessions = {}; 
 
+// --- ZIKR DATA ---
 const zikrData = [
     { id: 1, type: 'count', target: 3, titleUrdu: "تعوذ و تسمیہ", titleEng: "Ta'awwuz & Tasmiyah", bodyText: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nبِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", bodyRoman: "A'udhu Billahi Minash-Shaitanir-Rajim\nBismillahir-Rahmanir-Rahim" },
     { id: 2, type: 'count', target: 100, titleUrdu: "استغفار", titleEng: "Astaghfar", bodyText: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ", bodyRoman: "Astaghfirullaha Rabbi Min Kulli Zambin Wa Atubu Ilaih" },
@@ -34,20 +41,21 @@ function getPublicSessionList() {
 }
 
 io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+    console.log('Connected:', socket.id);
     io.emit('updateUserCount', io.engine.clientsCount);
     socket.emit('sessionList', getPublicSessionList());
 
-    socket.on('createSession', ({ name, password }) => {
-        const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+    // --- UPDATED CREATE LOGIC (Accepts Forced ID for recovery) ---
+    socket.on('createSession', ({ name, password, forcedId }) => {
+        const sessionId = forcedId || 'sess_' + Math.random().toString(36).substr(2, 9);
         const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
         
         sessions[sessionId] = {
             id: sessionId,
             name: name,
             password: password,
+            adminToken: adminToken,
             adminId: socket.id,
-            adminToken: adminToken, // Store secret token
             currentZikrIndex: 0,
             currentCount: 0,
             users: [socket.id]
@@ -65,7 +73,8 @@ io.on('connection', (socket) => {
     socket.on('joinSession', ({ sessionId, password }) => {
         const session = sessions[sessionId];
         if (!session) {
-            socket.emit('sessionError', 'Session does not exist or has expired.');
+            // Send special code so client knows to try resurrecting
+            socket.emit('sessionError', 'NOT_FOUND');
             return;
         }
         if (session.password && session.password !== password) {
@@ -82,7 +91,6 @@ io.on('connection', (socket) => {
         });
     });
 
-    // --- RE-JOIN LOGIC (Fixes buttons after refresh) ---
     socket.on('reJoinSession', ({ sessionId, adminToken }) => {
         const session = sessions[sessionId];
         if (session) {
@@ -90,9 +98,8 @@ io.on('connection', (socket) => {
             if(!session.users.includes(socket.id)) session.users.push(socket.id);
             
             let isAdmin = false;
-            // Validate Admin Token
             if (adminToken && session.adminToken === adminToken) {
-                session.adminId = socket.id; // Update Admin Socket ID
+                session.adminId = socket.id; 
                 isAdmin = true;
             }
 
@@ -102,16 +109,14 @@ io.on('connection', (socket) => {
                 state: getSessionState(sessionId)
             });
         } else {
-            // Force client to clear dead session
-            socket.emit('sessionError', 'Session expired (Server Restarted).');
+            socket.emit('sessionError', 'NOT_FOUND');
         }
     });
 
-    // --- ACTIONS (Now with Error Checks) ---
+    // --- ACTIONS ---
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) { socket.emit('sessionError', 'Session Expired'); return; } // Error feedback
-        
+        if (!session) return;
         const zikr = zikrData[session.currentZikrIndex];
         if (zikr.type === 'count' && session.currentCount < zikr.target) {
             session.currentCount++;
@@ -121,9 +126,7 @@ io.on('connection', (socket) => {
 
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) { socket.emit('sessionError', 'Session Expired'); return; }
-        if (socket.id !== session.adminId) return; 
-
+        if (!session || socket.id !== session.adminId) return; 
         if (session.currentZikrIndex < zikrData.length - 1) {
             session.currentZikrIndex++;
             session.currentCount = 0;
@@ -135,8 +138,7 @@ io.on('connection', (socket) => {
 
     socket.on('resetCurrent', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) return;
-        if (socket.id !== session.adminId) return;
+        if (!session || socket.id !== session.adminId) return;
         session.currentCount = 0;
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
