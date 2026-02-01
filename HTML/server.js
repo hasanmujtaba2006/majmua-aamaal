@@ -1,208 +1,275 @@
 const express = require('express');
 const http = require('http');
-const { Server } = require("socket.io");
+const { Server } = require('socket.io');
 const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
+const io = new Server(server);
 
-const io = new Server(server, {
-    cors: { origin: "*", methods: ["GET", "POST"] }
-});
+// Serve static files from the "HTML/public" folder
+app.use(express.static(path.join(__dirname, 'HTML/public')));
 
-app.use(express.static(path.join(__dirname, 'public')));
+// --- DATA STORAGE ---
+let sessions = {}; // Stores all active sessions
 
-// --- CONFIGURATION ---
-const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 Minutes
-const CLEANUP_INTERVAL = 60 * 1000;        // Check every 1 minute
-
-// --- MASTER DATA ---
-const masterZikrList = [
-    { id: "۱", titleUrdu: "دُرُودِ غوثیہ", titleEng: "Durood Ghousia", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِ وَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", bodyRoman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim", target: 111, isUrduBody: false },
-    { id: "۲", titleUrdu: "تیسرا کلمہ", titleEng: "Third Kalima", bodyText: "سُبْحَانَ اللّٰہِ وَالْحَمْدُ لِلّٰہِ وَلَا اِلٰهَ اِلَّا اللّٰہُ وَاللّٰہُ اَکْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ اِلَّابِاللّٰہِ الْعَلِیِّ الْعَظِیْمِ", bodyRoman: "SubhanAllahi Wal Hamdu Lillahi Wa La Ilaha Illallahu Wallahu Akbar Wa La Hawla Wa La Quwwata Illa Billahil 'Aliyyil 'Azeem", target: 111, isUrduBody: false },
-    { id: "۳", titleUrdu: "سور ہ الم نشرح", titleEng: "Surah Alam Nashrah", bodyText: "اَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۝ وَوَضَعْنَا عَنكَ وِزْرَكَ ۝ الَّذِىْۤ أَنقَضَ ظَهْرَكَ ۝وَرَفَعْنَا لَكَ ذِكْرَكَ ۝ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ فَإِذَا فَرَغْتَ فَانْصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَبْ", bodyRoman: "Alam Nashrah Laka Sadrak. Wa Wada'na 'Anka Wizrak. Allazi Anqada Zahrak. Wa Rafa'na Laka Zikrak. Fa Inna Ma'al 'Usri Yusra. Inna Ma'al 'Usri Yusra. Fa Iza Faraghta Fansab. Wa Ila Rabbika Farghab.", target: 111, isUrduBody: false },
-    { id: "۴", titleUrdu: "سورہ اِخلاص", titleEng: "Surah Ikhlas", bodyText: "قُلْ هُوَ اللّٰهُ أَحَدٌ ۝ اَللّٰهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ", bodyRoman: "Qul Huwa Allahu Ahad. Allahu As-Samad. Lam Yalid Wa Lam Yulad. Wa Lam Yakun Lahu Kufuwan Ahad.", target: 111, isUrduBody: false },
-    { id: "۵", titleUrdu: "اَسْمَاءُ الْحُسْنٰی", titleEng: "Asma-ul-Husna", bodyText: "یَا بَاقِی اَنْتَ الْبَاقِی", bodyRoman: "Ya Baqi Antal Baqi", target: 111, isUrduBody: false },
-    { id: "۶", titleUrdu: "اَسْمَاءُ الْحُسْنٰی", titleEng: "Asma-ul-Husna", bodyText: "یَا شَافِی اَنْتَ الشَّافِی", bodyRoman: "Ya Shafi Antal Shafi", target: 111, isUrduBody: false },
-    { id: "۷", titleUrdu: "اَسْمَاءُ الْحُسْنٰی", titleEng: "Asma-ul-Husna", bodyText: "یَا کَافِی اَنْتَ الْکَافِی", bodyRoman: "Ya Kafi Antal Kafi", target: 111, isUrduBody: false },
-    { id: "۸", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا رَسُوْلَ اللّٰہِ اُنْظُرْ حَالَنَا \n یَا حَبِیْبَ اللّٰہِ اِسْمَعْ قَالَنَا \n اِنَّنِی فِی بَحْرِ ھَمٍّ مُّغْرَقٌ \n خُذْ یَدِی سَہِّلْ لَنَا اَشْکَالَنَا", bodyRoman: "Ya Rasulallahi Unzur Halana \n Ya Habibal Lahi Isma' Qalana \n Innani Fi Bahri Hammin Mughraqun \n Khuz Yadi Sahhil Lana Ashkalana", target: 111, isUrduBody: false },
-    { id: "۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا حَبِیْبَ الْاِلٰـہِ خُذْ بِیَدِیْ \n مَا لِعَجْزِیْ سِوَاکَ مُسْتَنَدِیْ", bodyRoman: "Ya Habibal Ilahi Khuz Biyadi \n Ma Li'ajzi Siwaka Mustanadi", target: 111, isUrduBody: false },
-    { id: "۱۰", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "فَسَهِّلْ یَا اِلٰهِیْ كُلَّ صَعْبٍ \n بِحُرْمَةِ سَیِّدِ الْاَبْرَارِ سَهِّلْ", bodyRoman: "Fa Sahhil Ya Ilahi Kulla Sa'bin \n Bi Hurmati Sayyidil Abrari Sahhil", target: 111, isUrduBody: false },
-    { id: "۱۱", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا صِدِّیْقُ یَا عُمَرْ \n یَا عُثْمَانُ یَا حَیْدَرْ \n دَفْعِ شَرْ کُن خَیْر آوَرْ \n یَا شَبِّیْرُ یَا شَبَّرْ", bodyRoman: "Ya Siddiqu Ya 'Umar \n Ya 'Uthmanu Ya Haydar \n Daf'e Shar Kun Khair Aawar \n Ya Shabbiru Ya Shabbar", target: 111, isUrduBody: false },
-    { id: "۱۲", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یَا حَضْرَتْ سُلْطَانْ شَیْخْ سَیِّدْ شَاهْ عَبْدَ الْقَادِرْ جِیْلَانِیْ شَیْئًا لِلّٰہِ اَلْمَدَدْ", bodyRoman: "Ya Hazrat Sultan Sheikh Sayyid Shah Abdul Qadir Jilani Shay'an Lillah Al-Madad", target: 111, isUrduBody: false },
-    { id: "۱۳", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "ماہمہ محتاج تو حاجت روا \n المددیا غوث اعظم سیدا", bodyRoman: "Ma Hama Muhtaje Tu Hajat Rawa \n Al-Madad Ya Ghaus-e-Azam Sayyida", target: 111, isUrduBody: true },
-    { id: "۱۴", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "مشکلات بے عدد داریم ما \n المدد یا غوث اعظم پیرِ ما", bodyRoman: "Mushkilat Be 'Adad Dareem Ma \n Al-Madad Ya Ghaus-e-Azam Peer-e-Ma", target: 111, isUrduBody: true },
-    { id: "۱۵", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "يَا حَضْرَتْ شيْخْ مُحْيَ الدِّيْنْ مُشْكِلْ كُشَا بِالْخَيْر", bodyRoman: "Ya Hazrat Sheikh Muhyiddin Mushkil Kusha Bil Khair", target: 111, isUrduBody: false },
-    { id: "۱۶", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر", bodyRoman: "Imdad Kun Imdad Kun \n Az Band-e-Gham Azad Kun \n Dar Din-o-Dunya Shad Kun \n Ya Ghaus-e-Azam Dastagir", target: 111, isUrduBody: true },
-    { id: "۱۷", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "یا حَضْرَتْ غَوثْ! اَغِثْنَا بِاذْنِ اللّٰهِ تَعَالٰی", bodyRoman: "Ya Hazrat Ghaus! Aghithna Bi Izni Llah Ta'ala", target: 111, isUrduBody: false },
-    { id: "۱۸", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "خُذْ يَدِيْ يَا شَاہِ جِيلَاں خُذْ يَدِيْ \n شَيئًا للّٰهِ أَنْتَ نُورٌ اَحْمَدِيْ", bodyRoman: "Khuz Yadi Ya Shah-e-Jeelan Khuz Yadi \n Shay'an Lillah Anta Nurun Ahmadi", target: 111, isUrduBody: false },
-    { id: "۱۹", titleUrdu: "اِسْتِغَاثَہ", titleEng: "Istighasah", bodyText: "طفیل حضرت دستگیردشمن ہووےزیر", bodyRoman: "Tufail-e-Hazrat Dastagir Dushman Howe Zer", target: 111, isUrduBody: true },
-    { id: "!", titleUrdu: "ہدایات", titleEng: "Instructions", bodyText: "تلاوت: سورۃ یٰسین (۱ بار) \n قصیدہ غوثیہ (۱ بار)", bodyRoman: "Please Recite: Surah Yasin (1 time) & Qasida-e-Gausiya (1 time).\nTap to continue when done.", target: 1, type: 'instruction',
-      links: [
-            { label: "📖 Read Surah Yaseen", url: "https://www.canva.com/design/DAG3UUK4M0U/5DVUkBQ8TjJWAQr1FZYSVA/view?utm_content=DAG3UUK4M0U&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h15ec808d26" },
-            { label: "📖 Read Qasida Gausiya", url: "https://www.canva.com/design/DAG5nxskMQQ/XzjXiS63lpiphmzvHLJSBA/view?utm_content=DAG5nxskMQQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha522bd0d05" }
+// --- ZIKR CONTENT DATA ---
+const zikrData = [
+    { 
+        id: 1, 
+        type: 'count', 
+        target: 3, 
+        titleUrdu: "تعوذ و تسمیہ", 
+        titleEng: "Ta'awwuz & Tasmiyah", 
+        bodyText: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nبِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+        bodyRoman: "A'udhu Billahi Minash-Shaitanir-Rajim\nBismillahir-Rahmanir-Rahim" 
+    },
+    { 
+        id: 2, 
+        type: 'count', 
+        target: 100, 
+        titleUrdu: "استغفار", 
+        titleEng: "Astaghfar", 
+        bodyText: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ",
+        bodyRoman: "Astaghfirullaha Rabbi Min Kulli Zambin Wa Atubu Ilaih" 
+    },
+    { 
+        id: 3, 
+        type: 'count', 
+        target: 111, 
+        titleUrdu: "درودِ غوثیہ", 
+        titleEng: "Durood-e-Ghausia", 
+        bodyText: "اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُودِ وَالْكَرَمِ وَآلِهِ وَبَارِكْ وَسَلِّمْ",
+        bodyRoman: "Allahumma Salli Ala Sayyidina Wa Maulana Muhammadin Ma'dinil Judi Wal Karami Wa Aalihi Wa Barik Wa Sallim" 
+    },
+    { 
+        id: 4, 
+        type: 'count', 
+        target: 111, 
+        titleUrdu: "تہلیل", 
+        titleEng: "Tahlil", 
+        bodyText: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ\nوَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ",
+        bodyRoman: "SubhanAllahi Wal Hamdulillahi Wa La Ilaha Illallahu Wallahu Akbar\nWa La Hawla Wa La Quwwata Illa Billahil Aliyl Azim" 
+    },
+    { 
+        id: 5, 
+        type: 'count', 
+        target: 111, 
+        titleUrdu: "سورۃ الم نشرح", 
+        titleEng: "Surah Alam Nashrah", 
+        bodyText: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۝ وَوَضَعْنَا عَنكَ وَزْرَكَ ۝ الَّذِي أَنقَضَ ظَهْرَكَ ۝ وَرَفَعْنَا لَكَ ذِكْرَكَ ۝ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ فَإِذَا فَرَغْتَ فَانصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَب ۝",
+        bodyRoman: "(Recite Full Surah)",
+        isUrduBody: true 
+    },
+    { 
+        id: 6, 
+        type: 'count', 
+        target: 111, 
+        titleUrdu: "سورۃ الاخلاص", 
+        titleEng: "Surah Ikhlas", 
+        bodyText: "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ۝",
+        bodyRoman: "(Recite Full Surah)",
+        isUrduBody: true 
+    },
+    { 
+        id: 7, 
+        type: 'count', 
+        target: 111, 
+        titleUrdu: "درودِ غوثیہ", 
+        titleEng: "Durood-e-Ghausia", 
+        bodyText: "اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُودِ وَالْكَرَمِ وَآلِهِ وَبَارِكْ وَسَلِّمْ",
+        bodyRoman: "Allahumma Salli Ala Sayyidina Wa Maulana Muhammadin Ma'dinil Judi Wal Karami Wa Aalihi Wa Barik Wa Sallim" 
+    },
+    { 
+        id: 8, 
+        type: 'instruction', 
+        target: 0, 
+        titleUrdu: "ختمِ خواجگان", 
+        titleEng: "Khatm-e-Khwajagan", 
+        bodyText: "اب ختم خواجگان پڑھا جائے گا۔ براہ کرم دی گئی لنک پر کلک کریں اور آڈیو کے ساتھ پڑھیں۔",
+        bodyRoman: "Now Khatm-e-Khwajagan will be recited. Please click the link below to follow along.",
+        links: [
+             { label: "Open PDF / Read Online", url: "https://www.rekhta.org/nazms/khatm-e-khwaajgaan-allaah-allaah-allaah-allaah-haafiz-mehmood-sheerani-nazms" }
         ]
     },
-    { id: "۲۱", titleUrdu: "دُرُودِ غوثیہ (آخر)", titleEng: "Durood Ghousia (Final)", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِ وَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", bodyRoman: "Allahumma Salli 'Ala Sayyidina Wa Nabiyyina Wa Mawlana Muhammadin Ma'dinil Judi Wal Karami Wa 'Aalihi Al-Kirami Wabnihi Al-Kareemi Wa Barik Wa Sallim", target: 111, isUrduBody: false }
+    { 
+        id: 9, 
+        type: 'instruction', 
+        target: 0, 
+        titleUrdu: "دعا", 
+        titleEng: "Dua", 
+        bodyText: "اجتماعی دعا",
+        bodyRoman: "Collective Dua" 
+    }
 ];
 
-const sessions = {};
-
-// Helper: Refresh timestamp
-function touchSession(sessionId) {
-    if (sessions[sessionId]) {
-        sessions[sessionId].lastActive = Date.now();
-    }
+// --- HELPER FUNCTIONS ---
+function getPublicSessionList() {
+    // Returns a simplified list of sessions for the "Join" screen
+    return Object.values(sessions).map(s => ({
+        id: s.id,
+        name: s.name,
+        hasPassword: !!s.password
+    }));
 }
 
-// Cleanup Loop
-setInterval(() => {
-    const now = Date.now();
-    let sessionRemoved = false;
-    Object.keys(sessions).forEach(id => {
-        if (now - sessions[id].lastActive > INACTIVITY_TIMEOUT) {
-            console.log(`Removing inactive session: ${sessions[id].name}`);
-            io.to(id).emit('forceExit', "Session timed out due to inactivity.");
-            delete sessions[id];
-            sessionRemoved = true;
-        }
-    });
-    if (sessionRemoved) {
-        // Send list without passwords
-        const publicSessions = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
-        io.emit('sessionList', publicSessions);
-    }
-}, CLEANUP_INTERVAL);
-
+// --- SOCKET CONNECTION ---
 io.on('connection', (socket) => {
+    console.log('User connected:', socket.id);
     
-    // Send list (Hide passwords)
-    const publicSessions = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
-    socket.emit('sessionList', publicSessions);
+    // 1. LIVE STATS: Send updated count to ALL connected users instantly
+    io.emit('updateUserCount', io.engine.clientsCount);
 
-    // --- CREATE SESSION (Admin) ---
-    socket.on('createSession', (data) => {
-        const { name, password } = data; // Accept password
-        const sessionId = "room_" + Math.random().toString(36).substr(2, 9);
+    // Send available sessions to the new user
+    socket.emit('sessionList', getPublicSessionList());
+
+    // --- CREATE SESSION ---
+    socket.on('createSession', ({ name, password }) => {
+        const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
         
-        sessions[sessionId] = { 
-            name: name || "Khatm Session", 
-            password: password || "", // Store password
-            currentIndex: 0, 
-            currentCount: 0, 
-            isFinished: false,
-            lastActive: Date.now() 
+        sessions[sessionId] = {
+            id: sessionId,
+            name: name,
+            password: password,
+            adminId: socket.id, // The creator is the admin
+            currentZikrIndex: 0,
+            currentCount: 0,
+            users: [socket.id]
         };
 
         socket.join(sessionId);
-        socket.emit('joinedSession', { sessionId, isAdmin: true, state: getSessionState(sessionId) });
         
-        // Broadcast new list (exclude password)
-        const updatedList = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
-        io.emit('sessionList', updatedList);
+        // Send the initial state to the admin
+        io.to(sessionId).emit('joinedSession', {
+            sessionId: sessionId,
+            isAdmin: true,
+            state: getSessionState(sessionId)
+        });
+
+        // Broadcast updated session list to everyone else
+        io.broadcast.emit('sessionList', getPublicSessionList());
     });
 
-    // --- JOIN SESSION (Reciter) ---
-    socket.on('joinSession', (data) => {
-        const { sessionId, password } = data;
+    // --- JOIN SESSION ---
+    socket.on('joinSession', ({ sessionId, password }) => {
         const session = sessions[sessionId];
-
-        if (session) {
-            // Check Password
-            if (session.password && session.password !== password) {
-                socket.emit('sessionError', "Incorrect Password.");
-                return;
-            }
-
-            socket.join(sessionId);
-            socket.emit('joinedSession', { sessionId, isAdmin: false, state: getSessionState(sessionId) });
-        } else {
-            socket.emit('sessionError', "This session no longer exists.");
-        }
-    });
-
-    socket.on('reJoinSession', (sessionId) => {
-        if (sessions[sessionId]) {
-            socket.join(sessionId);
-            socket.emit('updateState', getSessionState(sessionId));
-        } else {
-            socket.emit('forceExit', "Session expired or invalid.");
-        }
-    });
-
-    socket.on('increment', (sessionId) => {
-        const session = sessions[sessionId];
+        
         if (!session) {
-            socket.emit('forceExit', "Session Disconnected.");
+            socket.emit('sessionError', 'Session not found.');
             return;
         }
-        touchSession(sessionId);
-        const currentTarget = masterZikrList[session.currentIndex].target;
-        if (session.currentCount < currentTarget) {
+
+        if (session.password && session.password !== password) {
+            socket.emit('sessionError', 'Incorrect Password.');
+            return;
+        }
+
+        socket.join(sessionId);
+        session.users.push(socket.id);
+
+        io.to(sessionId).emit('joinedSession', {
+            sessionId: sessionId,
+            isAdmin: (socket.id === session.adminId),
+            state: getSessionState(sessionId)
+        });
+    });
+
+    // --- INCREMENT COUNT ---
+    socket.on('increment', (sessionId) => {
+        const session = sessions[sessionId];
+        if (!session) return;
+
+        const zikr = zikrData[session.currentZikrIndex];
+        
+        // Only increment if we haven't reached the target
+        if (zikr.type === 'count' && session.currentCount < zikr.target) {
             session.currentCount++;
-            if (session.currentCount >= currentTarget) {
-                session.isFinished = true;
-            }
             io.to(sessionId).emit('updateState', getSessionState(sessionId));
         }
     });
 
+    // --- ADMIN CONTROLS ---
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) return;
-        touchSession(sessionId);
-        if (session.currentIndex < masterZikrList.length - 1) {
-            session.currentIndex++;
-            session.currentCount = 0;
-            session.isFinished = false;
+        if (!session || socket.id !== session.adminId) return; // Only Admin
+
+        if (session.currentZikrIndex < zikrData.length - 1) {
+            session.currentZikrIndex++;
+            session.currentCount = 0; // Reset count for next Zikr
             io.to(sessionId).emit('updateState', getSessionState(sessionId));
         } else {
-            io.to(sessionId).emit('sessionComplete', "Subhanallah you have successfully completed Khatm-e-Qadriya");
+            // End of Session
+            io.to(sessionId).emit('sessionComplete', "MashaAllah! Session Complete.");
         }
     });
 
     socket.on('resetCurrent', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) return;
-        touchSession(sessionId);
+        if (!session || socket.id !== session.adminId) return;
+
         session.currentCount = 0;
-        session.isFinished = false;
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
 
     socket.on('restartSession', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) return;
-        touchSession(sessionId);
-        session.currentIndex = 0;
+        if (!session || socket.id !== session.adminId) return;
+
+        session.currentZikrIndex = 0;
         session.currentCount = 0;
-        session.isFinished = false;
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
 
     socket.on('endSession', (sessionId) => {
-        if (sessions[sessionId]) {
-            delete sessions[sessionId];
-            io.to(sessionId).emit('forceExit', "Session Ended by Admin.");
-            const updatedList = Object.keys(sessions).map(id => ({ id, name: sessions[id].name }));
-            io.emit('sessionList', updatedList);
+        const session = sessions[sessionId];
+        if (!session || socket.id !== session.adminId) return;
+
+        // Kick everyone out
+        io.to(sessionId).emit('forceExit', 'The Admin has ended this session.');
+        io.socketsLeave(sessionId);
+        
+        // Delete session
+        delete sessions[sessionId];
+        io.emit('sessionList', getPublicSessionList());
+    });
+
+    // --- DISCONNECT ---
+    socket.on('disconnect', () => {
+        // 2. LIVE STATS: Update everyone when a user leaves
+        io.emit('updateUserCount', io.engine.clientsCount);
+        
+        // Cleanup: Remove user from any sessions
+        for (const sessId in sessions) {
+            const sess = sessions[sessId];
+            const idx = sess.users.indexOf(socket.id);
+            if (idx !== -1) {
+                sess.users.splice(idx, 1);
+                
+                // If Admin leaves, assign new admin? (Optional, currently session stays alive)
+                if (sess.users.length === 0) {
+                    // Auto-delete empty sessions after 1 minute? (Optional)
+                }
+            }
         }
     });
 });
 
+// Helper to construct the state object sent to clients
 function getSessionState(sessionId) {
     const session = sessions[sessionId];
+    const zikr = zikrData[session.currentZikrIndex];
+
     return {
-        zikr: masterZikrList[session.currentIndex],
-        currentCount: session.currentCount,
-        target: masterZikrList[session.currentIndex].target,
-        isFinished: session.isFinished,
         sessionName: session.name,
-        isLast: session.currentIndex === masterZikrList.length - 1
+        currentCount: session.currentCount,
+        target: zikr.target,
+        zikr: zikr,
+        isFinished: (zikr.type === 'count' && session.currentCount >= zikr.target),
+        isLast: (session.currentZikrIndex === zikrData.length - 1)
     };
 }
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

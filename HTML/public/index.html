@@ -48,6 +48,43 @@
 
         .hidden { display: none !important; }
 
+        /* LIVE VISITOR BADGE */
+        #live-visitor-badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(56, 239, 125, 0.3);
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #38ef7d;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #38ef7d;
+            animation: blink 2s infinite;
+        }
+
+        .live-text {
+            font-size: 0.85rem;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -204,6 +241,11 @@
 </head>
 <body>
 
+<div id="live-visitor-badge">
+    <div class="live-dot"></div>
+    <div class="live-text"><span id="live-count">1</span> Online</div>
+</div>
+
 <div class="glass-card" id="landing-screen">
     <h1>Khatme Qadirya</h1>
     <p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p>
@@ -339,8 +381,10 @@
     const createScreen = document.getElementById('create-screen');
     const joinScreen = document.getElementById('join-screen');
     const appScreen = document.getElementById('app-screen');
-    // Footer signature removed from elements list
     const instructionModal = document.getElementById('instruction-modal'); 
+    
+    // Live visitor element
+    const liveCountElement = document.getElementById('live-count');
 
     const createName = document.getElementById('create-name');
     const createPass = document.getElementById('create-pass');
@@ -372,6 +416,13 @@
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
         circle.style.strokeDashoffset = circumference;
     }
+
+    // --- LIVE USER COUNT LISTENER ---
+    socket.on('updateUserCount', (count) => {
+        if(liveCountElement) {
+            liveCountElement.innerText = count;
+        }
+    });
 
     // --- INSTRUCTION MODAL LOGIC ---
     window.addEventListener('load', () => {
