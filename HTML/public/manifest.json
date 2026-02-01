@@ -1,7 +1,7 @@
 {
   "name": "Khatme Qadirya Digital",
   "short_name": "Khatme Qadirya",
-  "description": "A real-time collaborative Zikr counter for spiritual gatherings. Join sessions, recite together, and track progress globally.",
+  "description": "A real-time collaborative Zikr counter. Join sessions, recite together, and track progress globally.",
   "id": "/",
   "start_url": "/",
   "display": "standalone",
@@ -29,7 +29,7 @@
       "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Desktop View"
+      "label": "App View"
     },
     {
       "src": "screenshot.png",
