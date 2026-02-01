@@ -7,14 +7,12 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Serve files (tries both paths)
+// Serve files (Double check paths)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'HTML/public')));
 
-// --- DATA STORAGE ---
 let sessions = {}; 
 
-// --- ZIKR DATA ---
 const zikrData = [
     { id: 1, type: 'count', target: 3, titleUrdu: "تعوذ و تسمیہ", titleEng: "Ta'awwuz & Tasmiyah", bodyText: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nبِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", bodyRoman: "A'udhu Billahi Minash-Shaitanir-Rajim\nBismillahir-Rahmanir-Rahim" },
     { id: 2, type: 'count', target: 100, titleUrdu: "استغفار", titleEng: "Astaghfar", bodyText: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ", bodyRoman: "Astaghfirullaha Rabbi Min Kulli Zambin Wa Atubu Ilaih" },
@@ -36,21 +34,20 @@ function getPublicSessionList() {
 }
 
 io.on('connection', (socket) => {
-    console.log('Connected:', socket.id);
+    console.log('User connected:', socket.id);
     io.emit('updateUserCount', io.engine.clientsCount);
     socket.emit('sessionList', getPublicSessionList());
 
     socket.on('createSession', ({ name, password }) => {
         const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
-        // Create an Admin Token to recognize the creator if they refresh
-        const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9); 
+        const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
         
         sessions[sessionId] = {
             id: sessionId,
             name: name,
             password: password,
-            adminToken: adminToken, // Store the secret token
-            adminId: socket.id,     // Current socket ID
+            adminId: socket.id,
+            adminToken: adminToken, // Store secret token
             currentZikrIndex: 0,
             currentCount: 0,
             users: [socket.id]
@@ -59,7 +56,7 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('joinedSession', {
             sessionId: sessionId,
             isAdmin: true,
-            adminToken: adminToken, // Send token to client
+            adminToken: adminToken,
             state: getSessionState(sessionId)
         });
         io.broadcast.emit('sessionList', getPublicSessionList());
@@ -68,7 +65,7 @@ io.on('connection', (socket) => {
     socket.on('joinSession', ({ sessionId, password }) => {
         const session = sessions[sessionId];
         if (!session) {
-            socket.emit('sessionError', 'Session not found or expired.');
+            socket.emit('sessionError', 'Session does not exist or has expired.');
             return;
         }
         if (session.password && session.password !== password) {
@@ -76,46 +73,45 @@ io.on('connection', (socket) => {
             return;
         }
         socket.join(sessionId);
-        if (!session.users.includes(socket.id)) session.users.push(socket.id);
+        if(!session.users.includes(socket.id)) session.users.push(socket.id);
         
         io.to(sessionId).emit('joinedSession', {
             sessionId: sessionId,
-            isAdmin: false,
+            isAdmin: (socket.id === session.adminId),
             state: getSessionState(sessionId)
         });
     });
 
-    // --- FIX: RE-JOIN LOGIC ---
+    // --- RE-JOIN LOGIC (Fixes buttons after refresh) ---
     socket.on('reJoinSession', ({ sessionId, adminToken }) => {
         const session = sessions[sessionId];
         if (session) {
             socket.join(sessionId);
-            if (!session.users.includes(socket.id)) session.users.push(socket.id);
+            if(!session.users.includes(socket.id)) session.users.push(socket.id);
             
-            // Check if this is the Admin reconnecting
             let isAdmin = false;
+            // Validate Admin Token
             if (adminToken && session.adminToken === adminToken) {
-                session.adminId = socket.id; // Update Admin's new socket ID
+                session.adminId = socket.id; // Update Admin Socket ID
                 isAdmin = true;
             }
 
-            // Send them back to the session screen
             socket.emit('joinedSession', {
                 sessionId: sessionId,
                 isAdmin: isAdmin,
                 state: getSessionState(sessionId)
             });
         } else {
-            // Only send error if we were genuinely expecting a session
-            // Silent fail is better for auto-reconnects on landing page, 
-            // but for specific requests, we can log.
-            socket.emit('sessionError', 'Session expired.');
+            // Force client to clear dead session
+            socket.emit('sessionError', 'Session expired (Server Restarted).');
         }
     });
 
+    // --- ACTIONS (Now with Error Checks) ---
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session) return;
+        if (!session) { socket.emit('sessionError', 'Session Expired'); return; } // Error feedback
+        
         const zikr = zikrData[session.currentZikrIndex];
         if (zikr.type === 'count' && session.currentCount < zikr.target) {
             session.currentCount++;
@@ -125,7 +121,9 @@ io.on('connection', (socket) => {
 
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session || socket.id !== session.adminId) return;
+        if (!session) { socket.emit('sessionError', 'Session Expired'); return; }
+        if (socket.id !== session.adminId) return; 
+
         if (session.currentZikrIndex < zikrData.length - 1) {
             session.currentZikrIndex++;
             session.currentCount = 0;
@@ -137,7 +135,8 @@ io.on('connection', (socket) => {
 
     socket.on('resetCurrent', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session || socket.id !== session.adminId) return;
+        if (!session) return;
+        if (socket.id !== session.adminId) return;
         session.currentCount = 0;
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
