@@ -7,10 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// --- FIX FOR BLANK SCREEN: Try both folder paths ---
-// 1. Try standard 'public' folder
+// Serve files (tries both paths to prevent "Cannot GET /" error)
 app.use(express.static(path.join(__dirname, 'public')));
-// 2. Try 'HTML/public' (if your structure is nested)
 app.use(express.static(path.join(__dirname, 'HTML/public')));
 
 // --- DATA STORAGE ---

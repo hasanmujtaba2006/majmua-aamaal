@@ -21,6 +21,7 @@
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
+        #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         #connection-status { position: absolute; top: 15px; right: 15px; width: 12px; height: 12px; border-radius: 50%; background: #4b5563; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: background 0.3s; }
@@ -30,6 +31,7 @@
         .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
         .home-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
         .home-btn.primary { background: var(--btn-gradient); border: none; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .home-btn.solo { border-color: #38ef7d; color: #38ef7d; }
         .session-list { width: 100%; margin-top: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
         .session-item { background: rgba(255,255,255,0.1); padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
         .session-item:hover { border-color: var(--gold); background: rgba(255,255,255,0.15); }
@@ -62,9 +64,8 @@
         .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
         .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
         .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
-        .footer-sig { margin-top: 40px; font-size: 0.8rem; color: #666; font-family: 'Outfit', sans-serif; text-align: center; width: 100%; padding-bottom: 20px; letter-spacing: 1px; }
-        .footer-sig span { color: var(--danger); }
-        #custom-modal, #password-modal, #instruction-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
+        #custom-modal, #password-modal, #instruction-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
         .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
         .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
@@ -76,6 +77,8 @@
         .eng-text { font-family: 'Outfit', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: left; color: #e0e0e0; }
         .instr-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; text-decoration: underline; text-decoration-color: var(--gold); }
         .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .toggle-label { color: white; font-size: 1.1rem; }
     </style>
 </head>
 <body>
@@ -83,12 +86,16 @@
     <div class="live-dot"></div>
     <div class="live-text"><span id="live-count">1</span> Online</div>
 </div>
+<div id="settings-badge" onclick="showSettings()">⚙️</div>
+
 <div class="glass-card" id="landing-screen">
     <h1>Khatme Qadirya</h1>
     <p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p>
     <button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button>
     <button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button>
+    <button class="home-btn solo" onclick="startSoloMode()">👤 SOLO MODE</button>
 </div>
+
 <div class="glass-card hidden" id="create-screen">
     <button class="back-btn" onclick="showLandingScreen()">&larr; Back</button>
     <h1>Create Group</h1>
@@ -96,6 +103,7 @@
     <input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)" />
     <button class="home-btn primary" onclick="createSession()">START SESSION</button>
 </div>
+
 <div class="glass-card hidden" id="join-screen">
     <button class="back-btn" onclick="showLandingScreen()">&larr; Back</button>
     <h1>Join Group</h1>
@@ -104,6 +112,7 @@
         <div style="color:#666;">Searching for active sessions...</div>
     </div>
 </div>
+
 <div class="glass-card hidden" id="app-screen">
     <div id="connection-status" class="status-online"></div>
     <div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div>
@@ -135,10 +144,12 @@
             <button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button>
             <button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button>
             <button class="admin-btn btn-restart" onclick="showModal('restart')">Restart</button>
-            <button class="admin-btn btn-end" onclick="showModal('end')">End Session</button>
+            <button class="admin-btn btn-end" onclick="showModal('end')">End</button>
+            <button class="admin-btn btn-share" onclick="shareSession()">🔗 Share Link</button>
         </div>
     </div>
 </div>
+
 <div id="instruction-modal">
     <div class="modal-content" style="text-align: left;">
         <div class="instr-section">
@@ -168,6 +179,18 @@
         <button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button>
     </div>
 </div>
+
+<div id="settings-modal">
+    <div class="modal-content">
+        <h3 style="color:var(--gold); margin-top:0;">Settings</h3>
+        <div class="toggle-row">
+            <span class="toggle-label">Vibration</span>
+            <button id="vib-toggle-btn" class="modal-btn" onclick="toggleVibration()" style="background:#38ef7d; width:80px;">ON</button>
+        </div>
+        <button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px;">Close</button>
+    </div>
+</div>
+
 <div id="custom-modal">
     <div class="modal-content">
         <h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3>
@@ -177,6 +200,7 @@
         </div>
     </div>
 </div>
+
 <div id="password-modal">
     <div class="modal-content">
         <h3 style="color:white; margin-top:0;">Enter Password</h3>
@@ -187,24 +211,32 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
     const socket = io();
     let currentSessionId = null;
+    let currentSessionPass = ""; // Store password for sharing
     let pendingAction = null;
     let availableSessions = [];
     let selectedSessionIdForJoin = null;
+    let vibrationEnabled = localStorage.getItem('vib') !== 'false';
+
+    // Elements
     const landingScreen = document.getElementById('landing-screen');
     const createScreen = document.getElementById('create-screen');
     const joinScreen = document.getElementById('join-screen');
     const appScreen = document.getElementById('app-screen');
     const instructionModal = document.getElementById('instruction-modal'); 
     const liveCountElement = document.getElementById('live-count');
+    const vibToggleBtn = document.getElementById('vib-toggle-btn');
+
     const createName = document.getElementById('create-name');
     const createPass = document.getElementById('create-pass');
     const searchInput = document.getElementById('search-input');
     const sessionsList = document.getElementById('sessions-list');
     const joinPassInput = document.getElementById('join-pass-input');
+
     const sessionTitleDisplay = document.getElementById('session-title-display');
     const statusDots = document.querySelectorAll('#connection-status');
     const zikrNum = document.getElementById('zikr-num');
@@ -220,41 +252,119 @@
     const statusMsg = document.getElementById('status-msg');
     const adminPanel = document.getElementById('admin-panel');
     const appCardElement = document.getElementById('app-screen'); 
+
     const circle = document.querySelector('.progress-ring__circle');
     const radius = circle && circle.r ? circle.r.baseVal.value : 70;
     const circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
-    socket.on('updateUserCount', (count) => { if(liveCountElement) { liveCountElement.innerText = count; } });
-    window.addEventListener('load', () => { if(instructionModal) instructionModal.style.display = 'flex'; });
+
+    // --- AUTO-JOIN LOGIC (LINK PARSER) ---
+    window.addEventListener('load', () => {
+        // Handle instructions
+        if(!window.location.search) {
+            if(instructionModal) instructionModal.style.display = 'flex';
+        }
+        updateVibBtn();
+
+        // Check for share link
+        const params = new URLSearchParams(window.location.search);
+        const joinId = params.get('join');
+        const joinPass = params.get('pass');
+
+        if(joinId) {
+            if(instructionModal) instructionModal.style.display = 'none'; // Skip help if joining via link
+            console.log("Auto-joining session:", joinId);
+            selectedSessionIdForJoin = joinId;
+            socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
+        }
+    });
+
+    // --- SETTINGS LOGIC ---
+    function showSettings() { document.getElementById('settings-modal').style.display='flex'; }
+    function toggleVibration() {
+        vibrationEnabled = !vibrationEnabled;
+        localStorage.setItem('vib', vibrationEnabled);
+        updateVibBtn();
+    }
+    function updateVibBtn() {
+        if(vibrationEnabled) { vibToggleBtn.innerText = "ON"; vibToggleBtn.style.background = "#38ef7d"; }
+        else { vibToggleBtn.innerText = "OFF"; vibToggleBtn.style.background = "#ef4444"; }
+    }
+
+    // --- SOLO MODE LOGIC ---
+    function startSoloMode() {
+        const name = "My Personal Zikr";
+        const password = "solo_" + Math.random().toString(36).substr(2,5);
+        socket.emit('createSession', { name, password });
+    }
+
+    // --- SHARE LOGIC ---
+    function shareSession() {
+        if(!currentSessionId) return;
+        const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`;
+        navigator.clipboard.writeText(link).then(() => {
+            alert("Invite Link Copied! Send it to your group.");
+        }).catch(err => {
+            prompt("Copy this link:", link);
+        });
+    }
+
     function closeInstructions() { if(instructionModal) instructionModal.style.display = 'none'; }
+    socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
+
+    // --- NAVIGATION ---
     function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
     function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
     function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
     function hideAll() { if(landingScreen) landingScreen.classList.add('hidden'); if(createScreen) createScreen.classList.add('hidden'); if(joinScreen) joinScreen.classList.add('hidden'); if(appScreen) appScreen.classList.add('hidden'); }
+
+    // --- SOCKET EVENTS ---
     socket.on('connect', () => { statusDots.forEach(dot => dot.classList.add('status-online')); if (currentSessionId) { socket.emit('reJoinSession', currentSessionId); } });
     socket.on('disconnect', () => { statusDots.forEach(dot => dot.classList.remove('status-online')); });
-    socket.on('forceExit', (msg) => { alert(msg); location.reload(); });
-    socket.on('sessionError', (msg) => { alert(msg); });
+    socket.on('forceExit', (msg) => { alert(msg); window.location.href = "/"; });
+    socket.on('sessionError', (msg) => { alert(msg); window.location.href = "/"; }); // Redirect clean on error
     socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
-    socket.on('joinedSession', (data) => { currentSessionId = data.sessionId; hideAll(); if(appScreen) appScreen.classList.remove('hidden'); if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; if (data.isAdmin && adminPanel) adminPanel.style.display = 'block'; updateUI(data.state); });
-    function createSession() { const name = createName.value.trim() || "Khatm Session"; const password = createPass.value.trim(); socket.emit('createSession', { name, password }); }
+    
+    socket.on('joinedSession', (data) => { 
+        currentSessionId = data.sessionId; 
+        hideAll(); 
+        if(appScreen) appScreen.classList.remove('hidden'); 
+        if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; 
+        if (data.isAdmin && adminPanel) adminPanel.style.display = 'block'; 
+        updateUI(data.state); 
+    });
+
+    function createSession() { 
+        const name = createName.value.trim() || "Khatm Session"; 
+        const password = createPass.value.trim(); 
+        currentSessionPass = password; // Save for sharing
+        socket.emit('createSession', { name, password }); 
+    }
+
     function renderSessions(list) { if(!sessionsList) return; sessionsList.innerHTML = ""; if (list.length === 0) { sessionsList.innerHTML = "<div style='color:#999; margin-top:10px;'>No active sessions found.</div>"; return; } list.forEach(s => { const div = document.createElement('div'); div.className = 'session-item'; div.innerHTML = `<span class="session-name">${s.name}</span><span class="join-badge">JOIN</span>`; div.onclick = () => initiateJoin(s.id); sessionsList.appendChild(div); }); }
     function filterSessions() { const query = searchInput.value.toLowerCase(); const filtered = availableSessions.filter(s => s.name.toLowerCase().includes(query)); renderSessions(filtered); }
+    
     function initiateJoin(sessionId) { selectedSessionIdForJoin = sessionId; document.getElementById('password-modal').style.display = 'flex'; if(joinPassInput) { joinPassInput.value = ""; joinPassInput.focus(); } }
     function submitJoin() { const pass = joinPassInput.value.trim(); socket.emit('joinSession', { sessionId: selectedSessionIdForJoin, password: pass }); closePassModal(); }
     function closePassModal() { document.getElementById('password-modal').style.display = 'none'; selectedSessionIdForJoin = null; }
-    function updateUI(data) { if (data.zikr) { if(zikrNum) zikrNum.innerText = data.zikr.id; if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu; if(titleEng) titleEng.innerText = data.zikr.titleEng; if(arabicBody) arabicBody.innerText = data.zikr.bodyText; if(romanBody) romanBody.innerText = data.zikr.bodyRoman; if(targetDisplay) targetDisplay.innerText = "Target: " + data.target; if(linksContainer) { linksContainer.innerHTML = ""; if (data.zikr.links) { data.zikr.links.forEach(link => { const a = document.createElement('a'); a.href = link.url; a.target = "_blank"; a.className = "link-btn"; a.innerText = link.label; linksContainer.appendChild(a); }); } } if(arabicBody) { if (data.zikr.isUrduBody) { arabicBody.classList.add('urdu-font'); } else { arabicBody.classList.remove('urdu-font'); } } if (data.zikr.type === 'instruction') { if(appCardElement) appCardElement.classList.add('special-mode'); if(progressWrapper) progressWrapper.style.display = 'none'; } else { if(appCardElement) appCardElement.classList.remove('special-mode'); if(progressWrapper) progressWrapper.style.display = 'block'; } } if(countDisplay) countDisplay.innerText = data.currentCount; if(circle && data.target > 0) { const radius = circle.r.baseVal.value; const circumference = radius * 2 * Math.PI; const percent = Math.min(data.currentCount / data.target, 1); const offset = circumference - percent * circumference; circle.style.strokeDashoffset = offset; } if (data.isFinished) { if(tapBtn) { tapBtn.disabled = true; tapBtn.innerText = data.isLast ? "COMPLETED" : "Next Zikr"; tapBtn.classList.remove('pulsing'); tapBtn.style.background = "#4b5563"; } if(statusMsg) statusMsg.innerText = "Target Reached! Waiting for Admin..."; if (!hasBeeped) { initAudio(); playSound(); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); hasBeeped = true; } } else { if(tapBtn) { tapBtn.disabled = false; tapBtn.innerText = (data.target === 1) ? "DONE / NEXT" : "TAP"; tapBtn.style.display = 'block'; tapBtn.classList.add('pulsing'); tapBtn.style.background = "var(--btn-gradient)"; } if(statusMsg) statusMsg.innerText = ""; hasBeeped = false; } }
+
+    function updateUI(data) { if (data.zikr) { if(zikrNum) zikrNum.innerText = data.zikr.id; if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu; if(titleEng) titleEng.innerText = data.zikr.titleEng; if(arabicBody) arabicBody.innerText = data.zikr.bodyText; if(romanBody) romanBody.innerText = data.zikr.bodyRoman; if(targetDisplay) targetDisplay.innerText = "Target: " + data.target; if(linksContainer) { linksContainer.innerHTML = ""; if (data.zikr.links) { data.zikr.links.forEach(link => { const a = document.createElement('a'); a.href = link.url; a.target = "_blank"; a.className = "link-btn"; a.innerText = link.label; linksContainer.appendChild(a); }); } } if(arabicBody) { if (data.zikr.isUrduBody) { arabicBody.classList.add('urdu-font'); } else { arabicBody.classList.remove('urdu-font'); } } if (data.zikr.type === 'instruction') { if(appCardElement) appCardElement.classList.add('special-mode'); if(progressWrapper) progressWrapper.style.display = 'none'; } else { if(appCardElement) appCardElement.classList.remove('special-mode'); if(progressWrapper) progressWrapper.style.display = 'block'; } } if(countDisplay) countDisplay.innerText = data.currentCount; if(circle && data.target > 0) { const radius = circle.r.baseVal.value; const circumference = radius * 2 * Math.PI; const percent = Math.min(data.currentCount / data.target, 1); const offset = circumference - percent * circumference; circle.style.strokeDashoffset = offset; } if (data.isFinished) { if(tapBtn) { tapBtn.disabled = true; tapBtn.innerText = data.isLast ? "COMPLETED" : "Next Zikr"; tapBtn.classList.remove('pulsing'); tapBtn.style.background = "#4b5563"; } if(statusMsg) statusMsg.innerText = "Target Reached! Waiting for Admin..."; if (!hasBeeped) { initAudio(); playSound(); if (navigator.vibrate && vibrationEnabled) navigator.vibrate([200, 100, 200]); hasBeeped = true; } } else { if(tapBtn) { tapBtn.disabled = false; tapBtn.innerText = (data.target === 1) ? "DONE / NEXT" : "TAP"; tapBtn.style.display = 'block'; tapBtn.classList.add('pulsing'); tapBtn.style.background = "var(--btn-gradient)"; } if(statusMsg) statusMsg.innerText = ""; hasBeeped = false; } }
+    
     socket.on('updateState', updateUI);
     socket.on('sessionComplete', (msg) => { if(titleUrdu) titleUrdu.innerText = "ختمِ قادریہ مکمل"; if(titleEng) titleEng.innerText = "Session Closed"; if(arabicBody) arabicBody.innerText = "الْحَمْدُ لِلَّٰهِ"; if(romanBody) romanBody.innerText = ""; if(linksContainer) linksContainer.innerHTML = ""; if(progressWrapper) progressWrapper.style.display = 'block'; if(countDisplay) countDisplay.innerText = "✓"; if(tapBtn) tapBtn.style.display = 'none'; if(statusMsg) { statusMsg.innerText = msg; statusMsg.style.color = "#38ef7d"; } playSound(); });
-    function handleUserTap() { if(!currentSessionId) { alert("Connection lost. Reloading..."); location.reload(); return; } initAudio(); socket.emit('increment', currentSessionId); if (navigator.vibrate) navigator.vibrate(15); playSound(); }
+    
+    function handleUserTap() { if(!currentSessionId) { alert("Connection lost. Reloading..."); location.reload(); return; } initAudio(); socket.emit('increment', currentSessionId); if (navigator.vibrate && vibrationEnabled) navigator.vibrate(15); playSound(); }
+    
     const modal = document.getElementById('custom-modal'); const modalText = document.getElementById('modal-text'); const modalConfirmBtn = document.getElementById('modal-confirm-btn');
     function showModal(action) { pendingAction = action; if(modal) modal.style.display = 'flex'; if(modalText) { if (action === 'reset') modalText.innerText = "Reset current count to 0?"; else if (action === 'next') modalText.innerText = "Move to Next Zikr?"; else if (action === 'restart') modalText.innerText = "Restart ENTIRE session?"; else if (action === 'end') modalText.innerText = "End and Delete this session?"; } }
     function closeModal() { if(modal) modal.style.display = 'none'; pendingAction = null; }
     if(modalConfirmBtn) { modalConfirmBtn.onclick = function() { if (!currentSessionId) return; if (pendingAction === 'reset') socket.emit('resetCurrent', currentSessionId); else if (pendingAction === 'next') socket.emit('nextZikr', currentSessionId); else if (pendingAction === 'restart') socket.emit('restartSession', currentSessionId); else if (pendingAction === 'end') socket.emit('endSession', currentSessionId); closeModal(); }; }
+    
     let audioCtx = null; let hasBeeped = false;
     function initAudio() { if (!audioCtx) { const AudioContext = window.AudioContext || window.webkitAudioContext; if (AudioContext) audioCtx = new AudioContext(); } if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }
     function playSound() { if (!audioCtx) return; try { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } catch(e){} }
     document.body.addEventListener('click', initAudio, { once: true }); document.body.addEventListener('touchstart', initAudio, { once: true });
+    
     if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js').then(reg => console.log('Service Worker registered')).catch(err => console.log('Service Worker failed', err)); }); }
 </script>
 </body>
