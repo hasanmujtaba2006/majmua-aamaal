@@ -7,11 +7,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Serve static files from the "HTML/public" folder
+// --- FIX FOR BLANK SCREEN: Try both folder paths ---
+// 1. Try standard 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
+// 2. Try 'HTML/public' (if your structure is nested)
 app.use(express.static(path.join(__dirname, 'HTML/public')));
 
 // --- DATA STORAGE ---
-let sessions = {}; // Stores all active sessions
+let sessions = {}; 
 
 // --- ZIKR CONTENT DATA ---
 const zikrData = [
@@ -103,9 +106,7 @@ const zikrData = [
     }
 ];
 
-// --- HELPER FUNCTIONS ---
 function getPublicSessionList() {
-    // Returns a simplified list of sessions for the "Join" screen
     return Object.values(sessions).map(s => ({
         id: s.id,
         name: s.name,
@@ -113,60 +114,43 @@ function getPublicSessionList() {
     }));
 }
 
-// --- SOCKET CONNECTION ---
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
-    
-    // 1. LIVE STATS: Send updated count to ALL connected users instantly
     io.emit('updateUserCount', io.engine.clientsCount);
-
-    // Send available sessions to the new user
     socket.emit('sessionList', getPublicSessionList());
 
-    // --- CREATE SESSION ---
     socket.on('createSession', ({ name, password }) => {
         const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
-        
         sessions[sessionId] = {
             id: sessionId,
             name: name,
             password: password,
-            adminId: socket.id, // The creator is the admin
+            adminId: socket.id,
             currentZikrIndex: 0,
             currentCount: 0,
             users: [socket.id]
         };
-
         socket.join(sessionId);
-        
-        // Send the initial state to the admin
         io.to(sessionId).emit('joinedSession', {
             sessionId: sessionId,
             isAdmin: true,
             state: getSessionState(sessionId)
         });
-
-        // Broadcast updated session list to everyone else
         io.broadcast.emit('sessionList', getPublicSessionList());
     });
 
-    // --- JOIN SESSION ---
     socket.on('joinSession', ({ sessionId, password }) => {
         const session = sessions[sessionId];
-        
         if (!session) {
             socket.emit('sessionError', 'Session not found.');
             return;
         }
-
         if (session.password && session.password !== password) {
             socket.emit('sessionError', 'Incorrect Password.');
             return;
         }
-
         socket.join(sessionId);
         session.users.push(socket.id);
-
         io.to(sessionId).emit('joinedSession', {
             sessionId: sessionId,
             isAdmin: (socket.id === session.adminId),
@@ -174,31 +158,24 @@ io.on('connection', (socket) => {
         });
     });
 
-    // --- INCREMENT COUNT ---
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
-
         const zikr = zikrData[session.currentZikrIndex];
-        
-        // Only increment if we haven't reached the target
         if (zikr.type === 'count' && session.currentCount < zikr.target) {
             session.currentCount++;
             io.to(sessionId).emit('updateState', getSessionState(sessionId));
         }
     });
 
-    // --- ADMIN CONTROLS ---
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session || socket.id !== session.adminId) return; // Only Admin
-
+        if (!session || socket.id !== session.adminId) return;
         if (session.currentZikrIndex < zikrData.length - 1) {
             session.currentZikrIndex++;
-            session.currentCount = 0; // Reset count for next Zikr
+            session.currentCount = 0;
             io.to(sessionId).emit('updateState', getSessionState(sessionId));
         } else {
-            // End of Session
             io.to(sessionId).emit('sessionComplete', "MashaAllah! Session Complete.");
         }
     });
@@ -206,7 +183,6 @@ io.on('connection', (socket) => {
     socket.on('resetCurrent', (sessionId) => {
         const session = sessions[sessionId];
         if (!session || socket.id !== session.adminId) return;
-
         session.currentCount = 0;
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
@@ -214,7 +190,6 @@ io.on('connection', (socket) => {
     socket.on('restartSession', (sessionId) => {
         const session = sessions[sessionId];
         if (!session || socket.id !== session.adminId) return;
-
         session.currentZikrIndex = 0;
         session.currentCount = 0;
         io.to(sessionId).emit('updateState', getSessionState(sessionId));
@@ -223,42 +198,27 @@ io.on('connection', (socket) => {
     socket.on('endSession', (sessionId) => {
         const session = sessions[sessionId];
         if (!session || socket.id !== session.adminId) return;
-
-        // Kick everyone out
         io.to(sessionId).emit('forceExit', 'The Admin has ended this session.');
         io.socketsLeave(sessionId);
-        
-        // Delete session
         delete sessions[sessionId];
         io.emit('sessionList', getPublicSessionList());
     });
 
-    // --- DISCONNECT ---
     socket.on('disconnect', () => {
-        // 2. LIVE STATS: Update everyone when a user leaves
         io.emit('updateUserCount', io.engine.clientsCount);
-        
-        // Cleanup: Remove user from any sessions
         for (const sessId in sessions) {
             const sess = sessions[sessId];
             const idx = sess.users.indexOf(socket.id);
             if (idx !== -1) {
                 sess.users.splice(idx, 1);
-                
-                // If Admin leaves, assign new admin? (Optional, currently session stays alive)
-                if (sess.users.length === 0) {
-                    // Auto-delete empty sessions after 1 minute? (Optional)
-                }
             }
         }
     });
 });
 
-// Helper to construct the state object sent to clients
 function getSessionState(sessionId) {
     const session = sessions[sessionId];
     const zikr = zikrData[session.currentZikrIndex];
-
     return {
         sessionName: session.name,
         currentCount: session.currentCount,
