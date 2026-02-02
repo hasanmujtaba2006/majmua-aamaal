@@ -94,10 +94,10 @@
 <div id="password-modal"><div class="modal-content"><h3 style="color:white; margin-top:0;">Enter Password</h3><input type="password" id="join-pass-input" class="input-field" style="width:90%; font-size:1rem;" /><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closePassModal()">Cancel</button><button class="modal-btn modal-confirm" onclick="submitJoin()">Join</button></div></div></div>
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
-    // CRITICAL FIX: Force Websocket transport to prevent 502 errors
+    // --- CRASH FIX: FORCE WEBSOCKET ---
     const socket = io({
-        transports: ['websocket'],
-        upgrade: false
+        transports: ['websocket', 'polling'], // Allow both
+        reconnection: true
     });
 
     let currentSessionId = null;
@@ -123,6 +123,7 @@
     const sessionsList = document.getElementById('sessions-list');
     const joinPassInput = document.getElementById('join-pass-input');
     const sessionTitleDisplay = document.getElementById('session-title-display');
+    const statusDots = document.querySelectorAll('#connection-status');
     const zikrNum = document.getElementById('zikr-num');
     const titleUrdu = document.getElementById('zikr-title-urdu');
     const titleEng = document.getElementById('zikr-title-eng');
@@ -225,6 +226,7 @@
         window.location.href = "/"; 
     });
     
+    // --- UPDATED ERROR HANDLING (LESS ANNOYING) ---
     socket.on('sessionError', (msg) => { 
         console.log("Session Error:", msg);
         if (msg === 'NOT_FOUND') {
@@ -238,9 +240,9 @@
                     forcedId: joinId 
                 });
             } else {
+                // FAIL SILENTLY TO HOME SCREEN
                 localStorage.removeItem('kq_session');
                 localStorage.removeItem('kq_admin');
-                alert("Session expired. Please create a new one.");
                 if(window.location.search) window.location.href = "/"; 
                 else showLandingScreen();
             }

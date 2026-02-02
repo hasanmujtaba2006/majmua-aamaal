@@ -2,46 +2,36 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
-const fs = require('fs');
+
+// --- SAFETY NET: Prevent Server Crash ---
+process.on('uncaughtException', (err) => {
+    console.error('CRITICAL ERROR (Uncaught):', err);
+    // Keep server alive despite error
+});
 
 const app = express();
 const server = http.createServer(app);
 
-// --- CONFIG: Enable CORS to prevent connection blocking ---
+// --- CONFIG: Fix 502 Errors with Permissive CORS ---
 const io = new Server(server, {
     cors: {
         origin: "*",
-        methods: ["GET", "POST"]
-    }
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    transports: ['websocket', 'polling'] // Allow both to ensure connection
 });
 
-// --- CRASH FIX: Smart Folder Detection ---
-// This finds where your 'index.html' actually lives to prevent "Cannot GET /"
-const possiblePaths = [
-    path.join(__dirname, 'HTML/public'), // Priority 1
-    path.join(__dirname, 'public'),      // Priority 2
-    path.join(__dirname, '')             // Priority 3 (Root)
-];
-
-let staticPath = null;
-for (const p of possiblePaths) {
-    if (fs.existsSync(path.join(p, 'index.html'))) {
-        staticPath = p;
-        break;
-    }
-}
-
-if (staticPath) {
-    console.log(`Serving files from: ${staticPath}`);
-    app.use(express.static(staticPath));
-} else {
-    console.error("CRITICAL ERROR: Could not find index.html in any expected folder!");
-}
+// --- SIMPLE PATH LOGIC (Won't Crash) ---
+// We tell Express to look in these folders. If one is missing, it just ignores it.
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'HTML/public')));
+// Fallback for root level files
+app.use(express.static(__dirname));
 
 // --- DATA STORAGE ---
 let sessions = {}; 
 
-// --- ZIKR DATA ---
 const zikrData = [
     { id: 1, type: 'count', target: 3, titleUrdu: "تعوذ و تسمیہ", titleEng: "Ta'awwuz & Tasmiyah", bodyText: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nبِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", bodyRoman: "A'udhu Billahi Minash-Shaitanir-Rajim\nBismillahir-Rahmanir-Rahim" },
     { id: 2, type: 'count', target: 100, titleUrdu: "استغفار", titleEng: "Astaghfar", bodyText: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ وَأَتُوبُ إِلَيْهِ", bodyRoman: "Astaghfirullaha Rabbi Min Kulli Zambin Wa Atubu Ilaih" },
@@ -63,11 +53,10 @@ function getPublicSessionList() {
 }
 
 io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+    // console.log('Connected:', socket.id); // Reduced logging to save resources
     io.emit('updateUserCount', io.engine.clientsCount);
     socket.emit('sessionList', getPublicSessionList());
 
-    // --- CREATE SESSION (With Resurrection Support) ---
     socket.on('createSession', ({ name, password, forcedId }) => {
         const sessionId = forcedId || 'sess_' + Math.random().toString(36).substr(2, 9);
         const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
@@ -90,13 +79,11 @@ io.on('connection', (socket) => {
             state: getSessionState(sessionId)
         });
         io.broadcast.emit('sessionList', getPublicSessionList());
-        console.log(`Session created: ${sessionId}`);
     });
 
     socket.on('joinSession', ({ sessionId, password }) => {
         const session = sessions[sessionId];
         if (!session) {
-            // Send special code so client knows to try resurrecting from link
             socket.emit('sessionError', 'NOT_FOUND');
             return;
         }
@@ -119,24 +106,22 @@ io.on('connection', (socket) => {
         if (session) {
             socket.join(sessionId);
             if(!session.users.includes(socket.id)) session.users.push(socket.id);
-            
             let isAdmin = false;
             if (adminToken && session.adminToken === adminToken) {
                 session.adminId = socket.id;
                 isAdmin = true;
             }
-
             socket.emit('joinedSession', {
                 sessionId: sessionId,
                 isAdmin: isAdmin,
                 state: getSessionState(sessionId)
             });
         } else {
+            // Silently fail or minimal error to prevent popup loops
             socket.emit('sessionError', 'NOT_FOUND');
         }
     });
 
-    // --- ACTIONS ---
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
         if (!session) return;
@@ -149,7 +134,7 @@ io.on('connection', (socket) => {
 
     socket.on('nextZikr', (sessionId) => {
         const session = sessions[sessionId];
-        if (!session || socket.id !== session.adminId) return; 
+        if (!session || socket.id !== session.adminId) return;
         if (session.currentZikrIndex < zikrData.length - 1) {
             session.currentZikrIndex++;
             session.currentCount = 0;
