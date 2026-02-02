@@ -22,8 +22,7 @@
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
         .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
         #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
-        #prayer-badge { position: fixed; top: 20px; right: 65px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255, 215, 0, 0.5); padding: 7px 15px; border-radius: 50px; color: #fff; font-size: 0.85rem; z-index: 100; backdrop-filter: blur(5px); display: none; }
-        #prayer-badge span { color: var(--gold); font-weight: bold; margin-left: 5px; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
         .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
@@ -82,24 +81,18 @@
 </head>
 <body>
 <div id="live-visitor-badge"><div class="live-dot"></div><div class="live-text"><span id="live-count">1</span> Online</div></div>
-<div id="prayer-badge">Next: <span id="next-prayer">Loading...</span></div>
 <div id="settings-badge" onclick="showSettings()">⚙️</div>
 <div class="glass-card" id="landing-screen"><h1>Khatme Qadirya</h1><p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p><button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button><button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button><button class="home-btn solo" onclick="startSoloMode()">👤 SOLO MODE</button></div>
 <div class="glass-card hidden" id="create-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Create Group</h1><input type="text" id="create-name" class="input-field" placeholder="Group Name" /><input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)" /><button class="home-btn primary" onclick="createSession()">START SESSION</button></div>
 <div class="glass-card hidden" id="join-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Join Group</h1><input type="text" id="search-input" class="input-field" placeholder="Search Groups..." onkeyup="filterSessions()" /><div id="sessions-list" class="session-list"><div style="color:#666;">Searching for active sessions...</div></div></div>
-<div class="glass-card hidden" id="app-screen"><div id="connection-status" class="status-online"></div><div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div><h1>Khatme Qadirya</h1><div class="zikr-header"><div class="zikr-badge" id="zikr-num">1</div><div class="title-box"><div class="zikr-title" id="zikr-title-urdu">Loading...</div><div class="zikr-subtitle" id="zikr-title-eng">Connecting</div></div></div><div id="zikr-body-container"><div id="arabic-body">...</div><div id="roman-body">...</div><div id="links-container"></div></div><div class="progress-container" id="progress-wrapper"><svg class="progress-ring" width="160" height="160"><circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/><circle class="progress-ring__circle" stroke="#FFD700" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/></svg><div class="counter-text" id="count-display">0</div><div class="target-label" id="target-display">Target: 111</div></div><button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button><div id="status-msg"></div><div id="admin-panel"><div class="admin-controls"><button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button><button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button><button class="admin-btn btn-restart" onclick="showModal('restart')">Restart</button><button class="admin-btn btn-end" onclick="showModal('end')">End</button><button class="admin-btn btn-share" onclick="shareSession()">🔗 Share Link</button></div></div></div>
+<div class="glass-card hidden" id="app-screen"><div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div><h1>Khatme Qadirya</h1><div class="zikr-header"><div class="zikr-badge" id="zikr-num">1</div><div class="title-box"><div class="zikr-title" id="zikr-title-urdu">Loading...</div><div class="zikr-subtitle" id="zikr-title-eng">Connecting</div></div></div><div id="zikr-body-container"><div id="arabic-body">...</div><div id="roman-body">...</div><div id="links-container"></div></div><div class="progress-container" id="progress-wrapper"><svg class="progress-ring" width="160" height="160"><circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/><circle class="progress-ring__circle" stroke="#FFD700" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/></svg><div class="counter-text" id="count-display">0</div><div class="target-label" id="target-display">Target: 111</div></div><button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button><div id="status-msg"></div><div id="admin-panel"><div class="admin-controls"><button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button><button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button><button class="admin-btn btn-restart" onclick="showModal('restart')">Restart</button><button class="admin-btn btn-end" onclick="showModal('end')">End</button><button class="admin-btn btn-share" onclick="shareSession()">🔗 Share Link</button></div></div></div>
 <div id="instruction-modal"><div class="modal-content" style="text-align: left;"><div class="instr-section"><div class="urdu-text"><div class="instr-title">ایپ استعمال کرنے کی ہدایات</div>🔹 جو شخص ذکر کی مجلس شروع کرنا چاہے، وہ Create Group پر کلک کرے۔<br>🔹 مجلس کے لیے ایک نام درج کرے اور ایک Password بنائے۔<br>🔹 یہی شخص امیرِ مجلس ہوگا اور ذکر کا آغاز کرے گا۔<br><br>🔹 جو افراد اس مجلس میں شامل ہونا چاہیں، وہ Join Group پر کلک کریں۔<br>🔹 امیرِ مجلس کی طرف سے دیا گیا Password درج کریں۔<br>🔹 Password درست ہونے پر آپ مجلس میں شامل ہو جائیں گے اور سب لوگ ایک ساتھ ذکر و اذکار پڑھ سکیں گے۔</div></div><div class="instr-section"><div class="eng-text"><div class="instr-title">App Usage Instructions</div>🔹 The person who wants to start the Zikr session should tap <b>Create Group</b>.<br>🔹 Enter a Group Name and create a Password for the session.<br>🔹 This person will be the Ameer-e-Majlis and will start the Zikr.<br><br>🔹 Those who want to join the session should tap <b>Join Group</b>.<br>🔹 Enter the Password provided by the Ameer-e-Majlis.<br>🔹 Once the password is verified, you will join the session and everyone can perform Zikr together.</div></div><button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button></div></div>
 <div id="settings-modal"><div class="modal-content"><h3 style="color:var(--gold); margin-top:0;">Settings</h3><div class="toggle-row"><span class="toggle-label">Vibration</span><button id="vib-toggle-btn" class="modal-btn" onclick="toggleVibration()" style="background:#38ef7d; width:80px;">ON</button></div><button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px;">Close</button></div></div>
 <div id="custom-modal"><div class="modal-content"><h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-btn modal-confirm" id="modal-confirm-btn">Yes</button></div></div></div>
 <div id="password-modal"><div class="modal-content"><h3 style="color:white; margin-top:0;">Enter Password</h3><input type="password" id="join-pass-input" class="input-field" style="width:90%; font-size:1rem;" /><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closePassModal()">Cancel</button><button class="modal-btn modal-confirm" onclick="submitJoin()">Join</button></div></div></div>
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
-    // --- CRASH FIX: FORCE WEBSOCKET ---
-    const socket = io({
-        transports: ['websocket', 'polling'], // Allow both
-        reconnection: true
-    });
-
+    const socket = io({ transports: ['websocket'], upgrade: false });
     let currentSessionId = null;
     let currentSessionPass = ""; 
     let pendingAction = null;
@@ -115,8 +108,6 @@
     const liveCountElement = document.getElementById('live-count');
     const liveVisitorBadge = document.getElementById('live-visitor-badge');
     const vibToggleBtn = document.getElementById('vib-toggle-btn');
-    const prayerBadge = document.getElementById('prayer-badge');
-    const nextPrayerSpan = document.getElementById('next-prayer');
     const createName = document.getElementById('create-name');
     const createPass = document.getElementById('create-pass');
     const searchInput = document.getElementById('search-input');
@@ -142,37 +133,7 @@
     const circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
 
-    function initPrayerTimes() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => fetchPrayerData(pos.coords.latitude, pos.coords.longitude),
-                () => fetchPrayerData(28.3670, 79.4304)
-            );
-        } else { fetchPrayerData(28.3670, 79.4304); }
-    }
-    function fetchPrayerData(lat, lng) {
-        const date = Math.floor(Date.now() / 1000);
-        fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=2`)
-            .then(res => res.json()).then(data => updatePrayerBadge(data.data.timings)).catch(err => console.error("Prayer API Error:", err));
-    }
-    function updatePrayerBadge(timings) {
-        const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-        const now = new Date();
-        let nextPrayer = null; let nextTime = null;
-        for (let p of prayers) {
-            const timeStr = timings[p];
-            const [hours, minutes] = timeStr.split(':');
-            const prayerDate = new Date();
-            prayerDate.setHours(hours, minutes, 0);
-            if (prayerDate > now) { nextPrayer = p; nextTime = formatTime(timeStr); break; }
-        }
-        if (!nextPrayer) { nextPrayer = 'Fajr'; nextTime = formatTime(timings['Fajr']); }
-        if(prayerBadge && nextPrayerSpan) { nextPrayerSpan.innerText = `${nextPrayer} ${nextTime}`; prayerBadge.style.display = 'block'; }
-    }
-    function formatTime(time24) { let [h, m] = time24.split(':'); let suffix = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return `${h}:${m} ${suffix}`; }
-
     window.addEventListener('load', () => {
-        initPrayerTimes();
         updateVibBtn();
         const storedSession = localStorage.getItem('kq_session');
         const storedAdminToken = localStorage.getItem('kq_admin');
@@ -199,7 +160,25 @@
     function toggleVibration() { vibrationEnabled = !vibrationEnabled; localStorage.setItem('vib', vibrationEnabled); updateVibBtn(); }
     function updateVibBtn() { if(vibrationEnabled) { vibToggleBtn.innerText = "ON"; vibToggleBtn.style.background = "#38ef7d"; } else { vibToggleBtn.innerText = "OFF"; vibToggleBtn.style.background = "#ef4444"; } }
     function startSoloMode() { const name = "My Personal Zikr"; const password = "solo_" + Math.random().toString(36).substr(2,5); socket.emit('createSession', { name, password }); }
-    function shareSession() { if(!currentSessionId) return; const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`; navigator.clipboard.writeText(link).then(() => { alert("Invite Link Copied! Send it to your group."); }).catch(err => { prompt("Copy this link:", link); }); }
+    
+    // --- UPDATED SHARE LOGIC (NATIVE SHARE) ---
+    function shareSession() {
+        if(!currentSessionId) return;
+        const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Join Khatme Qadirya',
+                text: 'Join my Live Zikr Session!',
+                url: link
+            }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Link Copied! Share it manually.");
+            });
+        }
+    }
+
     function closeInstructions() { if(instructionModal) instructionModal.style.display = 'none'; }
     socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
     function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
@@ -207,7 +186,6 @@
     function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
     function hideAll() { if(landingScreen) landingScreen.classList.add('hidden'); if(createScreen) createScreen.classList.add('hidden'); if(joinScreen) joinScreen.classList.add('hidden'); if(appScreen) appScreen.classList.add('hidden'); }
 
-    // --- SOCKET LOGIC ---
     socket.on('connect', () => { 
         if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
         const storedSession = localStorage.getItem('kq_session');
@@ -226,7 +204,6 @@
         window.location.href = "/"; 
     });
     
-    // --- UPDATED ERROR HANDLING (LESS ANNOYING) ---
     socket.on('sessionError', (msg) => { 
         console.log("Session Error:", msg);
         if (msg === 'NOT_FOUND') {
@@ -240,9 +217,9 @@
                     forcedId: joinId 
                 });
             } else {
-                // FAIL SILENTLY TO HOME SCREEN
                 localStorage.removeItem('kq_session');
                 localStorage.removeItem('kq_admin');
+                alert("Session expired. Please create a new one.");
                 if(window.location.search) window.location.href = "/"; 
                 else showLandingScreen();
             }
