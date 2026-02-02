@@ -20,12 +20,11 @@
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
+        .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
         #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
         #prayer-badge { position: fixed; top: 20px; right: 65px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255, 215, 0, 0.5); padding: 7px 15px; border-radius: 50px; color: #fff; font-size: 0.85rem; z-index: 100; backdrop-filter: blur(5px); display: none; }
         #prayer-badge span { color: var(--gold); font-weight: bold; margin-left: 5px; }
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
-        #connection-status { position: absolute; top: 15px; right: 15px; width: 12px; height: 12px; border-radius: 50%; background: #4b5563; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: background 0.3s; }
-        .status-online { background: #38ef7d !important; box-shadow: 0 0 10px #38ef7d !important; }
         h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
         .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
         .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
@@ -114,6 +113,7 @@
     const appScreen = document.getElementById('app-screen');
     const instructionModal = document.getElementById('instruction-modal'); 
     const liveCountElement = document.getElementById('live-count');
+    const liveVisitorBadge = document.getElementById('live-visitor-badge');
     const vibToggleBtn = document.getElementById('vib-toggle-btn');
     const prayerBadge = document.getElementById('prayer-badge');
     const nextPrayerSpan = document.getElementById('next-prayer');
@@ -123,7 +123,6 @@
     const sessionsList = document.getElementById('sessions-list');
     const joinPassInput = document.getElementById('join-pass-input');
     const sessionTitleDisplay = document.getElementById('session-title-display');
-    const statusDots = document.querySelectorAll('#connection-status');
     const zikrNum = document.getElementById('zikr-num');
     const titleUrdu = document.getElementById('zikr-title-urdu');
     const titleEng = document.getElementById('zikr-title-eng');
@@ -183,7 +182,7 @@
         if(joinId) {
             if(instructionModal) instructionModal.style.display = 'none'; 
             selectedSessionIdForJoin = joinId;
-            currentSessionPass = joinPass || ""; // Save for auto-recreation
+            currentSessionPass = joinPass || ""; 
             socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
         } 
         else if (storedSession) {
@@ -207,14 +206,18 @@
     function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
     function hideAll() { if(landingScreen) landingScreen.classList.add('hidden'); if(createScreen) createScreen.classList.add('hidden'); if(joinScreen) joinScreen.classList.add('hidden'); if(appScreen) appScreen.classList.add('hidden'); }
 
+    // --- SOCKET LOGIC ---
     socket.on('connect', () => { 
-        statusDots.forEach(dot => dot.classList.add('status-online')); 
+        if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
         const storedSession = localStorage.getItem('kq_session');
         const storedAdminToken = localStorage.getItem('kq_admin');
         if (storedSession) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
     });
     
-    socket.on('disconnect', () => { statusDots.forEach(dot => dot.classList.remove('status-online')); });
+    socket.on('disconnect', () => { 
+        if(liveVisitorBadge) liveVisitorBadge.classList.add('status-disconnected');
+    });
+
     socket.on('forceExit', (msg) => { 
         alert(msg); 
         localStorage.removeItem('kq_session'); 
@@ -222,21 +225,17 @@
         window.location.href = "/"; 
     });
     
-    // --- UPDATED ERROR HANDLING (SELF-HEALING LINKS) ---
     socket.on('sessionError', (msg) => { 
         console.log("Session Error:", msg);
         if (msg === 'NOT_FOUND') {
-            // Check if we are trying to join via a link
             const params = new URLSearchParams(window.location.search);
             const joinId = params.get('join');
-            
             if (joinId && selectedSessionIdForJoin === joinId) {
-                // Auto-create/Resurrect the session!
                 console.log("Resurrecting dead session...");
                 socket.emit('createSession', { 
                     name: "Restored Session", 
                     password: currentSessionPass, 
-                    forcedId: joinId // Force server to use this ID
+                    forcedId: joinId 
                 });
             } else {
                 localStorage.removeItem('kq_session');
@@ -280,7 +279,7 @@
     function updateUI(data) { if (data.zikr) { if(zikrNum) zikrNum.innerText = data.zikr.id; if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu; if(titleEng) titleEng.innerText = data.zikr.titleEng; if(arabicBody) arabicBody.innerText = data.zikr.bodyText; if(romanBody) romanBody.innerText = data.zikr.bodyRoman; if(targetDisplay) targetDisplay.innerText = "Target: " + data.target; if(linksContainer) { linksContainer.innerHTML = ""; if (data.zikr.links) { data.zikr.links.forEach(link => { const a = document.createElement('a'); a.href = link.url; a.target = "_blank"; a.className = "link-btn"; a.innerText = link.label; linksContainer.appendChild(a); }); } } if(arabicBody) { if (data.zikr.isUrduBody) { arabicBody.classList.add('urdu-font'); } else { arabicBody.classList.remove('urdu-font'); } } if (data.zikr.type === 'instruction') { if(appCardElement) appCardElement.classList.add('special-mode'); if(progressWrapper) progressWrapper.style.display = 'none'; } else { if(appCardElement) appCardElement.classList.remove('special-mode'); if(progressWrapper) progressWrapper.style.display = 'block'; } } if(countDisplay) countDisplay.innerText = data.currentCount; if(circle && data.target > 0) { const radius = circle.r.baseVal.value; const circumference = radius * 2 * Math.PI; const percent = Math.min(data.currentCount / data.target, 1); const offset = circumference - percent * circumference; circle.style.strokeDashoffset = offset; } if (data.isFinished) { if(tapBtn) { tapBtn.disabled = true; tapBtn.innerText = data.isLast ? "COMPLETED" : "Next Zikr"; tapBtn.classList.remove('pulsing'); tapBtn.style.background = "#4b5563"; } if(statusMsg) statusMsg.innerText = "Target Reached! Waiting for Admin..."; if (!hasBeeped) { initAudio(); playSound(); if (navigator.vibrate && vibrationEnabled) navigator.vibrate([200, 100, 200]); hasBeeped = true; } } else { if(tapBtn) { tapBtn.disabled = false; tapBtn.innerText = (data.target === 1) ? "DONE / NEXT" : "TAP"; tapBtn.style.display = 'block'; tapBtn.classList.add('pulsing'); tapBtn.style.background = "var(--btn-gradient)"; } if(statusMsg) statusMsg.innerText = ""; hasBeeped = false; } }
     socket.on('updateState', updateUI);
     socket.on('sessionComplete', (msg) => { if(titleUrdu) titleUrdu.innerText = "ختمِ قادریہ مکمل"; if(titleEng) titleEng.innerText = "Session Closed"; if(arabicBody) arabicBody.innerText = "الْحَمْدُ لِلَّٰهِ"; if(romanBody) romanBody.innerText = ""; if(linksContainer) linksContainer.innerHTML = ""; if(progressWrapper) progressWrapper.style.display = 'block'; if(countDisplay) countDisplay.innerText = "✓"; if(tapBtn) tapBtn.style.display = 'none'; if(statusMsg) { statusMsg.innerText = msg; statusMsg.style.color = "#38ef7d"; } playSound(); });
-    function handleUserTap() { if(!currentSessionId) { alert("Session connection lost. trying to reconnect..."); socket.emit('reJoinSession', { sessionId: localStorage.getItem('kq_session'), adminToken: localStorage.getItem('kq_admin') }); return; } initAudio(); socket.emit('increment', currentSessionId); if (navigator.vibrate && vibrationEnabled) navigator.vibrate(15); playSound(); }
+    function handleUserTap() { if(!currentSessionId) { alert("Connection lost. Trying to reconnect..."); socket.emit('reJoinSession', { sessionId: localStorage.getItem('kq_session'), adminToken: localStorage.getItem('kq_admin') }); return; } initAudio(); socket.emit('increment', currentSessionId); if (navigator.vibrate && vibrationEnabled) navigator.vibrate(15); playSound(); }
     const modal = document.getElementById('custom-modal'); const modalText = document.getElementById('modal-text'); const modalConfirmBtn = document.getElementById('modal-confirm-btn');
     function showModal(action) { pendingAction = action; if(modal) modal.style.display = 'flex'; if(modalText) { if (action === 'reset') modalText.innerText = "Reset current count to 0?"; else if (action === 'next') modalText.innerText = "Move to Next Zikr?"; else if (action === 'restart') modalText.innerText = "Restart ENTIRE session?"; else if (action === 'end') modalText.innerText = "End and Delete this session?"; } }
     function closeModal() { if(modal) modal.style.display = 'none'; pendingAction = null; }

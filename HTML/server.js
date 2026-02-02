@@ -2,9 +2,12 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
+
+// --- CONFIG: Enable CORS to prevent connection blocking ---
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -12,9 +15,28 @@ const io = new Server(server, {
     }
 });
 
-// Serve files (tries both paths)
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'HTML/public')));
+// --- CRASH FIX: Smart Folder Detection ---
+// This finds where your 'index.html' actually lives to prevent "Cannot GET /"
+const possiblePaths = [
+    path.join(__dirname, 'HTML/public'), // Priority 1
+    path.join(__dirname, 'public'),      // Priority 2
+    path.join(__dirname, '')             // Priority 3 (Root)
+];
+
+let staticPath = null;
+for (const p of possiblePaths) {
+    if (fs.existsSync(path.join(p, 'index.html'))) {
+        staticPath = p;
+        break;
+    }
+}
+
+if (staticPath) {
+    console.log(`Serving files from: ${staticPath}`);
+    app.use(express.static(staticPath));
+} else {
+    console.error("CRITICAL ERROR: Could not find index.html in any expected folder!");
+}
 
 // --- DATA STORAGE ---
 let sessions = {}; 
@@ -41,11 +63,11 @@ function getPublicSessionList() {
 }
 
 io.on('connection', (socket) => {
-    console.log('Connected:', socket.id);
+    console.log('User connected:', socket.id);
     io.emit('updateUserCount', io.engine.clientsCount);
     socket.emit('sessionList', getPublicSessionList());
 
-    // --- UPDATED CREATE LOGIC (Accepts Forced ID for recovery) ---
+    // --- CREATE SESSION (With Resurrection Support) ---
     socket.on('createSession', ({ name, password, forcedId }) => {
         const sessionId = forcedId || 'sess_' + Math.random().toString(36).substr(2, 9);
         const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
@@ -68,12 +90,13 @@ io.on('connection', (socket) => {
             state: getSessionState(sessionId)
         });
         io.broadcast.emit('sessionList', getPublicSessionList());
+        console.log(`Session created: ${sessionId}`);
     });
 
     socket.on('joinSession', ({ sessionId, password }) => {
         const session = sessions[sessionId];
         if (!session) {
-            // Send special code so client knows to try resurrecting
+            // Send special code so client knows to try resurrecting from link
             socket.emit('sessionError', 'NOT_FOUND');
             return;
         }
@@ -99,7 +122,7 @@ io.on('connection', (socket) => {
             
             let isAdmin = false;
             if (adminToken && session.adminToken === adminToken) {
-                session.adminId = socket.id; 
+                session.adminId = socket.id;
                 isAdmin = true;
             }
 
