@@ -13,18 +13,16 @@
     <style>
         :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --glass-bg: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1); --gold: #FFD700; --text-main: #ffffff; --text-muted: #cfcfcf; --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); --danger: #ef4444; --special-bg: rgba(255, 215, 0, 0.1); }
         
-        /* FONT DEFINITIONS */
+        /* FONT FIX: Matches your exact filename */
         @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
         @font-face { font-family: 'Jameel Noori Nastaleeq'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
-        /* Fallback if file name differs slightly */
-        @font-face { font-family: 'Jameel Noori'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
-
+        
         body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); margin: 0; min-height: 100vh; color: var(--text-main); display: block; padding: 20px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; user-select: none; -webkit-tap-highlight-color: transparent; }
         .hidden { display: none !important; }
         
-        /* Classes for dynamic font switching */
+        /* Font Classes */
         .font-arabic { font-family: 'Al Qalam Quran', serif; line-height: 1.8; }
-        .font-urdu { font-family: 'Jameel Noori Nastaleeq', 'Jameel Noori', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
+        .font-urdu { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
 
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
