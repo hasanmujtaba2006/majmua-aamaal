@@ -41,7 +41,6 @@
         .zikr-subtitle { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
         #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; text-align: center; }
         #arabic-body { font-size: 2.0rem; line-height: 1.6; color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-wrap; user-select: text; text-align: center; }
-        .special-mode .title-box { background: var(--special-bg); border: 2px solid var(--gold); }
         .progress-container { position: relative; width: 160px; height: 160px; margin-bottom: 25px; flex-shrink: 0; }
         .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
         .counter-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 700; }
@@ -60,18 +59,6 @@
         .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
         #custom-modal, #password-modal, #instruction-modal, #settings-modal, #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
-        .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
-        .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
-        .modal-confirm { background: var(--gold); color: #000; }
-        .modal-cancel { background: #4b5563; color: white; }
-        .instr-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .instr-section:last-child { border-bottom: none; }
-        .urdu-text { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.2rem; line-height: 2.0; text-align: right; color: var(--gold); direction: rtl; }
-        .eng-text { font-family: 'Outfit', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: left; color: #e0e0e0; }
-        .instr-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; text-decoration: underline; text-decoration-color: var(--gold); }
-        .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .toggle-label { color: white; font-size: 1.1rem; }
         #reading-container { display: none; margin-top: 10px; width: 100%; height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,215,0,0.2); }
         .reading-text { font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; line-height: 2.0; color: #fff; text-align: center; white-space: pre-wrap; direction: rtl; }
     </style>
@@ -103,7 +90,6 @@
 </div>
 
 <div class="glass-card hidden" id="app-screen">
-    <div id="connection-status" class="status-online"></div>
     <div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div>
     <h1>Khatme Qadirya</h1>
     <div class="zikr-header">
@@ -115,7 +101,6 @@
     </div>
     <div id="zikr-body-container">
         <div id="arabic-body">...</div>
-        <div id="roman-body">...</div>
     </div>
     <div class="progress-container" id="progress-wrapper">
         <svg class="progress-ring" width="160" height="160">
@@ -129,7 +114,7 @@
     <button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button>
     <div id="status-msg"></div>
     
-    <div id="admin-panel" style="display:none;">
+    <div id="admin-panel">
         <div class="admin-controls">
             <button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button>
             <button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button>
@@ -140,209 +125,108 @@
     </div>
 </div>
 
-<div id="loading-overlay">
-    <div style="color:white; font-size:1.5rem;">Joining Session...</div>
-</div>
-
-<div id="instruction-modal"><div class="modal-content" style="text-align: left;"><div class="instr-section"><div class="urdu-text"><div class="instr-title">ایپ استعمال کرنے کی ہدایات</div>🔹 جو شخص ذکر کی مجلس شروع کرنا چاہے، وہ Create Group پر کلک کرے۔<br>🔹 مجلس کے لیے ایک نام درج کرے اور ایک Password بنائے۔<br>🔹 یہی شخص امیرِ مجلس ہوگا اور ذکر کا آغاز کرے گا۔<br><br>🔹 جو افراد اس مجلس میں شامل ہونا چاہیں، وہ Join Group پر کلک کریں۔<br>🔹 امیرِ مجلس کی طرف سے دیا گیا Password درج کریں۔<br>🔹 Password درست ہونے پر آپ مجلس میں شامل ہو جائیں گے اور سب لوگ ایک ساتھ ذکر و اذکار پڑھ سکیں گے۔</div></div><div class="instr-section"><div class="eng-text"><div class="instr-title">App Usage Instructions</div>🔹 The person who wants to start the Zikr session should tap <b>Create Group</b>.<br>🔹 Enter a Group Name and create a Password for the session.<br>🔹 This person will be the Ameer-e-Majlis and will start the Zikr.<br><br>🔹 Those who want to join the session should tap <b>Join Group</b>.<br>🔹 Enter the Password provided by the Ameer-e-Majlis.<br>🔹 Once the password is verified, you will join the session and everyone can perform Zikr together.</div></div><button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button></div></div>
-<div id="settings-modal"><div class="modal-content"><h3 style="color:var(--gold); margin-top:0;">Settings</h3><div class="toggle-row"><span class="toggle-label">Vibration</span><button id="vib-toggle-btn" class="modal-btn" onclick="toggleVibration()" style="background:#38ef7d; width:80px;">ON</button></div><button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px;">Close</button></div></div>
-<div id="custom-modal"><div class="modal-content"><h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-btn modal-confirm" id="modal-confirm-btn">Yes</button></div></div></div>
-<div id="password-modal"><div class="modal-content"><h3 style="color:white; margin-top:0;">Enter Password</h3><input type="password" id="join-pass-input" class="input-field" style="width:90%; font-size:1rem;" /><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closePassModal()">Cancel</button><button class="modal-btn modal-confirm" onclick="submitJoin()">Join</button></div></div></div>
+<div id="loading-overlay"><div style="color:white; font-size:1.5rem;">Joining Session...</div></div>
+<div id="settings-modal"><div class="modal-content"><h3 style="color:var(--gold);">Settings</h3><button id="vib-toggle-btn" class="home-btn" onclick="toggleVibration()">Vibration: ON</button><button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'">Close</button></div></div>
+<div id="custom-modal"><div class="modal-content"><h3 id="modal-text" style="color:white;">Confirm?</h3><button class="home-btn primary" id="modal-confirm-btn">Yes</button><button class="home-btn" onclick="closeModal()">Cancel</button></div></div>
+<div id="password-modal"><div class="modal-content"><h3>Enter Password</h3><input type="password" id="join-pass-input" class="input-field" /><button class="home-btn primary" onclick="submitJoin()">Join</button><button class="home-btn" onclick="closePassModal()">Cancel</button></div></div>
 
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
     const socket = io({ transports: ['websocket'], upgrade: false });
-    let currentSessionId = null;
-    let currentSessionPass = ""; 
-    let pendingAction = null;
-    let availableSessions = [];
-    let selectedSessionIdForJoin = null;
+    let currentSessionId = null, currentSessionPass = "", pendingAction = null;
+    let availableSessions = [], selectedSessionIdForJoin = null;
     let vibrationEnabled = localStorage.getItem('vib') !== 'false';
 
-    const landingScreen = document.getElementById('landing-screen');
-    const createScreen = document.getElementById('create-screen');
-    const joinScreen = document.getElementById('join-screen');
-    const appScreen = document.getElementById('app-screen');
-    const instructionModal = document.getElementById('instruction-modal'); 
-    const liveCountElement = document.getElementById('live-count');
-    const liveVisitorBadge = document.getElementById('live-visitor-badge');
-    const vibToggleBtn = document.getElementById('vib-toggle-btn');
-    const createName = document.getElementById('create-name');
-    const createPass = document.getElementById('create-pass');
-    const searchInput = document.getElementById('search-input');
-    const sessionsList = document.getElementById('sessions-list');
-    const joinPassInput = document.getElementById('join-pass-input');
-    const sessionTitleDisplay = document.getElementById('session-title-display');
-    const statusDots = document.querySelectorAll('#connection-status');
-    const zikrNum = document.getElementById('zikr-num');
-    const titleUrdu = document.getElementById('zikr-title-urdu');
-    const titleEng = document.getElementById('zikr-title-eng');
-    const arabicBody = document.getElementById('arabic-body');
-    const romanBody = document.getElementById('roman-body');
-    const countDisplay = document.getElementById('count-display');
-    const targetDisplay = document.getElementById('target-display');
-    const progressWrapper = document.getElementById('progress-wrapper');
-    const readingContainer = document.getElementById('reading-container');
-    const readingContent = document.getElementById('reading-content');
-    const tapBtn = document.getElementById('tap-btn');
-    const statusMsg = document.getElementById('status-msg');
-    const adminPanel = document.getElementById('admin-panel');
-    const appCardElement = document.getElementById('app-screen'); 
     const circle = document.querySelector('.progress-ring__circle');
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const radius = circle && circle.r ? circle.r.baseVal.value : 70;
-    const circumference = radius * 2 * Math.PI;
+    const radius = 70, circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
 
-    window.addEventListener('load', () => {
-        updateVibBtn();
-        const storedSession = localStorage.getItem('kq_session');
-        const storedAdminToken = localStorage.getItem('kq_admin');
-        const params = new URLSearchParams(window.location.search);
-        const joinId = params.get('join');
-        const joinPass = params.get('pass');
-
-        if(joinId) {
-            hideAll();
-            if(loadingOverlay) loadingOverlay.style.display = 'flex';
-            if(instructionModal) instructionModal.style.display = 'none'; 
-            
-            selectedSessionIdForJoin = joinId;
-            currentSessionPass = joinPass || ""; 
-            socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
-        } 
-        else if (storedSession) {
-            if(instructionModal) instructionModal.style.display = 'none';
-            if(socket.connected) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
-        }
-        else {
-            if(instructionModal) instructionModal.style.display = 'flex';
-        }
-    });
-
-    function showSettings() { document.getElementById('settings-modal').style.display='flex'; }
-    function toggleVibration() { vibrationEnabled = !vibrationEnabled; localStorage.setItem('vib', vibrationEnabled); updateVibBtn(); }
-    function updateVibBtn() { if(vibrationEnabled) { vibToggleBtn.innerText = "ON"; vibToggleBtn.style.background = "#38ef7d"; } else { vibToggleBtn.innerText = "OFF"; vibToggleBtn.style.background = "#ef4444"; } }
-    
-    function shareSession() {
-        if(!currentSessionId) return;
-        const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`;
-        if (navigator.share) {
-            navigator.share({ title: 'Join Khatme Qadirya', text: 'Join my Live Zikr Session!', url: link }).catch(console.error);
-        } else {
-            navigator.clipboard.writeText(link).then(() => { alert("Link Copied!"); });
-        }
+    function hideAll() { 
+        ['landing-screen', 'create-screen', 'join-screen', 'app-screen'].forEach(id => document.getElementById(id).classList.add('hidden')); 
     }
 
-    function closeInstructions() { if(instructionModal) instructionModal.style.display = 'none'; }
-    socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
-    function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
-    function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
-    function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
-    function hideAll() { if(landingScreen) landingScreen.classList.add('hidden'); if(createScreen) createScreen.classList.add('hidden'); if(joinScreen) joinScreen.classList.add('hidden'); if(appScreen) appScreen.classList.add('hidden'); }
-
-    socket.on('connect', () => { 
-        if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
-        const storedSession = localStorage.getItem('kq_session');
-        const storedAdminToken = localStorage.getItem('kq_admin');
-        if (storedSession) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
-    });
-    socket.on('disconnect', () => { if(liveVisitorBadge) liveVisitorBadge.classList.add('status-disconnected'); });
-    socket.on('forceExit', (msg) => { alert(msg); localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin'); window.location.href = "/"; });
-    socket.on('sessionError', (msg) => { 
-        if(loadingOverlay) loadingOverlay.style.display = 'none'; 
-        console.log("Session Error:", msg);
-        if (msg === 'NOT_FOUND') {
-            const params = new URLSearchParams(window.location.search);
-            const joinId = params.get('join');
-            if (joinId && selectedSessionIdForJoin === joinId) {
-                // RESURRECT SESSION
-                socket.emit('createSession', { name: "Restored Session", password: currentSessionPass, forcedId: joinId });
-            } else {
-                localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin');
-                alert("Session expired. Please create a new one.");
-                if(window.location.search) window.location.href = "/"; else showLandingScreen();
-            }
-        } else { alert(msg); }
-    });
-
-    socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
     socket.on('joinedSession', (data) => { 
-        if(loadingOverlay) loadingOverlay.style.display = 'none';
-        currentSessionId = data.sessionId; localStorage.setItem('kq_session', currentSessionId);
+        document.getElementById('loading-overlay').style.display = 'none';
+        currentSessionId = data.sessionId;
+        localStorage.setItem('kq_session', currentSessionId);
         if(data.adminToken) localStorage.setItem('kq_admin', data.adminToken);
-        hideAll(); if(appScreen) appScreen.classList.remove('hidden'); 
-        if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; 
         
-        // ADMIN PANEL VISIBILITY LOGIC
-        if (data.isAdmin && adminPanel) {
-            adminPanel.style.display = 'block'; 
-        } else {
-            adminPanel.style.display = 'none';
-        }
+        hideAll();
+        document.getElementById('app-screen').classList.remove('hidden');
+        document.getElementById('session-title-display').innerText = "Session: " + data.state.sessionName;
+        
+        // UI SECURITY: Only show panel if data says you are admin
+        document.getElementById('admin-panel').style.display = data.isAdmin ? 'block' : 'none';
         updateUI(data.state); 
     });
 
-    function createSession() { const name = createName.value.trim() || "Khatm Session"; const password = createPass.value.trim(); currentSessionPass = password; socket.emit('createSession', { name, password }); }
-    function renderSessions(list) { if(!sessionsList) return; sessionsList.innerHTML = ""; if (list.length === 0) { sessionsList.innerHTML = "<div style='color:#999; margin-top:10px;'>No active sessions found.</div>"; return; } list.forEach(s => { const div = document.createElement('div'); div.className = 'session-item'; div.innerHTML = `<span class="session-name">${s.name}</span><span class="join-badge">JOIN</span>`; div.onclick = () => initiateJoin(s.id); sessionsList.appendChild(div); }); }
-    function filterSessions() { const query = searchInput.value.toLowerCase(); const filtered = availableSessions.filter(s => s.name.toLowerCase().includes(query)); renderSessions(filtered); }
-    function initiateJoin(sessionId) { selectedSessionIdForJoin = sessionId; document.getElementById('password-modal').style.display = 'flex'; if(joinPassInput) { joinPassInput.value = ""; joinPassInput.focus(); } }
-    function submitJoin() { const pass = joinPassInput.value.trim(); socket.emit('joinSession', { sessionId: selectedSessionIdForJoin, password: pass }); closePassModal(); }
-    function closePassModal() { document.getElementById('password-modal').style.display = 'none'; selectedSessionIdForJoin = null; }
-
-    function updateUI(data) { 
-        if (data.zikr) { 
-            if(zikrNum) zikrNum.innerText = data.zikr.id; 
-            if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu; 
-            if(titleEng) titleEng.innerText = data.zikr.titleEng; 
-            
-            if(data.zikr.type === 'read') {
-                progressWrapper.style.display = 'none';
-                tapBtn.style.display = 'none';
-                readingContainer.style.display = 'block';
-                arabicBody.innerText = ""; 
-                if(readingContent) readingContent.innerText = data.zikr.bodyText;
-            } else {
-                progressWrapper.style.display = 'block';
-                tapBtn.style.display = 'block';
-                readingContainer.style.display = 'none';
-                if(arabicBody) {
-                    arabicBody.innerText = data.zikr.bodyText;
-                    arabicBody.className = ""; 
-                    if(data.zikr.font === 'urdu') arabicBody.classList.add('font-urdu');
-                    else arabicBody.classList.add('font-arabic');
-                }
-            }
-            if(targetDisplay) targetDisplay.innerText = "Target: " + data.target; 
-        } 
-        if(countDisplay) countDisplay.innerText = data.currentCount; 
-        if(circle && data.target > 0) { 
-            const percent = Math.min(data.currentCount / data.target, 1);
-            const offset = circumference - percent * circumference; 
-            circle.style.strokeDashoffset = offset; 
-        } 
-        if (data.isFinished) { 
-            if(tapBtn) { tapBtn.disabled = true; tapBtn.innerText = data.isLast ? "COMPLETED" : "Next Zikr"; tapBtn.classList.remove('pulsing'); tapBtn.style.background = "#4b5563"; } 
-            if(statusMsg) statusMsg.innerText = "Target Reached! Waiting for Admin..."; 
-            if (navigator.vibrate && vibrationEnabled) navigator.vibrate([200, 100, 200]); 
-        } else { 
-            if(tapBtn) { tapBtn.disabled = false; tapBtn.innerText = "TAP"; tapBtn.style.background = "var(--btn-gradient)"; } 
-            if(statusMsg) statusMsg.innerText = ""; 
-        } 
+    function createSession() {
+        const name = document.getElementById('create-name').value.trim() || "Khatm Session";
+        const password = document.getElementById('create-pass').value.trim();
+        currentSessionPass = password;
+        socket.emit('createSession', { name, password });
     }
-    
+
+    function updateUI(data) {
+        if (!data.zikr) return;
+        document.getElementById('zikr-num').innerText = data.zikr.id;
+        document.getElementById('zikr-title-urdu').innerText = data.zikr.titleUrdu;
+        document.getElementById('zikr-title-eng').innerText = data.zikr.titleEng;
+        
+        if(data.zikr.type === 'read') {
+            document.getElementById('progress-wrapper').style.display = 'none';
+            document.getElementById('tap-btn').style.display = 'none';
+            document.getElementById('reading-container').style.display = 'block';
+            document.getElementById('reading-content').innerText = data.zikr.bodyText;
+        } else {
+            document.getElementById('progress-wrapper').style.display = 'block';
+            document.getElementById('tap-btn').style.display = 'block';
+            document.getElementById('reading-container').style.display = 'none';
+            const body = document.getElementById('arabic-body');
+            body.innerText = data.zikr.bodyText;
+            body.className = data.zikr.font === 'urdu' ? 'font-urdu' : 'font-arabic';
+        }
+
+        document.getElementById('count-display').innerText = data.currentCount;
+        document.getElementById('target-display').innerText = "Target: " + data.target;
+        
+        if(circle) {
+            const offset = circumference - (Math.min(data.currentCount / data.target, 1) * circumference);
+            circle.style.strokeDashoffset = offset;
+        }
+
+        const tapBtn = document.getElementById('tap-btn');
+        if (data.isFinished) {
+            tapBtn.disabled = true; tapBtn.innerText = "Target Reached"; tapBtn.classList.remove('pulsing');
+        } else {
+            tapBtn.disabled = false; tapBtn.innerText = "TAP"; tapBtn.classList.add('pulsing');
+        }
+    }
+
     socket.on('updateState', updateUI);
-    socket.on('sessionComplete', (msg) => { if(titleUrdu) titleUrdu.innerText = "ختمِ قادریہ مکمل"; if(titleEng) titleEng.innerText = "Session Closed"; if(arabicBody) arabicBody.innerText = "الْحَمْدُ لِلَّٰهِ"; if(romanBody) romanBody.innerText = ""; if(linksContainer) linksContainer.innerHTML = ""; if(progressWrapper) progressWrapper.style.display = 'block'; if(countDisplay) countDisplay.innerText = "✓"; if(tapBtn) tapBtn.style.display = 'none'; if(statusMsg) { statusMsg.innerText = msg; statusMsg.style.color = "#38ef7d"; } playSound(); });
-    function handleUserTap() { if(!currentSessionId) { alert("Connection lost. Trying to reconnect..."); socket.emit('reJoinSession', { sessionId: localStorage.getItem('kq_session'), adminToken: localStorage.getItem('kq_admin') }); return; } initAudio(); socket.emit('increment', currentSessionId); if (navigator.vibrate && vibrationEnabled) navigator.vibrate(15); playSound(); }
-    const modal = document.getElementById('custom-modal'); const modalText = document.getElementById('modal-text'); const modalConfirmBtn = document.getElementById('modal-confirm-btn');
-    function showModal(action) { pendingAction = action; if(modal) modal.style.display = 'flex'; if(modalText) { if (action === 'reset') modalText.innerText = "Reset current count to 0?"; else if (action === 'next') modalText.innerText = "Move to Next Zikr?"; else if (action === 'restart') modalText.innerText = "Restart ENTIRE session?"; else if (action === 'end') modalText.innerText = "End and Delete this session?"; } }
-    function closeModal() { if(modal) modal.style.display = 'none'; pendingAction = null; }
-    if(modalConfirmBtn) { modalConfirmBtn.onclick = function() { if (!currentSessionId) return; if (pendingAction === 'reset') socket.emit('resetCurrent', currentSessionId); else if (pendingAction === 'next') socket.emit('nextZikr', currentSessionId); else if (pendingAction === 'restart') socket.emit('restartSession', currentSessionId); else if (pendingAction === 'end') socket.emit('endSession', currentSessionId); closeModal(); }; }
-    let audioCtx = null; let hasBeeped = false;
-    function initAudio() { if (!audioCtx) { const AudioContext = window.AudioContext || window.webkitAudioContext; if (AudioContext) audioCtx = new AudioContext(); } if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }
-    function playSound() { if (!audioCtx) return; try { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } catch(e){} }
-    document.body.addEventListener('click', initAudio, { once: true }); document.body.addEventListener('touchstart', initAudio, { once: true });
-    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js').then(reg => console.log('Service Worker registered')).catch(err => console.log('Service Worker failed', err)); }); }
+    socket.on('sessionError', (msg) => { alert(msg); location.reload(); });
+    function handleUserTap() { socket.emit('increment', currentSessionId); }
+    function showModal(action) { pendingAction = action; document.getElementById('custom-modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('custom-modal').style.display = 'none'; }
+    document.getElementById('modal-confirm-btn').onclick = () => {
+        socket.emit(pendingAction === 'next' ? 'nextZikr' : pendingAction === 'reset' ? 'resetCurrent' : pendingAction === 'restart' ? 'restartSession' : 'endSession', currentSessionId);
+        closeModal();
+    };
+    
+    function shareSession() {
+        const url = `${window.location.origin}/?join=${currentSessionId}&pass=${currentSessionPass}`;
+        navigator.clipboard.writeText(url).then(() => alert("Link Copied!"));
+    }
+
+    function showCreateScreen() { hideAll(); document.getElementById('create-screen').classList.remove('hidden'); }
+    function showJoinScreen() { hideAll(); document.getElementById('join-screen').classList.remove('hidden'); socket.emit('getSessions'); }
+    socket.on('sessionList', (list) => {
+        const container = document.getElementById('sessions-list');
+        container.innerHTML = list.map(s => `<div class="session-item" onclick="initiateJoin('${s.id}')"><span>${s.name}</span> <span class="join-badge">JOIN</span></div>`).join('');
+    });
+    function initiateJoin(id) { selectedSessionIdForJoin = id; document.getElementById('password-modal').style.display = 'flex'; }
+    function submitJoin() { socket.emit('joinSession', { sessionId: selectedSessionIdForJoin, password: document.getElementById('join-pass-input').value }); document.getElementById('password-modal').style.display = 'none'; }
+    function showLandingScreen() { hideAll(); document.getElementById('landing-screen').classList.remove('hidden'); }
 </script>
 </body>
 </html>
