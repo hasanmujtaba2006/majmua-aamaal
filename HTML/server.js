@@ -16,12 +16,12 @@ app.use(express.static(staticPath));
 let sessions = {}; 
 let disconnectTimeouts = {};
 
-const surahYaseenText = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ...`; // Full text here
-const qaseedaText = `سَقَانِي الْحُبُّ كَأْسَاتِ الْوِصَالِ...`; // Full text here
+const surahYaseenText = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ...`; 
+const qaseedaText = `سَقَانِي الْحُبُّ كَأْسَاتِ الْوِصَالِ...`; 
 
 const zikrData = [
     { id: 1, type: 'count', target: 111, titleUrdu: "درود شریف", titleEng: "Durood Shareef", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", font: 'arabic' },
-    // ... items 2-19 ...
+    { id: 2, type: 'count', target: 111, titleUrdu: "تیسرا کلمہ", titleEng: "Teesra Kalma", bodyText: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", font: 'arabic' },
     { id: 20, type: 'read', target: 1, titleUrdu: "سورۃ یٰسین", titleEng: "Surah Yaseen", bodyText: surahYaseenText, font: 'arabic' },
     { id: 21, type: 'read', target: 1, titleUrdu: "قصیدہ غوثیہ", titleEng: "Qaseeda Ghausia", bodyText: qaseedaText, font: 'arabic' },
     { id: 22, type: 'count', target: 111, titleUrdu: "درود شریف", titleEng: "Durood Shareef", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", font: 'arabic' }
@@ -53,15 +53,18 @@ io.on('connection', (socket) => {
         if (!session) return socket.emit('sessionError', 'NOT_FOUND');
         if (session.password && session.password !== password) return socket.emit('sessionError', 'Wrong Password');
         socket.join(sessionId);
-        session.users.push(socket.id);
+        if(!session.users.includes(socket.id)) session.users.push(socket.id);
         socket.emit('joinedSession', { sessionId, isAdmin: false, state: getSessionState(sessionId) });
     });
 
     socket.on('increment', (sessionId) => {
         const session = sessions[sessionId];
-        if (session && session.currentCount < zikrData[session.currentZikrIndex].target) {
-            session.currentCount++;
-            io.to(sessionId).emit('updateState', getSessionState(sessionId));
+        if (session) {
+            const zikr = zikrData[session.currentZikrIndex];
+            if (zikr.type === 'count' && session.currentCount < zikr.target) {
+                session.currentCount++;
+                io.to(sessionId).emit('updateState', getSessionState(sessionId));
+            }
         }
     });
 
@@ -71,14 +74,14 @@ io.on('connection', (socket) => {
             if (session.currentZikrIndex < zikrData.length - 1) {
                 session.currentZikrIndex++; session.currentCount = 0;
                 io.to(sessionId).emit('updateState', getSessionState(sessionId));
-            } else { io.to(sessionId).emit('sessionComplete', "Khatm Complete!"); }
+            } else { io.to(sessionId).emit('sessionComplete', "MashaAllah! Khatm Complete."); }
         }
     });
 
     socket.on('endSession', (sessionId) => {
         const session = sessions[sessionId];
         if (session && socket.id === session.adminId) {
-            io.to(sessionId).emit('forceExit', 'The session has been ended by the Admin.');
+            io.to(sessionId).emit('forceExit', 'Session Ended by Admin.');
             delete sessions[sessionId];
         }
     });
@@ -92,4 +95,5 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
