@@ -22,7 +22,7 @@ const qaseedaText = `سَقَانِي الْحُبُّ كَأْسَاتِ الْ
 const zikrData = [
     { id: 1, type: 'count', target: 111, titleUrdu: "درود شریف", titleEng: "Durood Shareef", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", font: 'arabic' },
     { id: 2, type: 'count', target: 111, titleUrdu: "تیسرا کلمہ", titleEng: "Teesra Kalma", bodyText: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", font: 'arabic' },
-    // ... items 3-19 ...
+    { id: 13, type: 'count', target: 111, titleUrdu: "استغاثہ", titleEng: "Istighatha", bodyText: "ما ہمہ محتاج تو حاجت روا \n الَمدَد یا غوثِ اعظم سیّدا", font: 'urdu' },
     { id: 20, type: 'read', target: 1, titleUrdu: "سورۃ یٰسین", titleEng: "Surah Yaseen", bodyText: surahYaseenText, font: 'arabic' },
     { id: 21, type: 'read', target: 1, titleUrdu: "قصیدہ غوثیہ", titleEng: "Qaseeda Ghausia", bodyText: qaseedaText, font: 'arabic' },
     { id: 22, type: 'count', target: 111, titleUrdu: "درود شریف", titleEng: "Durood Shareef", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", font: 'arabic' }
@@ -36,26 +36,34 @@ function getSessionState(sessionId) {
         sessionName: session.name, currentCount: session.currentCount,
         target: zikr.target, zikr: zikr,
         isFinished: (zikr.type === 'count' && session.currentCount >= zikr.target),
-        isLast: (session.currentZikrIndex === zikrData.length - 1)
+        isLast: (session.currentZikrIndex === zikrData.length - 1),
+        users: session.userList // Send list of usernames
     };
 }
 
 io.on('connection', (socket) => {
-    socket.on('createSession', ({ name, password }) => {
+    socket.on('createSession', ({ name, password, username }) => {
         const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
         const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
-        sessions[sessionId] = { id: sessionId, name, password, adminToken, adminId: socket.id, currentZikrIndex: 0, currentCount: 0, users: [socket.id] };
+        sessions[sessionId] = { 
+            id: sessionId, name, password, adminToken, adminId: socket.id, 
+            currentZikrIndex: 0, currentCount: 0, 
+            userList: [{ id: socket.id, name: username || "Admin" }] 
+        };
         socket.join(sessionId);
         socket.emit('joinedSession', { sessionId, isAdmin: true, adminToken, state: getSessionState(sessionId) });
     });
 
-    socket.on('joinSession', ({ sessionId, password }) => {
+    socket.on('joinSession', ({ sessionId, password, username }) => {
         const session = sessions[sessionId];
         if (!session) return socket.emit('sessionError', 'NOT_FOUND');
         if (session.password && session.password !== password) return socket.emit('sessionError', 'Wrong Password');
+        
         socket.join(sessionId);
-        if(!session.users.includes(socket.id)) session.users.push(socket.id);
+        session.userList.push({ id: socket.id, name: username || "User" });
+        
         socket.emit('joinedSession', { sessionId, isAdmin: false, state: getSessionState(sessionId) });
+        io.to(sessionId).emit('updateState', getSessionState(sessionId));
     });
 
     socket.on('increment', (sessionId) => {
@@ -77,22 +85,32 @@ io.on('connection', (socket) => {
             if (session.currentZikrIndex < zikrData.length - 1) {
                 session.currentZikrIndex++; session.currentCount = 0;
                 io.to(sessionId).emit('updateState', getSessionState(sessionId));
-            } else { io.to(sessionId).emit('sessionComplete', "Khatm Complete!"); }
+            } else { io.to(sessionId).emit('sessionComplete', "MashaAllah!"); }
         }
     });
 
     socket.on('endSession', (sessionId) => {
         const session = sessions[sessionId];
         if (session && socket.id === session.adminId) {
-            io.to(sessionId).emit('forceExit', 'Session Ended by Admin.');
+            io.to(sessionId).emit('forceExit', 'Session Ended.');
             delete sessions[sessionId];
         }
     });
 
     socket.on('disconnect', () => {
         for (const id in sessions) {
-            if (sessions[id].adminId === socket.id) {
-                disconnectTimeouts[id] = setTimeout(() => { delete sessions[id]; }, 10000);
+            const index = sessions[id].userList.findIndex(u => u.id === socket.id);
+            if (index !== -1) {
+                sessions[id].userList.splice(index, 1);
+                io.to(id).emit('updateState', getSessionState(id));
+                if (sessions[id].adminId === socket.id) {
+                    disconnectTimeouts[id] = setTimeout(() => { 
+                        if (sessions[id]) {
+                            io.to(id).emit('forceExit', 'Admin left the session.');
+                            delete sessions[id]; 
+                        }
+                    }, 10000);
+                }
             }
         }
     });

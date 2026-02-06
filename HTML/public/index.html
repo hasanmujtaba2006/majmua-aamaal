@@ -9,14 +9,21 @@
         :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --gold: #FFD700; --glass: rgba(255, 255, 255, 0.08); }
         body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); color: white; margin: 0; text-align: center; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
         .hidden { display: none !important; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 30px; padding: 30px; width: 85%; max-width: 450px; margin: 20px auto; border: 1px solid rgba(255,255,255,0.1); }
-        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin: 10px 0; font-size: 1.1rem; transition: transform 0.1s; }
-        .btn:active { transform: scale(0.98); }
+        .glass-card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 30px; padding: 25px; width: 85%; max-width: 450px; margin: 15px auto; border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin: 8px 0; font-size: 1.1rem; }
         .btn-primary { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
         .btn-outline { background: none; border: 1px solid var(--gold); color: white; }
-        .input-field { width: 90%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px; text-align: center; font-size: 1rem; outline: none; }
-        #admin-panel { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-        .font-arabic { font-family: 'Gulzar', serif; direction: rtl; }
+        .input-field { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; margin-bottom: 12px; text-align: center; font-size: 1rem; box-sizing: border-box; }
+        
+        /* FONT FIXES */
+        .font-arabic { font-family: 'Gulzar', serif !important; direction: rtl !important; }
+        .font-urdu { font-family: 'Gulzar', serif !important; direction: rtl !important; font-size: 1.8rem !important; }
+        
+        #user-list-container { margin-top: 20px; text-align: left; width: 100%; }
+        .user-tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; margin: 3px; border: 1px solid rgba(255,215,0,0.2); }
+        .admin-tag { border-color: var(--gold); color: var(--gold); }
+        
+        #admin-panel { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; width: 100%; }
         .progress-ring__circle { transition: stroke-dashoffset 0.3s; transform: rotate(-90deg); transform-origin: 50% 50%; stroke: var(--gold); }
     </style>
 </head>
@@ -25,73 +32,66 @@
 <div id="settings-badge" style="position:fixed; top:20px; right:20px; cursor:pointer; z-index:1000; font-size: 1.5rem;" onclick="toggleModal('settings-modal', true)">⚙️</div>
 
 <div id="landing-screen" class="glass-card">
-    <h1 style="color:var(--gold); letter-spacing: 2px;">KHATME QADIRYA</h1>
-    <p style="color:#ccc;">Group Zikr Session</p>
+    <h1 style="color:var(--gold);">KHATME QADIRYA</h1>
     <button class="btn btn-primary" onclick="showScreen('create-screen')">CREATE GROUP</button>
     <button class="btn btn-outline" onclick="showScreen('join-screen')">JOIN GROUP</button>
 </div>
 
 <div id="create-screen" class="glass-card hidden">
-    <h2>Create Session</h2>
+    <h2>Create Group</h2>
+    <input type="text" id="create-user" class="input-field" placeholder="Your Name">
     <input type="text" id="create-name" class="input-field" placeholder="Group Name">
-    <input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)">
+    <input type="password" id="create-pass" class="input-field" placeholder="Password (Optional)">
     <button class="btn btn-primary" onclick="createSession()">START SESSION</button>
     <button class="btn btn-outline" onclick="showScreen('landing-screen')">BACK</button>
 </div>
 
 <div id="join-screen" class="glass-card hidden">
-    <h2>Join Session</h2>
-    <p id="join-status-text" style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px;"></p>
+    <h2>Join Group</h2>
+    <input type="text" id="join-user" class="input-field" placeholder="Your Name">
     <input type="password" id="join-pass-input" class="input-field" placeholder="Enter Password">
     <button class="btn btn-primary" onclick="joinSession()">JOIN NOW</button>
     <button class="btn btn-outline" onclick="showScreen('landing-screen')">BACK</button>
 </div>
 
 <div id="app-screen" class="glass-card hidden">
-    <div id="zikr-title-urdu" class="font-arabic" style="font-size:2.2rem; color: var(--gold);"></div>
-    <div id="zikr-body" class="font-arabic" style="font-size:1.6rem; margin:25px 0; line-height: 1.6;"></div>
+    <div id="zikr-title-urdu" class="font-arabic" style="font-size:2rem; color: var(--gold);"></div>
+    <div id="zikr-body" style="margin:20px 0; min-height: 80px;"></div>
     
-    <div id="counter-container" style="position:relative; height: 160px; margin: 0 auto; width: 160px;">
+    <div id="counter-container" style="position:relative; height: 160px; width: 160px; margin: 0 auto;">
         <svg width="160" height="160"><circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/></svg>
         <div id="count-display" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:3.5rem; font-weight:bold;">0</div>
     </div>
 
-    <button id="tap-btn" class="btn btn-primary" style="margin-top:40px; height: 80px; border-radius: 40px; font-size: 1.5rem;" onclick="handleTap()">TAP</button>
+    <button id="tap-btn" class="btn btn-primary" style="margin-top:30px; height: 70px;" onclick="handleTap()">TAP</button>
+
+    <div id="user-list-container">
+        <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">Participants:</p>
+        <div id="user-tags-box"></div>
+    </div>
 
     <div id="admin-panel">
         <button class="btn btn-outline" onclick="socket.emit('nextZikr', currentSessionId)">NEXT ZIKR</button>
-        <button class="btn btn-outline" style="border-color:#ef4444; color:#ef4444;" onclick="socket.emit('endSession', currentSessionId)">END FOR ALL</button>
+        <button class="btn btn-outline" style="border-color:#ef4444; color:#ef4444;" onclick="socket.emit('endSession', currentSessionId)">END SESSION</button>
     </div>
 </div>
 
 <div id="settings-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; display:flex; align-items:center; justify-content:center;">
-    <div class="glass-card">
-        <h3>Settings</h3>
-        <button class="btn btn-outline" id="vib-toggle" onclick="toggleSetting('vib')">Vibration: ON</button>
-        <button class="btn btn-outline" id="sound-toggle" onclick="toggleSetting('sound')">Sound: ON</button>
-        <button class="btn btn-primary" onclick="toggleModal('settings-modal', false)">CLOSE</button>
-    </div>
+    <div class="glass-card"><h3>Settings</h3><button class="btn btn-outline" id="vib-toggle" onclick="toggleSetting('vib')">Vibration: ON</button><button class="btn btn-outline" id="sound-toggle" onclick="toggleSetting('sound')">Sound: ON</button><button class="btn btn-primary" onclick="toggleModal('settings-modal', false)">CLOSE</button></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
-    let currentSessionId = null, isAdmin = false;
-    let settings = { vib: true, sound: true };
-
+    let currentSessionId = null, isAdmin = false, settings = { vib: true, sound: true };
     const circle = document.querySelector('.progress-ring__circle');
     const radius = 70, circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
 
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
-        const joinId = params.get('join');
-        if (joinId) {
-            currentSessionId = joinId;
-            document.getElementById('join-status-text').innerText = "Joining shared session...";
-            showScreen('join-screen');
-        }
+        if (params.get('join')) { currentSessionId = params.get('join'); showScreen('join-screen'); }
     };
 
     function showScreen(id) {
@@ -100,15 +100,19 @@
     }
 
     function createSession() {
-        const name = document.getElementById('create-name').value;
-        const password = document.getElementById('create-pass').value;
-        socket.emit('createSession', { name, password });
+        socket.emit('createSession', { 
+            username: document.getElementById('create-user').value,
+            name: document.getElementById('create-name').value, 
+            password: document.getElementById('create-pass').value 
+        });
     }
 
     function joinSession() {
-        const pass = document.getElementById('join-pass-input').value;
-        const sid = currentSessionId || prompt("Enter Session ID:");
-        if (sid) socket.emit('joinSession', { sessionId: sid, password: pass });
+        socket.emit('joinSession', { 
+            username: document.getElementById('join-user').value,
+            sessionId: currentSessionId || prompt("Session ID:"), 
+            password: document.getElementById('join-pass-input').value 
+        });
     }
 
     socket.on('joinedSession', (data) => {
@@ -120,34 +124,28 @@
     });
 
     socket.on('updateState', updateUI);
-    socket.on('targetReached', () => {
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-    });
-
-    socket.on('forceExit', (msg) => {
-        alert(msg);
-        window.location.href = "/"; 
-    });
-
+    socket.on('targetReached', () => { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); });
+    socket.on('forceExit', (msg) => { alert(msg); window.location.href = "/"; });
     socket.on('sessionError', (err) => alert(err));
 
     function updateUI(state) {
         if(!state) return;
         document.getElementById('zikr-title-urdu').innerText = state.zikr.titleUrdu;
-        document.getElementById('zikr-body').innerText = state.zikr.bodyText;
-        document.getElementById('count-display').innerText = state.currentCount;
+        const body = document.getElementById('zikr-body');
+        body.innerText = state.zikr.bodyText;
+        body.className = state.zikr.font === 'urdu' ? 'font-urdu' : 'font-arabic';
         
-        if(circle) {
-            const offset = circumference - (Math.min(state.currentCount / state.target, 1) * circumference);
-            circle.style.strokeDashoffset = offset;
-        }
+        document.getElementById('count-display').innerText = state.currentCount;
+        if(circle) circle.style.strokeDashoffset = circumference - (Math.min(state.currentCount / state.target, 1) * circumference);
 
         const tapBtn = document.getElementById('tap-btn');
-        if (state.isFinished) {
-            tapBtn.disabled = true; tapBtn.innerText = "TARGET REACHED"; tapBtn.style.opacity = "0.5";
-        } else {
-            tapBtn.disabled = false; tapBtn.innerText = "TAP"; tapBtn.style.opacity = "1";
-        }
+        tapBtn.disabled = state.isFinished;
+        tapBtn.innerText = state.isFinished ? "WAITING..." : "TAP";
+        tapBtn.style.opacity = state.isFinished ? "0.5" : "1";
+
+        // Update User List
+        const box = document.getElementById('user-tags-box');
+        box.innerHTML = state.users.map((u, i) => `<span class="user-tag ${i===0?'admin-tag':''}">${u.name}</span>`).join('');
     }
 
     function handleTap() {
@@ -161,20 +159,15 @@
         document.getElementById(key + '-toggle').innerText = `${key.toUpperCase()}: ${settings[key] ? 'ON' : 'OFF'}`;
     }
 
-    function toggleModal(id, show) {
-        document.getElementById(id).classList.toggle('hidden', !show);
-    }
-
+    function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
     function playBeep() {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            gain.gain.setValueAtTime(0.05, ctx.currentTime);
-            osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.start(); osc.stop(ctx.currentTime + 0.05);
-        } catch(e) {}
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.start(); osc.stop(ctx.currentTime + 0.05);
     }
 </script>
 </body>
