@@ -12,33 +12,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Gulzar&display=swap" rel="stylesheet">
     <style>
         :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --glass-bg: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1); --gold: #FFD700; --text-main: #ffffff; --text-muted: #cfcfcf; --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); --danger: #ef4444; --special-bg: rgba(255, 215, 0, 0.1); }
-        
-        /* FONT DEFINITIONS */
         @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
         @font-face { font-family: 'Jameel Noori Nastaleeq'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
-        @font-face { font-family: 'Jameel Noori'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
-
+        @font-face { font-family: 'Jameel Noori Nastaleeq Kasheeda'; src: url('Jameel Noori Nastaleeq Kasheeda.ttf') format('truetype'); }
         body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); margin: 0; min-height: 100vh; color: var(--text-main); display: block; padding: 20px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; user-select: none; -webkit-tap-highlight-color: transparent; }
         .hidden { display: none !important; }
-        
-        /* Classes for dynamic font switching */
         .font-arabic { font-family: 'Al Qalam Quran', serif; line-height: 1.8; }
-        .font-urdu { font-family: 'Jameel Noori Nastaleeq', 'Jameel Noori', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
-
+        .font-urdu { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
         .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
         #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
         .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
         .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
         .home-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
         .home-btn.primary { background: var(--btn-gradient); border: none; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .home-btn.solo { border-color: #38ef7d; color: #38ef7d; }
         .session-list { width: 100%; margin-top: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
         .session-item { background: rgba(255,255,255,0.1); padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
         .session-item:hover { border-color: var(--gold); background: rgba(255,255,255,0.15); }
@@ -48,11 +39,8 @@
         .title-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 30px 20px 15px 20px; width: 100%; position: relative; }
         .zikr-title { font-family: 'Gulzar', serif; font-size: 2.0rem; color: #ffffff; line-height: 1.6; margin-bottom: 5px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
         .zikr-subtitle { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-        
         #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; text-align: center; }
         #arabic-body { font-size: 2.0rem; line-height: 1.6; color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-wrap; user-select: text; text-align: center; }
-        #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; user-select: text; }
-        
         .special-mode .title-box { background: var(--special-bg); border: 2px solid var(--gold); }
         .progress-container { position: relative; width: 160px; height: 160px; margin-bottom: 25px; flex-shrink: 0; }
         .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
@@ -70,7 +58,7 @@
         .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
         .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
         .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
-        #custom-modal, #password-modal, #instruction-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        #custom-modal, #password-modal, #instruction-modal, #settings-modal, #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
         .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
         .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
@@ -84,7 +72,6 @@
         .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .toggle-label { color: white; font-size: 1.1rem; }
-        
         #reading-container { display: none; margin-top: 10px; width: 100%; height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,215,0,0.2); }
         .reading-text { font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; line-height: 2.0; color: #fff; text-align: center; white-space: pre-wrap; direction: rtl; }
     </style>
@@ -92,17 +79,76 @@
 <body>
 <div id="live-visitor-badge"><div class="live-dot"></div><div class="live-text"><span id="live-count">1</span> Online</div></div>
 <div id="settings-badge" onclick="showSettings()">⚙️</div>
-<div class="glass-card" id="landing-screen"><h1>Khatme Qadirya</h1><p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p><button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button><button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button><button class="home-btn solo" onclick="startSoloMode()">👤 SOLO MODE</button></div>
-<div class="glass-card hidden" id="create-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Create Group</h1><input type="text" id="create-name" class="input-field" placeholder="Group Name" /><input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)" /><button class="home-btn primary" onclick="createSession()">START SESSION</button></div>
-<div class="glass-card hidden" id="join-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Join Group</h1><input type="text" id="search-input" class="input-field" placeholder="Search Groups..." onkeyup="filterSessions()" /><div id="sessions-list" class="session-list"><div style="color:#666;">Searching for active sessions...</div></div></div>
-<div class="glass-card hidden" id="app-screen"><div id="connection-status" class="status-online"></div><div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div><h1>Khatme Qadirya</h1><div class="zikr-header"><div class="zikr-badge" id="zikr-num">1</div><div class="title-box"><div class="zikr-title" id="zikr-title-urdu">Loading...</div><div class="zikr-subtitle" id="zikr-title-eng">Connecting</div></div></div><div id="zikr-body-container"><div id="arabic-body">...</div><div id="roman-body">...</div><div id="links-container"></div></div>
-<div class="progress-container" id="progress-wrapper"><svg class="progress-ring" width="160" height="160"><circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/><circle class="progress-ring__circle" stroke="#FFD700" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/></svg><div class="counter-text" id="count-display">0</div><div class="target-label" id="target-display">Target: 111</div></div>
-<div id="reading-container"><div class="reading-text" id="reading-content"></div></div>
-<button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button><div id="status-msg"></div><div id="admin-panel"><div class="admin-controls"><button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button><button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button><button class="admin-btn btn-restart" onclick="showModal('restart')">Restart</button><button class="admin-btn btn-end" onclick="showModal('end')">End</button><button class="admin-btn btn-share" onclick="shareSession()">🔗 Share Link</button></div></div></div>
+
+<div class="glass-card" id="landing-screen">
+    <h1>Khatme Qadirya</h1>
+    <p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p>
+    <button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button>
+    <button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button>
+</div>
+
+<div class="glass-card hidden" id="create-screen">
+    <button class="back-btn" onclick="showLandingScreen()">&larr; Back</button>
+    <h1>Create Group</h1>
+    <input type="text" id="create-name" class="input-field" placeholder="Group Name" />
+    <input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)" />
+    <button class="home-btn primary" onclick="createSession()">START SESSION</button>
+</div>
+
+<div class="glass-card hidden" id="join-screen">
+    <button class="back-btn" onclick="showLandingScreen()">&larr; Back</button>
+    <h1>Join Group</h1>
+    <input type="text" id="search-input" class="input-field" placeholder="Search Groups..." onkeyup="filterSessions()" />
+    <div id="sessions-list" class="session-list"><div style="color:#666;">Searching for active sessions...</div></div>
+</div>
+
+<div class="glass-card hidden" id="app-screen">
+    <div id="connection-status" class="status-online"></div>
+    <div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div>
+    <h1>Khatme Qadirya</h1>
+    <div class="zikr-header">
+        <div class="zikr-badge" id="zikr-num">1</div>
+        <div class="title-box">
+            <div class="zikr-title" id="zikr-title-urdu">Loading...</div>
+            <div class="zikr-subtitle" id="zikr-title-eng">Connecting</div>
+        </div>
+    </div>
+    <div id="zikr-body-container">
+        <div id="arabic-body">...</div>
+        <div id="roman-body">...</div>
+    </div>
+    <div class="progress-container" id="progress-wrapper">
+        <svg class="progress-ring" width="160" height="160">
+            <circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+            <circle class="progress-ring__circle" stroke="#FFD700" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/>
+        </svg>
+        <div class="counter-text" id="count-display">0</div>
+        <div class="target-label" id="target-display">Target: 111</div>
+    </div>
+    <div id="reading-container"><div class="reading-text" id="reading-content"></div></div>
+    <button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button>
+    <div id="status-msg"></div>
+    
+    <div id="admin-panel" style="display:none;">
+        <div class="admin-controls">
+            <button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button>
+            <button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button>
+            <button class="admin-btn btn-restart" onclick="showModal('restart')">Restart</button>
+            <button class="admin-btn btn-end" onclick="showModal('end')">End</button>
+            <button class="admin-btn btn-share" onclick="shareSession()">🔗 Share Link</button>
+        </div>
+    </div>
+</div>
+
+<div id="loading-overlay">
+    <div style="color:white; font-size:1.5rem;">Joining Session...</div>
+</div>
+
 <div id="instruction-modal"><div class="modal-content" style="text-align: left;"><div class="instr-section"><div class="urdu-text"><div class="instr-title">ایپ استعمال کرنے کی ہدایات</div>🔹 جو شخص ذکر کی مجلس شروع کرنا چاہے، وہ Create Group پر کلک کرے۔<br>🔹 مجلس کے لیے ایک نام درج کرے اور ایک Password بنائے۔<br>🔹 یہی شخص امیرِ مجلس ہوگا اور ذکر کا آغاز کرے گا۔<br><br>🔹 جو افراد اس مجلس میں شامل ہونا چاہیں، وہ Join Group پر کلک کریں۔<br>🔹 امیرِ مجلس کی طرف سے دیا گیا Password درج کریں۔<br>🔹 Password درست ہونے پر آپ مجلس میں شامل ہو جائیں گے اور سب لوگ ایک ساتھ ذکر و اذکار پڑھ سکیں گے۔</div></div><div class="instr-section"><div class="eng-text"><div class="instr-title">App Usage Instructions</div>🔹 The person who wants to start the Zikr session should tap <b>Create Group</b>.<br>🔹 Enter a Group Name and create a Password for the session.<br>🔹 This person will be the Ameer-e-Majlis and will start the Zikr.<br><br>🔹 Those who want to join the session should tap <b>Join Group</b>.<br>🔹 Enter the Password provided by the Ameer-e-Majlis.<br>🔹 Once the password is verified, you will join the session and everyone can perform Zikr together.</div></div><button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button></div></div>
 <div id="settings-modal"><div class="modal-content"><h3 style="color:var(--gold); margin-top:0;">Settings</h3><div class="toggle-row"><span class="toggle-label">Vibration</span><button id="vib-toggle-btn" class="modal-btn" onclick="toggleVibration()" style="background:#38ef7d; width:80px;">ON</button></div><button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px;">Close</button></div></div>
 <div id="custom-modal"><div class="modal-content"><h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-btn modal-confirm" id="modal-confirm-btn">Yes</button></div></div></div>
 <div id="password-modal"><div class="modal-content"><h3 style="color:white; margin-top:0;">Enter Password</h3><input type="password" id="join-pass-input" class="input-field" style="width:90%; font-size:1rem;" /><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closePassModal()">Cancel</button><button class="modal-btn modal-confirm" onclick="submitJoin()">Join</button></div></div></div>
+
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
     const socket = io({ transports: ['websocket'], upgrade: false });
@@ -133,7 +179,6 @@
     const titleEng = document.getElementById('zikr-title-eng');
     const arabicBody = document.getElementById('arabic-body');
     const romanBody = document.getElementById('roman-body');
-    const linksContainer = document.getElementById('links-container');
     const countDisplay = document.getElementById('count-display');
     const targetDisplay = document.getElementById('target-display');
     const progressWrapper = document.getElementById('progress-wrapper');
@@ -144,6 +189,7 @@
     const adminPanel = document.getElementById('admin-panel');
     const appCardElement = document.getElementById('app-screen'); 
     const circle = document.querySelector('.progress-ring__circle');
+    const loadingOverlay = document.getElementById('loading-overlay');
     const radius = circle && circle.r ? circle.r.baseVal.value : 70;
     const circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
@@ -157,7 +203,10 @@
         const joinPass = params.get('pass');
 
         if(joinId) {
+            hideAll();
+            if(loadingOverlay) loadingOverlay.style.display = 'flex';
             if(instructionModal) instructionModal.style.display = 'none'; 
+            
             selectedSessionIdForJoin = joinId;
             currentSessionPass = joinPass || ""; 
             socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
@@ -174,7 +223,6 @@
     function showSettings() { document.getElementById('settings-modal').style.display='flex'; }
     function toggleVibration() { vibrationEnabled = !vibrationEnabled; localStorage.setItem('vib', vibrationEnabled); updateVibBtn(); }
     function updateVibBtn() { if(vibrationEnabled) { vibToggleBtn.innerText = "ON"; vibToggleBtn.style.background = "#38ef7d"; } else { vibToggleBtn.innerText = "OFF"; vibToggleBtn.style.background = "#ef4444"; } }
-    function startSoloMode() { const name = "My Personal Zikr"; const password = "solo_" + Math.random().toString(36).substr(2,5); socket.emit('createSession', { name, password }); }
     
     function shareSession() {
         if(!currentSessionId) return;
@@ -202,11 +250,13 @@
     socket.on('disconnect', () => { if(liveVisitorBadge) liveVisitorBadge.classList.add('status-disconnected'); });
     socket.on('forceExit', (msg) => { alert(msg); localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin'); window.location.href = "/"; });
     socket.on('sessionError', (msg) => { 
+        if(loadingOverlay) loadingOverlay.style.display = 'none'; 
         console.log("Session Error:", msg);
         if (msg === 'NOT_FOUND') {
             const params = new URLSearchParams(window.location.search);
             const joinId = params.get('join');
             if (joinId && selectedSessionIdForJoin === joinId) {
+                // RESURRECT SESSION
                 socket.emit('createSession', { name: "Restored Session", password: currentSessionPass, forcedId: joinId });
             } else {
                 localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin');
@@ -218,11 +268,18 @@
 
     socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
     socket.on('joinedSession', (data) => { 
+        if(loadingOverlay) loadingOverlay.style.display = 'none';
         currentSessionId = data.sessionId; localStorage.setItem('kq_session', currentSessionId);
         if(data.adminToken) localStorage.setItem('kq_admin', data.adminToken);
         hideAll(); if(appScreen) appScreen.classList.remove('hidden'); 
         if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; 
-        if (data.isAdmin && adminPanel) adminPanel.style.display = 'block'; 
+        
+        // ADMIN PANEL VISIBILITY LOGIC
+        if (data.isAdmin && adminPanel) {
+            adminPanel.style.display = 'block'; 
+        } else {
+            adminPanel.style.display = 'none';
+        }
         updateUI(data.state); 
     });
 
@@ -239,28 +296,23 @@
             if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu; 
             if(titleEng) titleEng.innerText = data.zikr.titleEng; 
             
-            // Reading Mode Logic
             if(data.zikr.type === 'read') {
                 progressWrapper.style.display = 'none';
                 tapBtn.style.display = 'none';
                 readingContainer.style.display = 'block';
-                arabicBody.innerText = ""; // Clear main text
-                romanBody.innerText = "";
+                arabicBody.innerText = ""; 
                 if(readingContent) readingContent.innerText = data.zikr.bodyText;
             } else {
                 progressWrapper.style.display = 'block';
                 tapBtn.style.display = 'block';
                 readingContainer.style.display = 'none';
-                
                 if(arabicBody) {
                     arabicBody.innerText = data.zikr.bodyText;
                     arabicBody.className = ""; 
                     if(data.zikr.font === 'urdu') arabicBody.classList.add('font-urdu');
                     else arabicBody.classList.add('font-arabic');
                 }
-                if(romanBody) romanBody.innerText = data.zikr.bodyRoman || ""; 
             }
-            
             if(targetDisplay) targetDisplay.innerText = "Target: " + data.target; 
         } 
         if(countDisplay) countDisplay.innerText = data.currentCount; 
