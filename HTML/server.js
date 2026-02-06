@@ -22,6 +22,7 @@ const qaseedaText = `سَقَانِي الْحُبُّ كَأْسَاتِ الْ
 const zikrData = [
     { id: 1, type: 'count', target: 111, titleUrdu: "درود شریف", titleEng: "Durood Shareef", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", font: 'arabic' },
     { id: 2, type: 'count', target: 111, titleUrdu: "تیسرا کلمہ", titleEng: "Teesra Kalma", bodyText: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", font: 'arabic' },
+    // ... items 3-19 ...
     { id: 20, type: 'read', target: 1, titleUrdu: "سورۃ یٰسین", titleEng: "Surah Yaseen", bodyText: surahYaseenText, font: 'arabic' },
     { id: 21, type: 'read', target: 1, titleUrdu: "قصیدہ غوثیہ", titleEng: "Qaseeda Ghausia", bodyText: qaseedaText, font: 'arabic' },
     { id: 22, type: 'count', target: 111, titleUrdu: "درود شریف", titleEng: "Durood Shareef", bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", font: 'arabic' }
@@ -63,7 +64,9 @@ io.on('connection', (socket) => {
             const zikr = zikrData[session.currentZikrIndex];
             if (zikr.type === 'count' && session.currentCount < zikr.target) {
                 session.currentCount++;
-                io.to(sessionId).emit('updateState', getSessionState(sessionId));
+                const state = getSessionState(sessionId);
+                io.to(sessionId).emit('updateState', state);
+                if (state.isFinished) io.to(sessionId).emit('targetReached');
             }
         }
     });
@@ -74,7 +77,7 @@ io.on('connection', (socket) => {
             if (session.currentZikrIndex < zikrData.length - 1) {
                 session.currentZikrIndex++; session.currentCount = 0;
                 io.to(sessionId).emit('updateState', getSessionState(sessionId));
-            } else { io.to(sessionId).emit('sessionComplete', "MashaAllah! Khatm Complete."); }
+            } else { io.to(sessionId).emit('sessionComplete', "Khatm Complete!"); }
         }
     });
 

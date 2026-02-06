@@ -7,16 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Gulzar&display=swap" rel="stylesheet">
     <style>
         :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --gold: #FFD700; --glass: rgba(255, 255, 255, 0.08); }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); color: white; margin: 0; text-align: center; min-height: 100vh; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); color: white; margin: 0; text-align: center; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
         .hidden { display: none !important; }
         .glass-card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 30px; padding: 30px; width: 85%; max-width: 450px; margin: 20px auto; border: 1px solid rgba(255,255,255,0.1); }
-        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin: 10px 0; font-size: 1.1rem; }
+        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin: 10px 0; font-size: 1.1rem; transition: transform 0.1s; }
+        .btn:active { transform: scale(0.98); }
         .btn-primary { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
         .btn-outline { background: none; border: 1px solid var(--gold); color: white; }
-        .input-field { width: 90%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px; text-align: center; font-size: 1rem; }
+        .input-field { width: 90%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; margin-bottom: 15px; text-align: center; font-size: 1rem; outline: none; }
         #admin-panel { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-        .font-arabic { font-family: 'Outfit', serif; direction: rtl; }
-        .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; stroke: var(--gold); }
+        .font-arabic { font-family: 'Gulzar', serif; direction: rtl; }
+        .progress-ring__circle { transition: stroke-dashoffset 0.3s; transform: rotate(-90deg); transform-origin: 50% 50%; stroke: var(--gold); }
     </style>
 </head>
 <body>
@@ -40,17 +41,17 @@
 
 <div id="join-screen" class="glass-card hidden">
     <h2>Join Session</h2>
-    <p id="join-status-text" style="color: var(--gold); font-size: 0.9rem;"></p>
+    <p id="join-status-text" style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px;"></p>
     <input type="password" id="join-pass-input" class="input-field" placeholder="Enter Password">
     <button class="btn btn-primary" onclick="joinSession()">JOIN NOW</button>
     <button class="btn btn-outline" onclick="showScreen('landing-screen')">BACK</button>
 </div>
 
 <div id="app-screen" class="glass-card hidden">
-    <div id="zikr-title-urdu" style="font-family:'Gulzar'; font-size:2.2rem; color: var(--gold);"></div>
+    <div id="zikr-title-urdu" class="font-arabic" style="font-size:2.2rem; color: var(--gold);"></div>
     <div id="zikr-body" class="font-arabic" style="font-size:1.6rem; margin:25px 0; line-height: 1.6;"></div>
     
-    <div id="counter-container" style="position:relative; height: 160px;">
+    <div id="counter-container" style="position:relative; height: 160px; margin: 0 auto; width: 160px;">
         <svg width="160" height="160"><circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/></svg>
         <div id="count-display" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:3.5rem; font-weight:bold;">0</div>
     </div>
@@ -72,6 +73,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
@@ -82,13 +84,12 @@
     const radius = 70, circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
 
-    // 4. DEEP LINK FIX
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const joinId = params.get('join');
         if (joinId) {
             currentSessionId = joinId;
-            document.getElementById('join-status-text').innerText = "Joining via shared link...";
+            document.getElementById('join-status-text').innerText = "Joining shared session...";
             showScreen('join-screen');
         }
     };
@@ -107,7 +108,7 @@
     function joinSession() {
         const pass = document.getElementById('join-pass-input').value;
         const sid = currentSessionId || prompt("Enter Session ID:");
-        socket.emit('joinSession', { sessionId: sid, password: pass });
+        if (sid) socket.emit('joinSession', { sessionId: sid, password: pass });
     }
 
     socket.on('joinedSession', (data) => {
@@ -119,6 +120,9 @@
     });
 
     socket.on('updateState', updateUI);
+    socket.on('targetReached', () => {
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    });
 
     socket.on('forceExit', (msg) => {
         alert(msg);
@@ -140,13 +144,12 @@
 
         const tapBtn = document.getElementById('tap-btn');
         if (state.isFinished) {
-            tapBtn.disabled = true; tapBtn.innerText = "WAITING..."; tapBtn.style.opacity = "0.5";
+            tapBtn.disabled = true; tapBtn.innerText = "TARGET REACHED"; tapBtn.style.opacity = "0.5";
         } else {
             tapBtn.disabled = false; tapBtn.innerText = "TAP"; tapBtn.style.opacity = "1";
         }
     }
 
-    // 1. TAP BUTTON FIX
     function handleTap() {
         if (settings.vib && navigator.vibrate) navigator.vibrate(40);
         if (settings.sound) playBeep();
