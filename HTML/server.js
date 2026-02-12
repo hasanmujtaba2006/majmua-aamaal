@@ -4,7 +4,6 @@ const { Server } = require('socket.io');
 const path = require('path');
 const fs = require('fs');
 
-// --- SAFETY NET: PREVENT CRASHES ---
 process.on('uncaughtException', (err) => {
     console.error('CRITICAL ERROR:', err);
 });
@@ -17,7 +16,6 @@ const io = new Server(server, {
     transports: ['websocket', 'polling']
 });
 
-// --- SMART FOLDER DETECTION ---
 const possiblePaths = [
     path.join(__dirname, 'HTML/public'),
     path.join(__dirname, 'public'),
@@ -31,19 +29,13 @@ for (const p of possiblePaths) {
         break;
     }
 }
-
-if (staticPath) {
-    app.use(express.static(staticPath));
-    console.log(`Serving files from: ${staticPath}`);
-} else {
-    console.log("WARNING: Index.html not found in standard folders.");
-}
+if (staticPath) app.use(express.static(staticPath));
 
 let sessions = {}; 
 
-// --- FULL TEXTS FOR READING MODE ---
+// --- TEXT CONTENT ---
 
-[cite_start]// Surah Yaseen (Extracted from your PDF) [cite: 73, 82, 85, 91, 98, 104, 111, 117]
+// Surah Yaseen (Extracted from your PDF)
 const surahYaseenText = `بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
 يس ۝ وَالْقُرْآنِ الْحَكِيمِ ۝ إِنَّكَ لَمِنَ الْمُرْسَلِينَ ۝ عَلَىٰ صِرَاطٍ مُّسْتَقِيمٍ ۝ تَنزِيلَ الْعَزِيزِ الرَّحِيمِ ۝ لِتُنذِرَ قَوْمًا مَّا أُنذِرَ آبَاؤُهُمْ فَهُمْ غَافِلُونَ ۝ لَقَدْ حَقَّ الْقَوْلُ عَلَىٰ أَكْثَرِهِمْ فَهُمْ لَا يُؤْمِنُونَ ۝ إِنَّا جَعَلْنَا فِي أَعْنَاقِهِمْ أَغْلَالًا فَهِيَ إِلَى الْأَذْقَانِ فَهُم مُّقْمَحُونَ ۝ وَجَعَلْنَا مِن بَيْنِ أَيْدِيهِمْ سَدًّا وَمِنْ خَلْفِهِمْ سَدًّا فَأَغْشَيْنَاهُمْ فَهُمْ لَا يُبْصِرُونَ ۝ وَسَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا يُؤْمِنُونَ ۝ إِنَّمَا تُنذِرُ مَنِ اتَّبَعَ الذِّكْرَ وَخَشِيَ الرَّحْمَٰنَ بِالْغَيْبِ ۖ فَبَشِّرْهُ بِمَغْفِرَةٍ وَأَجْرٍ كَرِيمٍ ۝ إِنَّا نَحْنُ نُحْيِي الْمَوْتَىٰ وَنَكْتُبُ مَا قَدَّمُوا وَآثَارَهُمْ ۚ وَكُلَّ شَيْءٍ أَحْصَيْنَاهُ فِي إِمَامٍ مُّبِينٍ ۝
 
@@ -59,6 +51,7 @@ const surahYaseenText = `بِسْمِ اللَّهِ الرَّحْمَٰنِ ا
 
 وَمَن نُّعَمِّرْهُ نُنَكِّسْهُ فِي الْخَلْقِ ۖ أَفَلَا يَعْقِلُونَ ۝ وَمَا عَلَّمْنَاهُ الشِّعْرَ وَمَا يَنبَغِي لَهُ ۚ إِنْ هُوَ إِلَّا ذِكْرٌ وَقُرْآنٌ مُّبِينٌ ۝ لِّيُنذِرَ مَن كَانَ حَيًّا وَيَحِقَّ الْقَوْلُ عَلَى الْكَافِرِينَ ۝ أَوَلَمْ يَرَوْا أَنَّا خَلَقْنَا لَهُم مِّمَّا عَمِلَتْ أَيْدِينَا أَنْعَامًا فَهُمْ لَهَا مَالِكُونَ ۝ وَذَلَّلْنَاهَا لَهُمْ فَمِنْهَا رَكُوبُهُمْ وَمِنْهَا يَأْكُلُونَ ۝ وَلَهُمْ فِيهَا مَنَافِعُ وَمَشَارِبُ ۖ أَفَلَا يَشْكُرُونَ ۝ وَاتَّخَذُوا مِن دُونِ اللَّهِ آلِهَةً لَّعَلَّهُمْ يُنصَرُونَ ۝ لَا يَسْتَطِيعُونَ نَصْرَهُمْ وَهُمْ لَهُمْ جُندٌ مُّحْضَرُونَ ۝ فَلَا يَحْزُنكَ قَوْلُهُمْ ۘ إِنَّا نَعْلَمُ مَا يُسِرُّونَ وَمَا يُعْلِنُونَ ۝ أَوَلَمْ يَرَ الْإِنسَانُ أَنَّا خَلَقْنَاهُ مِن نُّطْفَةٍ فَإِذَا هُوَ خَصِيمٌ مُّبِينٌ ۝ وَضَرَبَ لَنَا مَثَلًا وَنَسِيَ خَلْقَهُ ۖ قَالَ مَن يُحْيِي الْعِظَامَ وَهِيَ رَمِيمٌ ۝ قُلْ يُحْيِيهَا الَّذِي أَنشَأَهَا أَوَّلَ مَرَّةٍ ۖ وَهُوَ بِكُلِّ خَلْقٍ عَلِيمٌ ۝ الَّذِي جَعَلَ لَكُم مِّنَ الشَّجَرِ الْأَخْضَرِ نَارًا فَإِذَا أَنتُم مِّنْهُ تُوقِدُونَ ۝ أَوَلَيْسَ الَّذِي خَلَقَ السَّمَاوَاتِ وَالْأَرْضَ بِقَادِرٍ عَلَىٰ أَن يَخْلُقَ مِثْلَهُم ۚ بَلَىٰ وَهُوَ الْخَلَّاقُ الْعَلِيمُ ۝ إِنَّمَا أَمْرُهُ إِذَا أَرَادَ شَيْئًا أَن يَقُولَ لَهُ كُن فَيَكُونُ ۝ فَسُبْحَانَ الَّذِي بِيَدِهِ مَلَكُوتُ كُلِّ شَيْءٍ وَإِلَيْهِ تُرْجَعُونَ`;
 
+// Qaseeda Ghausia
 const qaseedaText = `سَقَانِي الْحُبُّ كَأْسَاتِ الْوِصَالِ 
  فَقُلْتُ لِخَمْرَتِي نَحْوِي تَعَالِي
 
@@ -146,156 +139,156 @@ const qaseedaText = `سَقَانِي الْحُبُّ كَأْسَاتِ الْ
 وَعَبْدُ الْقَادِرِ الْمَشْهُورُ إِسْمِي 
  وَجَدِّي صَاحِبُ الْعَيْنِ الْكَمَالِ`;
 
-// --- UPDATED ZIKR LIST ---
+// --- UPDATED ZIKR LIST (YOUR 11 POINTS) ---
 const zikrData = [
-    // 1. Durood 
+    // 1. Durood (Updated Text)
     { 
         id: 1, type: 'count', target: 111, 
         titleUrdu: "درود شریف", titleEng: "Durood Shareef", 
         bodyText: "اللّٰهُمَّ صَلِّ عَلٰی سَیِّدِنَا وَنَبِیِّنَا وَمَوْلَانَا مُحَمَّدٍ مَعْدِنِ الْجُوْدِوَالْکَرَمِ وَآلِهِ الْکِرَامِ وَابْنِہِ الْکَرِیْمِ وَبَارِكْ وَسَلِّمْ", 
         font: 'arabic' 
     },
-    // 2. Teesra Kalma
+    // 2. Teesra Kalma (Renamed, Removed Enter)
     { 
         id: 2, type: 'count', target: 111, 
         titleUrdu: "تیسرا کلمہ", titleEng: "Teesra Kalma", 
         bodyText: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", 
         font: 'arabic' 
     },
-    // 3. Alam Nashrah
+    // 3. Alam Nashrah (Arabic Heading)
     { 
         id: 3, type: 'count', target: 111, 
         titleUrdu: "سورة ألم نشرح", titleEng: "Surah Alam Nashrah", 
         bodyText: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۝ وَوَضَعْنَا عَنكَ وَزْرَكَ ۝ الَّذِي أَنقَضَ ظَهْرَكَ ۝ وَرَفَعْنَا لَكَ ذِكْرَكَ ۝ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ فَإِذَا فَرَغْتَ فَانصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَب ۝", 
         font: 'arabic' 
     },
-    // 4. Surah Ikhlas
+    // 4. Surah Ikhlas (Arabic Heading)
     { 
         id: 4, type: 'count', target: 111, 
         titleUrdu: "سورة الإخلاص", titleEng: "Surah Ikhlas", 
         bodyText: "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ۝", 
         font: 'arabic' 
     },
-    // 5. Isma-e-Husna Part 1
+    // 5. Isma-e-Husna Part 1 (Split)
     { 
         id: 5, type: 'count', target: 111, 
         titleUrdu: "أسماء الله الحسنى", titleEng: "Isma-e-Husna", 
         bodyText: "يَا بَاقِي أَنْتَ الْبَاقِي", 
         font: 'arabic' 
     },
-    // 6. Isma-e-Husna Part 2
+    // 6. Isma-e-Husna Part 2 (Split)
     { 
         id: 6, type: 'count', target: 111, 
         titleUrdu: "أسماء الله الحسنى", titleEng: "Isma-e-Husna", 
         bodyText: "يَا شَافِي أَنْتَ الشَّافِي", 
         font: 'arabic' 
     },
-    // 7. Isma-e-Husna Part 3
+    // 7. Isma-e-Husna Part 3 (Split)
     { 
         id: 7, type: 'count', target: 111, 
         titleUrdu: "أسماء الله الحسنى", titleEng: "Isma-e-Husna", 
         bodyText: "يَا كَافِي أَنْتَ الْكَافِي", 
         font: 'arabic' 
     },
-    // 8. Istighatha
+    // 8. Istighatha (Was Ya Rasool Allah) - Fixed Ashkalina
     { 
         id: 8, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "يَا رَسُولَ اللَّهِ اُنْظُرْ حَالَنَا \n يَا حَبِيْبَ اللَّهِ اِسْمَعْ قَالَنَا \n اِنَّنِي فِي بَحْرِ هَمٍّ مُّغْرَقٌ \n خُذْ يَدِي سَهِّلْ لَنَا اَشْكَالَنَا", 
         font: 'arabic' 
     },
-    // 9. Istighatha
+    // 9. Istighatha (Was Ya Habib)
     { 
         id: 9, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "يَا حَبِيْبَ الْإِلَهِ خُذْ بِيَدِي \n مَا لِعَجْزِي سِوَاكَ مُسْتَنَدِي", 
         font: 'arabic' 
     },
-    // 10. Istighatha
+    // 10. Istighatha (Was Fasahil)
     { 
         id: 10, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "فَسَهِّلْ يَا إِلَهِي كُلَّ صَعْبٍ \n بِحُرْمَةِ سَيِّدِ الْأَبْرَارِ سَهِّلْ", 
         font: 'arabic' 
     },
-    // 11. Istighatha
+    // 11. Istighatha (Was Sahaba)
     { 
         id: 11, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "يَا صِدِّيقُ يَا عُمَرُ \n يَا عُثْمَانُ يَا حَيْدَرُ \n دَفْعِ شَر كُنْ خَيْرَ آوَرْ \n يَا شَبِيْرُ يَا شَبَرْ", 
         font: 'arabic' 
     },
-    // 12. Istighatha
+    // 12. Istighatha (Was Ya Hazrat Sultan) - Added Almadad
     { 
         id: 12, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "يَا حَضْرَتِ سُلْطَانِ شَيْخ سَيِّد شَاه \n عَبْدَ الْقَادِرِ جِيلَانِي شَيْئًا لِلَّهِ \n الْمَدَدْ", 
         font: 'arabic' 
     },
-    // 13. Istighatha
+    // 13. Istighatha (Was Ma Hama)
     { 
         id: 13, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "ما ہمہ محتاج تو حاجت روا \n الَمدَد یا غوثِ اعظم سیّدا", 
         font: 'urdu' 
     },
-    // 14. Istighatha
+    // 14. Istighatha (Was Mushkilat)
     { 
         id: 14, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "مشکلاتِ بے عدد داریم ما \n الَمدَد یا غوثِ اعظم پیرا ما", 
         font: 'urdu' 
     },
-    // 15. Istighatha
+    // 15. Istighatha (Was Ya Hazrat Sheikh)
     { 
         id: 15, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "يَا حَضْرَتِ شَيْخ \n مُحْيِ الدِّينِ مُشْكِلْ كُشَا بِالْخَيْر", 
         font: 'arabic' 
     },
-    // 16. Istighatha
+    // 16. Istighatha (Was Madad Kun) - NEW TEXT
     { 
         id: 16, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "امداد کن امداد کن \n از بندِ غم آزاد کن \n در دین و دنیا شاد کن \n یا غوثِ اعظم دستگیر", 
         font: 'urdu' 
     },
-    // 17. Istighatha
+    // 17. Istighatha (Was Ya Hazrat Ghaus)
     { 
         id: 17, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "يَا حَضْرَتِ غَوْث \n أَغِثْنَا بِإِذْنِ اللَّهِ تَعَالَى", 
         font: 'arabic' 
     },
-    // 18. Istighatha
+    // 18. Istighatha (Was Khuz Yadi)
     { 
         id: 18, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "خُذْ يَدِي يَا شَاهِ جِيْلَاں خُذْ يَدِي \n شَيْئًا لِلَّهِ أَنْتَ نُوْرٌ أَحْمَدِي", 
         font: 'arabic' 
     },
-    // 19. Istighatha
+    // 19. Istighatha (Was Tufail) - NEW TEXT
     { 
         id: 19, type: 'count', target: 111, 
         titleUrdu: "استغاثہ", titleEng: "Istighatha", 
         bodyText: "طفیل حضرت دستگیر \n دشمن ہووے زیر", 
         font: 'urdu' 
     },
-    // 20. Surah Yaseen
+    // 20. Surah Yaseen (READING)
     { 
         id: 20, type: 'read', target: 1, 
         titleUrdu: "سورۃ یٰسین", titleEng: "Surah Yaseen", 
         bodyText: surahYaseenText, 
         font: 'arabic'
     },
-    // 21. Qaseeda Ghausia
+    // 21. Qaseeda Ghausia (READING)
     { 
         id: 21, type: 'read', target: 1, 
         titleUrdu: "قصیدہ غوثیہ", titleEng: "Qaseeda Ghausia", 
         bodyText: qaseedaText, 
         font: 'arabic'
     },
-    // 22. Durood
+    // 22. Durood (Ending - Updated Text to match #1)
     { 
         id: 22, type: 'count', target: 111, 
         titleUrdu: "درود شریف", titleEng: "Durood Shareef", 
