@@ -4,171 +4,293 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khatme Qadirya</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0F2027">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Gulzar&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --gold: #FFD700; --glass: rgba(255, 255, 255, 0.08); }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); color: white; margin: 0; text-align: center; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --glass-bg: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1); --gold: #FFD700; --text-main: #ffffff; --text-muted: #cfcfcf; --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); --danger: #ef4444; --special-bg: rgba(255, 215, 0, 0.1); }
+        
+        /* FONT DEFINITIONS */
+        @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
+        @font-face { font-family: 'Jameel Noori Nastaleeq'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
+        @font-face { font-family: 'Jameel Noori'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
+
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); margin: 0; min-height: 100vh; color: var(--text-main); display: block; padding: 20px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; user-select: none; -webkit-tap-highlight-color: transparent; }
         .hidden { display: none !important; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 30px; padding: 25px; width: 85%; max-width: 450px; margin: 15px auto; border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin: 8px 0; font-size: 1.1rem; }
-        .btn-primary { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
-        .btn-outline { background: none; border: 1px solid var(--gold); color: white; }
-        .input-field { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; margin-bottom: 12px; text-align: center; font-size: 1rem; box-sizing: border-box; }
         
-        /* FONT FIXES */
-        .font-arabic { font-family: 'Gulzar', serif !important; direction: rtl !important; }
-        .font-urdu { font-family: 'Gulzar', serif !important; direction: rtl !important; font-size: 1.8rem !important; }
+        /* Classes for dynamic font switching */
+        .font-arabic { font-family: 'Al Qalam Quran', serif; line-height: 1.8; }
+        .font-urdu { font-family: 'Jameel Noori Nastaleeq', 'Jameel Noori', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
+
+        #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
+        .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
+        .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
+        .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+        #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         
-        #user-list-container { margin-top: 20px; text-align: left; width: 100%; }
-        .user-tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; margin: 3px; border: 1px solid rgba(255,215,0,0.2); }
-        .admin-tag { border-color: var(--gold); color: var(--gold); }
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
+        h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+        .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
+        .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
+        .home-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        .home-btn.primary { background: var(--btn-gradient); border: none; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .home-btn.solo { border-color: #38ef7d; color: #38ef7d; }
+        .session-list { width: 100%; margin-top: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
+        .session-item { background: rgba(255,255,255,0.1); padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
+        .session-item:hover { border-color: var(--gold); background: rgba(255,255,255,0.15); }
+        .join-badge { background: var(--btn-gradient); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .zikr-header { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+        .zikr-badge { background: var(--gold); color: #0F2027; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Al Qalam Quran', serif; font-size: 1.6rem; font-weight: bold; margin-bottom: -22px; z-index: 10; border: 3px solid #0F2027; }
+        .title-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 30px 20px 15px 20px; width: 100%; position: relative; }
+        .zikr-title { font-family: 'Gulzar', serif; font-size: 2.0rem; color: #ffffff; line-height: 1.6; margin-bottom: 5px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .zikr-subtitle { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
         
-        #admin-panel { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; width: 100%; }
-        .progress-ring__circle { transition: stroke-dashoffset 0.3s; transform: rotate(-90deg); transform-origin: 50% 50%; stroke: var(--gold); }
+        #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; text-align: center; }
+        #arabic-body { font-size: 2.0rem; line-height: 1.6; color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-wrap; user-select: text; text-align: center; }
+        #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; user-select: text; }
+        
+        .special-mode .title-box { background: var(--special-bg); border: 2px solid var(--gold); }
+        .progress-container { position: relative; width: 160px; height: 160px; margin-bottom: 25px; flex-shrink: 0; }
+        .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .counter-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 700; }
+        .target-label { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #aaa; }
+        #tap-btn { width: 100%; background: var(--btn-gradient); color: white; border: none; padding: 20px; font-size: 1.2rem; font-weight: 700; border-radius: 50px; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2); transition: transform 0.1s; }
+        #tap-btn:active { transform: scale(0.96); }
+        #tap-btn:disabled { background: #4b5563; box-shadow: none; }
+        .pulsing { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(56, 239, 125, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); } }
+        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
+        #admin-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+        .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
+        .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
+        .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
+        .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
+        #custom-modal, #password-modal, #instruction-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
+        .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
+        .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
+        .modal-confirm { background: var(--gold); color: #000; }
+        .modal-cancel { background: #4b5563; color: white; }
+        .instr-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .instr-section:last-child { border-bottom: none; }
+        .urdu-text { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.2rem; line-height: 2.0; text-align: right; color: var(--gold); direction: rtl; }
+        .eng-text { font-family: 'Outfit', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: left; color: #e0e0e0; }
+        .instr-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; text-decoration: underline; text-decoration-color: var(--gold); }
+        .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .toggle-label { color: white; font-size: 1.1rem; }
+        
+        #reading-container { display: none; margin-top: 10px; width: 100%; height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,215,0,0.2); }
+        .reading-text { font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; line-height: 2.0; color: #fff; text-align: center; white-space: pre-wrap; direction: rtl; }
     </style>
 </head>
 <body>
-
-<div id="settings-badge" style="position:fixed; top:20px; right:20px; cursor:pointer; z-index:1000; font-size: 1.5rem;" onclick="toggleModal('settings-modal', true)">⚙️</div>
-
-<div id="landing-screen" class="glass-card">
-    <h1 style="color:var(--gold);">KHATME QADIRYA</h1>
-    <button class="btn btn-primary" onclick="showScreen('create-screen')">CREATE GROUP</button>
-    <button class="btn btn-outline" onclick="showScreen('join-screen')">JOIN GROUP</button>
-</div>
-
-<div id="create-screen" class="glass-card hidden">
-    <h2>Create Group</h2>
-    <input type="text" id="create-user" class="input-field" placeholder="Your Name">
-    <input type="text" id="create-name" class="input-field" placeholder="Group Name">
-    <input type="password" id="create-pass" class="input-field" placeholder="Password (Optional)">
-    <button class="btn btn-primary" onclick="createSession()">START SESSION</button>
-    <button class="btn btn-outline" onclick="showScreen('landing-screen')">BACK</button>
-</div>
-
-<div id="join-screen" class="glass-card hidden">
-    <h2>Join Group</h2>
-    <input type="text" id="join-user" class="input-field" placeholder="Your Name">
-    <input type="password" id="join-pass-input" class="input-field" placeholder="Enter Password">
-    <button class="btn btn-primary" onclick="joinSession()">JOIN NOW</button>
-    <button class="btn btn-outline" onclick="showScreen('landing-screen')">BACK</button>
-</div>
-
-<div id="app-screen" class="glass-card hidden">
-    <div id="zikr-title-urdu" class="font-arabic" style="font-size:2rem; color: var(--gold);"></div>
-    <div id="zikr-body" style="margin:20px 0; min-height: 80px;"></div>
-    
-    <div id="counter-container" style="position:relative; height: 160px; width: 160px; margin: 0 auto;">
-        <svg width="160" height="160"><circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/></svg>
-        <div id="count-display" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:3.5rem; font-weight:bold;">0</div>
-    </div>
-
-    <button id="tap-btn" class="btn btn-primary" style="margin-top:30px; height: 70px;" onclick="handleTap()">TAP</button>
-
-    <div id="user-list-container">
-        <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">Participants:</p>
-        <div id="user-tags-box"></div>
-    </div>
-
-    <div id="admin-panel">
-        <button class="btn btn-outline" onclick="socket.emit('nextZikr', currentSessionId)">NEXT ZIKR</button>
-        <button class="btn btn-outline" style="border-color:#ef4444; color:#ef4444;" onclick="socket.emit('endSession', currentSessionId)">END SESSION</button>
-    </div>
-</div>
-
-<div id="settings-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; display:flex; align-items:center; justify-content:center;">
-    <div class="glass-card"><h3>Settings</h3><button class="btn btn-outline" id="vib-toggle" onclick="toggleSetting('vib')">Vibration: ON</button><button class="btn btn-outline" id="sound-toggle" onclick="toggleSetting('sound')">Sound: ON</button><button class="btn btn-primary" onclick="toggleModal('settings-modal', false)">CLOSE</button></div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+<div id="live-visitor-badge"><div class="live-dot"></div><div class="live-text"><span id="live-count">1</span> Online</div></div>
+<div id="settings-badge" onclick="showSettings()">⚙️</div>
+<div class="glass-card" id="landing-screen"><h1>Khatme Qadirya</h1><p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p><button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button><button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button><button class="home-btn solo" onclick="startSoloMode()">👤 SOLO MODE</button></div>
+<div class="glass-card hidden" id="create-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Create Group</h1><input type="text" id="create-name" class="input-field" placeholder="Group Name" /><input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)" /><button class="home-btn primary" onclick="createSession()">START SESSION</button></div>
+<div class="glass-card hidden" id="join-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Join Group</h1><input type="text" id="search-input" class="input-field" placeholder="Search Groups..." onkeyup="filterSessions()" /><div id="sessions-list" class="session-list"><div style="color:#666;">Searching for active sessions...</div></div></div>
+<div class="glass-card hidden" id="app-screen"><div id="connection-status" class="status-online"></div><div style="font-size:0.8rem; color:#aaa; margin-bottom:10px;" id="session-title-display"></div><h1>Khatme Qadirya</h1><div class="zikr-header"><div class="zikr-badge" id="zikr-num">1</div><div class="title-box"><div class="zikr-title" id="zikr-title-urdu">Loading...</div><div class="zikr-subtitle" id="zikr-title-eng">Connecting</div></div></div><div id="zikr-body-container"><div id="arabic-body">...</div><div id="roman-body">...</div><div id="links-container"></div></div>
+<div class="progress-container" id="progress-wrapper"><svg class="progress-ring" width="160" height="160"><circle class="progress-ring__bg" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/><circle class="progress-ring__circle" stroke="#FFD700" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/></svg><div class="counter-text" id="count-display">0</div><div class="target-label" id="target-display">Target: 111</div></div>
+<div id="reading-container"><div class="reading-text" id="reading-content"></div></div>
+<button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button><div id="status-msg"></div><div id="admin-panel"><div class="admin-controls"><button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button><button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button><button class="admin-btn btn-restart" onclick="showModal('restart')">Restart</button><button class="admin-btn btn-end" onclick="showModal('end')">End</button><button class="admin-btn btn-share" onclick="shareSession()">🔗 Share Link</button></div></div></div>
+<div id="instruction-modal"><div class="modal-content" style="text-align: left;"><div class="instr-section"><div class="urdu-text"><div class="instr-title">ایپ استعمال کرنے کی ہدایات</div>🔹 جو شخص ذکر کی مجلس شروع کرنا چاہے، وہ Create Group پر کلک کرے۔<br>🔹 مجلس کے لیے ایک نام درج کرے اور ایک Password بنائے۔<br>🔹 یہی شخص امیرِ مجلس ہوگا اور ذکر کا آغاز کرے گا۔<br><br>🔹 جو افراد اس مجلس میں شامل ہونا چاہیں، وہ Join Group پر کلک کریں۔<br>🔹 امیرِ مجلس کی طرف سے دیا گیا Password درج کریں۔<br>🔹 Password درست ہونے پر آپ مجلس میں شامل ہو جائیں گے اور سب لوگ ایک ساتھ ذکر و اذکار پڑھ سکیں گے۔</div></div><div class="instr-section"><div class="eng-text"><div class="instr-title">App Usage Instructions</div>🔹 The person who wants to start the Zikr session should tap <b>Create Group</b>.<br>🔹 Enter a Group Name and create a Password for the session.<br>🔹 This person will be the Ameer-e-Majlis and will start the Zikr.<br><br>🔹 Those who want to join the session should tap <b>Join Group</b>.<br>🔹 Enter the Password provided by the Ameer-e-Majlis.<br>🔹 Once the password is verified, you will join the session and everyone can perform Zikr together.</div></div><button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button></div></div>
+<div id="settings-modal"><div class="modal-content"><h3 style="color:var(--gold); margin-top:0;">Settings</h3><div class="toggle-row"><span class="toggle-label">Vibration</span><button id="vib-toggle-btn" class="modal-btn" onclick="toggleVibration()" style="background:#38ef7d; width:80px;">ON</button></div><button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px;">Close</button></div></div>
+<div id="custom-modal"><div class="modal-content"><h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-btn modal-confirm" id="modal-confirm-btn">Yes</button></div></div></div>
+<div id="password-modal"><div class="modal-content"><h3 style="color:white; margin-top:0;">Enter Password</h3><input type="password" id="join-pass-input" class="input-field" style="width:90%; font-size:1rem;" /><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closePassModal()">Cancel</button><button class="modal-btn modal-confirm" onclick="submitJoin()">Join</button></div></div></div>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
-    const socket = io();
-    let currentSessionId = null, isAdmin = false, settings = { vib: true, sound: true };
+    const socket = io({ transports: ['websocket'], upgrade: false });
+    let currentSessionId = null;
+    let currentSessionPass = ""; 
+    let pendingAction = null;
+    let availableSessions = [];
+    let selectedSessionIdForJoin = null;
+    let vibrationEnabled = localStorage.getItem('vib') !== 'false';
+
+    const landingScreen = document.getElementById('landing-screen');
+    const createScreen = document.getElementById('create-screen');
+    const joinScreen = document.getElementById('join-screen');
+    const appScreen = document.getElementById('app-screen');
+    const instructionModal = document.getElementById('instruction-modal'); 
+    const liveCountElement = document.getElementById('live-count');
+    const liveVisitorBadge = document.getElementById('live-visitor-badge');
+    const vibToggleBtn = document.getElementById('vib-toggle-btn');
+    const createName = document.getElementById('create-name');
+    const createPass = document.getElementById('create-pass');
+    const searchInput = document.getElementById('search-input');
+    const sessionsList = document.getElementById('sessions-list');
+    const joinPassInput = document.getElementById('join-pass-input');
+    const sessionTitleDisplay = document.getElementById('session-title-display');
+    const statusDots = document.querySelectorAll('#connection-status');
+    const zikrNum = document.getElementById('zikr-num');
+    const titleUrdu = document.getElementById('zikr-title-urdu');
+    const titleEng = document.getElementById('zikr-title-eng');
+    const arabicBody = document.getElementById('arabic-body');
+    const romanBody = document.getElementById('roman-body');
+    const linksContainer = document.getElementById('links-container');
+    const countDisplay = document.getElementById('count-display');
+    const targetDisplay = document.getElementById('target-display');
+    const progressWrapper = document.getElementById('progress-wrapper');
+    const readingContainer = document.getElementById('reading-container');
+    const readingContent = document.getElementById('reading-content');
+    const tapBtn = document.getElementById('tap-btn');
+    const statusMsg = document.getElementById('status-msg');
+    const adminPanel = document.getElementById('admin-panel');
+    const appCardElement = document.getElementById('app-screen'); 
     const circle = document.querySelector('.progress-ring__circle');
-    const radius = 70, circumference = radius * 2 * Math.PI;
+    const radius = circle && circle.r ? circle.r.baseVal.value : 70;
+    const circumference = radius * 2 * Math.PI;
     if(circle) { circle.style.strokeDasharray = `${circumference} ${circumference}`; circle.style.strokeDashoffset = circumference; }
 
-    window.onload = () => {
+    window.addEventListener('load', () => {
+        updateVibBtn();
+        const storedSession = localStorage.getItem('kq_session');
+        const storedAdminToken = localStorage.getItem('kq_admin');
         const params = new URLSearchParams(window.location.search);
-        if (params.get('join')) { currentSessionId = params.get('join'); showScreen('join-screen'); }
-    };
+        const joinId = params.get('join');
+        const joinPass = params.get('pass');
 
-    function showScreen(id) {
-        ['landing-screen', 'create-screen', 'join-screen', 'app-screen'].forEach(s => document.getElementById(s).classList.add('hidden'));
-        document.getElementById(id).classList.remove('hidden');
-    }
-
-    function createSession() {
-        socket.emit('createSession', { 
-            username: document.getElementById('create-user').value,
-            name: document.getElementById('create-name').value, 
-            password: document.getElementById('create-pass').value 
-        });
-    }
-
-    function joinSession() {
-        socket.emit('joinSession', { 
-            username: document.getElementById('join-user').value,
-            sessionId: currentSessionId || prompt("Session ID:"), 
-            password: document.getElementById('join-pass-input').value 
-        });
-    }
-
-    socket.on('joinedSession', (data) => {
-        currentSessionId = data.sessionId;
-        isAdmin = data.isAdmin;
-        document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
-        showScreen('app-screen');
-        updateUI(data.state);
+        if(joinId) {
+            if(instructionModal) instructionModal.style.display = 'none'; 
+            selectedSessionIdForJoin = joinId;
+            currentSessionPass = joinPass || ""; 
+            socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
+        } 
+        else if (storedSession) {
+            if(instructionModal) instructionModal.style.display = 'none';
+            if(socket.connected) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
+        }
+        else {
+            if(instructionModal) instructionModal.style.display = 'flex';
+        }
     });
 
+    function showSettings() { document.getElementById('settings-modal').style.display='flex'; }
+    function toggleVibration() { vibrationEnabled = !vibrationEnabled; localStorage.setItem('vib', vibrationEnabled); updateVibBtn(); }
+    function updateVibBtn() { if(vibrationEnabled) { vibToggleBtn.innerText = "ON"; vibToggleBtn.style.background = "#38ef7d"; } else { vibToggleBtn.innerText = "OFF"; vibToggleBtn.style.background = "#ef4444"; } }
+    function startSoloMode() { const name = "My Personal Zikr"; const password = "solo_" + Math.random().toString(36).substr(2,5); socket.emit('createSession', { name, password }); }
+    
+    function shareSession() {
+        if(!currentSessionId) return;
+        const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`;
+        if (navigator.share) {
+            navigator.share({ title: 'Join Khatme Qadirya', text: 'Join my Live Zikr Session!', url: link }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(link).then(() => { alert("Link Copied!"); });
+        }
+    }
+
+    function closeInstructions() { if(instructionModal) instructionModal.style.display = 'none'; }
+    socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
+    function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
+    function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
+    function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
+    function hideAll() { if(landingScreen) landingScreen.classList.add('hidden'); if(createScreen) createScreen.classList.add('hidden'); if(joinScreen) joinScreen.classList.add('hidden'); if(appScreen) appScreen.classList.add('hidden'); }
+
+    socket.on('connect', () => { 
+        if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
+        const storedSession = localStorage.getItem('kq_session');
+        const storedAdminToken = localStorage.getItem('kq_admin');
+        if (storedSession) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
+    });
+    socket.on('disconnect', () => { if(liveVisitorBadge) liveVisitorBadge.classList.add('status-disconnected'); });
+    socket.on('forceExit', (msg) => { alert(msg); localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin'); window.location.href = "/"; });
+    socket.on('sessionError', (msg) => { 
+        console.log("Session Error:", msg);
+        if (msg === 'NOT_FOUND') {
+            const params = new URLSearchParams(window.location.search);
+            const joinId = params.get('join');
+            if (joinId && selectedSessionIdForJoin === joinId) {
+                socket.emit('createSession', { name: "Restored Session", password: currentSessionPass, forcedId: joinId });
+            } else {
+                localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin');
+                alert("Session expired. Please create a new one.");
+                if(window.location.search) window.location.href = "/"; else showLandingScreen();
+            }
+        } else { alert(msg); }
+    });
+
+    socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
+    socket.on('joinedSession', (data) => { 
+        currentSessionId = data.sessionId; localStorage.setItem('kq_session', currentSessionId);
+        if(data.adminToken) localStorage.setItem('kq_admin', data.adminToken);
+        hideAll(); if(appScreen) appScreen.classList.remove('hidden'); 
+        if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; 
+        if (data.isAdmin && adminPanel) adminPanel.style.display = 'block'; 
+        updateUI(data.state); 
+    });
+
+    function createSession() { const name = createName.value.trim() || "Khatm Session"; const password = createPass.value.trim(); currentSessionPass = password; socket.emit('createSession', { name, password }); }
+    function renderSessions(list) { if(!sessionsList) return; sessionsList.innerHTML = ""; if (list.length === 0) { sessionsList.innerHTML = "<div style='color:#999; margin-top:10px;'>No active sessions found.</div>"; return; } list.forEach(s => { const div = document.createElement('div'); div.className = 'session-item'; div.innerHTML = `<span class="session-name">${s.name}</span><span class="join-badge">JOIN</span>`; div.onclick = () => initiateJoin(s.id); sessionsList.appendChild(div); }); }
+    function filterSessions() { const query = searchInput.value.toLowerCase(); const filtered = availableSessions.filter(s => s.name.toLowerCase().includes(query)); renderSessions(filtered); }
+    function initiateJoin(sessionId) { selectedSessionIdForJoin = sessionId; document.getElementById('password-modal').style.display = 'flex'; if(joinPassInput) { joinPassInput.value = ""; joinPassInput.focus(); } }
+    function submitJoin() { const pass = joinPassInput.value.trim(); socket.emit('joinSession', { sessionId: selectedSessionIdForJoin, password: pass }); closePassModal(); }
+    function closePassModal() { document.getElementById('password-modal').style.display = 'none'; selectedSessionIdForJoin = null; }
+
+    function updateUI(data) { 
+        if (data.zikr) { 
+            if(zikrNum) zikrNum.innerText = data.zikr.id; 
+            if(titleUrdu) titleUrdu.innerText = data.zikr.titleUrdu; 
+            if(titleEng) titleEng.innerText = data.zikr.titleEng; 
+            
+            // Reading Mode Logic
+            if(data.zikr.type === 'read') {
+                progressWrapper.style.display = 'none';
+                tapBtn.style.display = 'none';
+                readingContainer.style.display = 'block';
+                arabicBody.innerText = ""; // Clear main text
+                romanBody.innerText = "";
+                if(readingContent) readingContent.innerText = data.zikr.bodyText;
+            } else {
+                progressWrapper.style.display = 'block';
+                tapBtn.style.display = 'block';
+                readingContainer.style.display = 'none';
+                
+                if(arabicBody) {
+                    arabicBody.innerText = data.zikr.bodyText;
+                    arabicBody.className = ""; 
+                    if(data.zikr.font === 'urdu') arabicBody.classList.add('font-urdu');
+                    else arabicBody.classList.add('font-arabic');
+                }
+                if(romanBody) romanBody.innerText = data.zikr.bodyRoman || ""; 
+            }
+            
+            if(targetDisplay) targetDisplay.innerText = "Target: " + data.target; 
+        } 
+        if(countDisplay) countDisplay.innerText = data.currentCount; 
+        if(circle && data.target > 0) { 
+            const percent = Math.min(data.currentCount / data.target, 1);
+            const offset = circumference - percent * circumference; 
+            circle.style.strokeDashoffset = offset; 
+        } 
+        if (data.isFinished) { 
+            if(tapBtn) { tapBtn.disabled = true; tapBtn.innerText = data.isLast ? "COMPLETED" : "Next Zikr"; tapBtn.classList.remove('pulsing'); tapBtn.style.background = "#4b5563"; } 
+            if(statusMsg) statusMsg.innerText = "Target Reached! Waiting for Admin..."; 
+            if (navigator.vibrate && vibrationEnabled) navigator.vibrate([200, 100, 200]); 
+        } else { 
+            if(tapBtn) { tapBtn.disabled = false; tapBtn.innerText = "TAP"; tapBtn.style.background = "var(--btn-gradient)"; } 
+            if(statusMsg) statusMsg.innerText = ""; 
+        } 
+    }
+    
     socket.on('updateState', updateUI);
-    socket.on('targetReached', () => { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); });
-    socket.on('forceExit', (msg) => { alert(msg); window.location.href = "/"; });
-    socket.on('sessionError', (err) => alert(err));
-
-    function updateUI(state) {
-        if(!state) return;
-        document.getElementById('zikr-title-urdu').innerText = state.zikr.titleUrdu;
-        const body = document.getElementById('zikr-body');
-        body.innerText = state.zikr.bodyText;
-        body.className = state.zikr.font === 'urdu' ? 'font-urdu' : 'font-arabic';
-        
-        document.getElementById('count-display').innerText = state.currentCount;
-        if(circle) circle.style.strokeDashoffset = circumference - (Math.min(state.currentCount / state.target, 1) * circumference);
-
-        const tapBtn = document.getElementById('tap-btn');
-        tapBtn.disabled = state.isFinished;
-        tapBtn.innerText = state.isFinished ? "WAITING..." : "TAP";
-        tapBtn.style.opacity = state.isFinished ? "0.5" : "1";
-
-        // Update User List
-        const box = document.getElementById('user-tags-box');
-        box.innerHTML = state.users.map((u, i) => `<span class="user-tag ${i===0?'admin-tag':''}">${u.name}</span>`).join('');
-    }
-
-    function handleTap() {
-        if (settings.vib && navigator.vibrate) navigator.vibrate(40);
-        if (settings.sound) playBeep();
-        socket.emit('increment', currentSessionId);
-    }
-
-    function toggleSetting(key) {
-        settings[key] = !settings[key];
-        document.getElementById(key + '-toggle').innerText = `${key.toUpperCase()}: ${settings[key] ? 'ON' : 'OFF'}`;
-    }
-
-    function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
-    function playBeep() {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        gain.gain.setValueAtTime(0.05, ctx.currentTime);
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        osc.start(); osc.stop(ctx.currentTime + 0.05);
-    }
+    socket.on('sessionComplete', (msg) => { if(titleUrdu) titleUrdu.innerText = "ختمِ قادریہ مکمل"; if(titleEng) titleEng.innerText = "Session Closed"; if(arabicBody) arabicBody.innerText = "الْحَمْدُ لِلَّٰهِ"; if(romanBody) romanBody.innerText = ""; if(linksContainer) linksContainer.innerHTML = ""; if(progressWrapper) progressWrapper.style.display = 'block'; if(countDisplay) countDisplay.innerText = "✓"; if(tapBtn) tapBtn.style.display = 'none'; if(statusMsg) { statusMsg.innerText = msg; statusMsg.style.color = "#38ef7d"; } playSound(); });
+    function handleUserTap() { if(!currentSessionId) { alert("Connection lost. Trying to reconnect..."); socket.emit('reJoinSession', { sessionId: localStorage.getItem('kq_session'), adminToken: localStorage.getItem('kq_admin') }); return; } initAudio(); socket.emit('increment', currentSessionId); if (navigator.vibrate && vibrationEnabled) navigator.vibrate(15); playSound(); }
+    const modal = document.getElementById('custom-modal'); const modalText = document.getElementById('modal-text'); const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+    function showModal(action) { pendingAction = action; if(modal) modal.style.display = 'flex'; if(modalText) { if (action === 'reset') modalText.innerText = "Reset current count to 0?"; else if (action === 'next') modalText.innerText = "Move to Next Zikr?"; else if (action === 'restart') modalText.innerText = "Restart ENTIRE session?"; else if (action === 'end') modalText.innerText = "End and Delete this session?"; } }
+    function closeModal() { if(modal) modal.style.display = 'none'; pendingAction = null; }
+    if(modalConfirmBtn) { modalConfirmBtn.onclick = function() { if (!currentSessionId) return; if (pendingAction === 'reset') socket.emit('resetCurrent', currentSessionId); else if (pendingAction === 'next') socket.emit('nextZikr', currentSessionId); else if (pendingAction === 'restart') socket.emit('restartSession', currentSessionId); else if (pendingAction === 'end') socket.emit('endSession', currentSessionId); closeModal(); }; }
+    let audioCtx = null; let hasBeeped = false;
+    function initAudio() { if (!audioCtx) { const AudioContext = window.AudioContext || window.webkitAudioContext; if (AudioContext) audioCtx = new AudioContext(); } if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }
+    function playSound() { if (!audioCtx) return; try { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } catch(e){} }
+    document.body.addEventListener('click', initAudio, { once: true }); document.body.addEventListener('touchstart', initAudio, { once: true });
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js').then(reg => console.log('Service Worker registered')).catch(err => console.log('Service Worker failed', err)); }); }
 </script>
 </body>
 </html>

@@ -14,10 +14,10 @@ int main(){
     }
     printf("Memory Allocated,Values are :- ");
     for (i=0;i<n;i++){
-        printf("p[%d]=%d\n",i,p[i]);
+        printf("\np[%d]=%d",i,p[i]);
     }
 
-    printf("Enter the value of m :- ");
+    printf("\nEnter the value of m :- ");
     scanf("%d",&m);
 
     p = (int*)realloc(p,m*(sizeof(int)));
