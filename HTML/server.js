@@ -11,9 +11,9 @@ process.on('uncaughtException', (err) => {
 const app = express();
 const server = http.createServer(app);
 
-// --- NEW: STRICT ANTI-CACHING MIDDLEWARE ---
-// This forces every user's browser to always fetch the live code, never using memory.
+// Kills the cache and unregisters Service Workers automatically
 app.use((req, res, next) => {
+    res.setHeader('Clear-Site-Data', '"cache", "executionContexts"'); 
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
@@ -52,9 +52,9 @@ const zikrData = [
     { id: 2, type: 'count', target: 111, titleUrdu: "تیسرا کلمہ", titleEng: "Teesra Kalma", bodyText: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَٰهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ", font: 'arabic' },
     { id: 3, type: 'count', target: 111, titleUrdu: "سورة ألم نشرح", titleEng: "Surah Alam Nashrah", bodyText: "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ ۝ وَوَضَعْنَا عَنكَ وَزْرَكَ ۝ الَّذِي أَنقَضَ ظَهْرَكَ ۝ وَرَفَعْنَا لَكَ ذِكْرَكَ ۝ فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ فَإِذَا فَرَغْتَ فَانصَبْ ۝ وَإِلَىٰ رَبِّكَ فَارْغَب ۝", font: 'arabic' },
     { id: 4, type: 'count', target: 111, titleUrdu: "سورة الإخلاص", titleEng: "Surah Ikhlas", bodyText: "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ۝", font: 'arabic' },
-    { id: 5, type: 'count', target: 111, titleUrdu: "أسماء الله الحسنى", titleEng: "Isma-e-Husna", bodyText: "يَا بَاقِي أَنْتَ الْبَاقِي", font: 'arabic' },
-    { id: 6, type: 'count', target: 111, titleUrdu: "أسماء الله الحسنى", titleEng: "Isma-e-Husna", bodyText: "يَا شَافِي أَنْتَ الشَّافِي", font: 'arabic' },
-    { id: 7, type: 'count', target: 111, titleUrdu: "أسماء الله الحسنى", titleEng: "Isma-e-Husna", bodyText: "يَا كَافِي أَنْتَ الْكَافِي", font: 'arabic' },
+    { id: 5, type: 'count', target: 111, titleUrdu: "أسماء الله الحسنى", titleEng: "Asma'ul Husna", bodyText: "يَا بَاقِي أَنْتَ الْبَاقِي", font: 'arabic' },
+    { id: 6, type: 'count', target: 111, titleUrdu: "أسماء الله الحسنى", titleEng: "Asma'ul Husna", bodyText: "يَا شَافِي أَنْتَ الشَّافِي", font: 'arabic' },
+    { id: 7, type: 'count', target: 111, titleUrdu: "أسماء الله الحسنى", titleEng: "Asma'ul Husna", bodyText: "يَا كَافِي أَنْتَ الْكَافِي", font: 'arabic' },
     { id: 8, type: 'count', target: 111, titleUrdu: "استغاثہ", titleEng: "Istighatha", bodyText: "يَا رَسُولَ اللَّهِ اُنْظُرْ حَالَنَا \n يَا حَبِيْبَ اللَّهِ اِسْمَعْ قَالَنَا \n اِنَّنِي فِي بَحْرِ هَمٍّ مُّغْرَقٌ \n خُذْ يَدِي سَهِّلْ لَنَا اَشْكَالَنَا", font: 'arabic' },
     { id: 9, type: 'count', target: 111, titleUrdu: "استغاثہ", titleEng: "Istighatha", bodyText: "يَا حَبِيْبَ الْإِلَهِ خُذْ بِيَدِي \n مَا لِعَجْزِي سِوَاكَ مُسْتَنَدِي", font: 'arabic' },
     { id: 10, type: 'count', target: 111, titleUrdu: "استغاثہ", titleEng: "Istighatha", bodyText: "فَسَهِّلْ يَا إِلَهِي كُلَّ صَعْبٍ \n بِحُرْمَةِ سَيِّدِ الْأَبْرَارِ سَهِّلْ", font: 'arabic' },
