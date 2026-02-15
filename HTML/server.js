@@ -11,6 +11,16 @@ process.on('uncaughtException', (err) => {
 const app = express();
 const server = http.createServer(app);
 
+// --- NEW: STRICT ANTI-CACHING MIDDLEWARE ---
+// This forces every user's browser to always fetch the live code, never using memory.
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+    next();
+});
+
 const io = new Server(server, {
     cors: { origin: "*", methods: ["GET", "POST"] },
     transports: ['websocket', 'polling']
