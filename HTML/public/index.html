@@ -9,40 +9,92 @@
     
     <title>Khatme Qadirya</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0F2027">
+    <meta name="theme-color" content="#4A7055">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="/icon-192.png">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Gulzar&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Gulzar&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); --glass-bg: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1); --gold: #FFD700; --text-main: #ffffff; --text-muted: #cfcfcf; --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); --danger: #ef4444; --special-bg: rgba(255, 215, 0, 0.1); }
+        :root { 
+            --bg-gradient: radial-gradient(circle at top right, #0F2027, #203A43, #2C5364); 
+            --glass-bg: rgba(255, 255, 255, 0.08); 
+            --glass-border: rgba(255, 255, 255, 0.1); 
+            --gold: #FFD700; 
+            --text-main: #ffffff; 
+            --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
+            
+            /* NEW UI COLORS */
+            --app-bg: #F0F4F2;
+            --header-green: #4A7055;
+            --card-white: #FFFFFF;
+            --text-dark: #2C3E35;
+            --text-muted: #7A8E82;
+            --nav-pill-bg: #E3EBE6;
+        }
         
         @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
         @font-face { font-family: 'Jameel Noori Nastaleeq'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
-        @font-face { font-family: 'Jameel Noori'; src: url('Jameel Noori Nastaleeq Regular.ttf') format('truetype'); }
 
         body { font-family: 'Outfit', sans-serif; background: var(--bg-gradient); margin: 0; min-height: 100vh; color: var(--text-main); display: block; padding: 20px 0; overflow-y: auto; -webkit-overflow-scrolling: touch; user-select: none; -webkit-tap-highlight-color: transparent; }
         .hidden { display: none !important; }
         
         .font-arabic { font-family: 'Al Qalam Quran', serif; line-height: 1.8; }
-        .font-urdu { font-family: 'Jameel Noori Nastaleeq', 'Jameel Noori', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
+        .font-urdu { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.8rem !important; line-height: 2.2 !important; }
 
+        /* --- NEW MODERN SUPER HOME SCREEN CSS --- */
+        .modern-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--app-bg); overflow-y: auto; z-index: 500; display: flex; flex-direction: column; }
+        
+        .modern-header { background: var(--header-green); border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; padding: 50px 20px 30px 20px; color: white; position: relative; box-shadow: 0 10px 20px rgba(74, 112, 85, 0.2); }
+        
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .icon-circle { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; font-size: 1.3rem; backdrop-filter: blur(5px); cursor: pointer; }
+        .location-text { text-align: center; line-height: 1.2; }
+        .location-text span { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-weight: 300; }
+        .location-text strong { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
+        
+        .search-bar { background: rgba(255,255,255,0.15); padding: 15px 20px; border-radius: 25px; margin-bottom: 25px; font-size: 1rem; color: rgba(255,255,255,0.8); display: flex; align-items: center; backdrop-filter: blur(5px); }
+        .search-bar span { opacity: 0.8; }
+        
+        .header-banner { background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 25px 15px; text-align: center; backdrop-filter: blur(10px); }
+        .header-main-title { font-family: 'Al Qalam Quran', serif; font-size: 2.2rem; color: #fff; margin: 0 0 10px 0; font-weight: normal; }
+        .header-sub-title { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.8rem; color: var(--gold); margin: 0; line-height: 1.2; }
+
+        .modern-body { padding: 25px 20px 120px 20px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-heading { font-size: 1.1rem; color: var(--text-dark); margin: 0; font-weight: 600; }
+        .see-all { font-size: 0.9rem; color: var(--text-muted); }
+        
+        .modern-card { background: var(--card-white); border-radius: 25px; padding: 20px; margin-bottom: 18px; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.02); }
+        .modern-card:active { transform: scale(0.98); }
+        
+        .card-icon-box { width: 75px; height: 75px; border-radius: 20px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; flex-shrink: 0; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+        .bg-blue { background: linear-gradient(135deg, #2b5876, #4e4376); }
+        .bg-green { background: linear-gradient(135deg, #4A7055, #6ab04c); }
+        .bg-red { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+        .bg-brown { background: linear-gradient(135deg, #603813, #b29f94); }
+        
+        .card-text-content { flex-grow: 1; text-align: right; direction: rtl; }
+        .card-text-content h3 { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.2rem; color: var(--text-dark); margin: 0 0 2px 0; line-height: 1.2; }
+        .card-text-content p { font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: var(--text-muted); margin: 0; text-transform: uppercase; letter-spacing: 1px; direction: ltr; text-align: right; }
+
+        .floating-nav-container { position: fixed; bottom: 30px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 1000; }
+        .floating-nav { background: var(--card-white); padding: 10px 15px; border-radius: 50px; display: flex; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.03); }
+        .nav-item { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; color: var(--text-muted); background: var(--nav-pill-bg); cursor: pointer; transition: 0.3s; }
+        .nav-item.active { background: var(--header-green); color: white; box-shadow: 0 5px 15px rgba(74, 112, 85, 0.4); }
+
+        /* --- EXISTING APP STYLES (Kept for inner pages) --- */
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
-        .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
-        #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         
-        /* NEW HOME CARDS CSS */
-        .home-card { background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 20px; padding: 30px; margin: 15px 0; width: 85%; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .home-card:hover { border-color: var(--gold); transform: translateY(-5px); background: rgba(255,255,255,0.12); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
-        .card-title-urdu { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.8rem; color: #fff; line-height: 1.2; margin-bottom: 5px; }
-        .card-title-eng { font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+        /* FAZAIL & KHATM SELECTION CARDS (Inner App) */
+        .home-card-inner { background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 20px; padding: 30px; margin: 15px 0; width: 85%; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .home-card-inner:hover { border-color: var(--gold); transform: translateY(-5px); background: rgba(255,255,255,0.12); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
+        .card-title-urdu-inner { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.8rem; color: #fff; line-height: 1.2; margin-bottom: 5px; }
+        .card-title-eng-inner { font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* FAZAIL CONTENT CSS */
         .fazail-container { max-width: 800px !important; width: 95%; padding: 30px 15px; }
         .fazail-content { max-height: 70vh; overflow-y: auto; text-align: right; direction: rtl; padding-right: 15px; font-size: 1.4rem; line-height: 2.2; color: #e0e0e0; font-family: 'Jameel Noori Nastaleeq', serif; }
         .fazail-h { color: var(--gold); font-size: 1.8rem; margin-top: 25px; margin-bottom: 5px; text-decoration: underline; text-decoration-color: rgba(255,215,0,0.5); font-weight: bold; }
@@ -57,7 +109,6 @@
         .home-btn.solo { border-color: #38ef7d; color: #38ef7d; }
         .session-list { width: 100%; margin-top: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
         .session-item { background: rgba(255,255,255,0.1); padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
-        .session-item:hover { border-color: var(--gold); background: rgba(255,255,255,0.15); }
         .join-badge { background: var(--btn-gradient); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
         .zikr-header { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
         .zikr-badge { background: var(--gold); color: #0F2027; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Al Qalam Quran', serif; font-size: 1.6rem; font-weight: bold; margin-bottom: -22px; z-index: 10; border: 3px solid #0F2027; }
@@ -69,17 +120,12 @@
         #arabic-body { font-size: 2.0rem; line-height: 1.6; color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-wrap; user-select: text; text-align: center; }
         #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; user-select: text; }
         
-        .special-mode .title-box { background: var(--special-bg); border: 2px solid var(--gold); }
         .progress-container { position: relative; width: 160px; height: 160px; margin-bottom: 25px; flex-shrink: 0; }
         .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
         .counter-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 700; }
         .target-label { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #aaa; }
         #tap-btn { width: 100%; background: var(--btn-gradient); color: white; border: none; padding: 20px; font-size: 1.2rem; font-weight: 700; border-radius: 50px; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2); transition: transform 0.1s; }
         #tap-btn:active { transform: scale(0.96); }
-        #tap-btn:disabled { background: #4b5563; box-shadow: none; }
-        .pulsing { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(56, 239, 125, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); } }
-        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
         
         .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
         .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
@@ -95,34 +141,107 @@
         .modal-cancel { background: #4b5563; color: white; }
         
         .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .toggle-label { color: white; font-size: 1.1rem; }
-        
+        .back-btn-modern { background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 20px; position: absolute; top: 20px; left: 20px; cursor: pointer; backdrop-filter: blur(5px); z-index: 100; font-family: 'Outfit', sans-serif; font-weight: bold; }
+
         #reading-container { display: none; margin-top: 10px; width: 100%; height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,215,0,0.2); }
         .reading-text { font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; line-height: 2.0; color: #fff; text-align: center; white-space: pre-wrap; direction: rtl; }
     </style>
 </head>
 <body>
-<div id="live-visitor-badge"><div class="live-dot"></div><div class="live-text"><span id="live-count">1</span> Online</div></div>
-<div id="settings-badge" onclick="showSettings()">⚙️</div>
 
-<div class="glass-card" id="main-home-screen">
-    <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3.5rem; margin-bottom: 5px; color: var(--gold); text-transform: none; letter-spacing: normal;">ختمِ قادریہ</h1>
-    <p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Application</p>
+<div id="super-home-screen" class="modern-screen">
+    
+    <div class="modern-header">
+        <div class="header-top">
+            <div class="icon-circle" style="background: rgba(255,255,255,0.15);">🕋</div>
+            <div class="location-text">
+                <span>Welcome to</span><br>
+                <strong>Islamic Hub</strong>
+            </div>
+            <div class="icon-circle" onclick="showSettings()" style="background: rgba(255,255,255,0.15);">⚙️</div>
+        </div>
+        
+        <div class="search-bar">
+            <span>🔍 Search for Zikr or Wazifa...</span>
+        </div>
+        
+        <div class="header-banner">
+            <h2 class="header-main-title">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+            <h3 class="header-sub-title">اَلصَّلٰوۃُ وَالسَّلَامُ عَلَیْكَ یَا رَسُولَ اللّٰهِ</h3>
+        </div>
+    </div>
+    
+    <div class="modern-body">
+        <div class="section-header">
+            <h2 class="section-heading">Recommended Services</h2>
+            <span class="see-all">By default ⌄</span>
+        </div>
+        
+        <div class="modern-card" onclick="showInnerHome()">
+            <div class="card-icon-box bg-blue">🕌</div>
+            <div class="card-text-content">
+                <h3>ختمِ قادریہ شریف</h3>
+                <p>Khatme Qadirya Shareef</p>
+            </div>
+        </div>
 
-    <div class="home-card" onclick="showFazail()">
-        <div class="card-title-urdu">فضائل و برکات</div>
-        <div class="card-title-eng">Fazail & Method</div>
+        <div class="modern-card" onclick="alert('Al-Wazifatul Karima will be available in the next update!')">
+            <div class="card-icon-box bg-green">ﷲ</div>
+            <div class="card-text-content">
+                <h3>الوَظِيفَةُ الْكَرِيمَة</h3>
+                <p>Al-Wazifatul Karima</p>
+            </div>
+        </div>
+
+        <div class="modern-card" onclick="alert('Be-Nazeer Amal will be available in the next update!')">
+            <div class="card-icon-box bg-red">📖</div>
+            <div class="card-text-content">
+                <h3>بے نظیر عمل</h3>
+                <p>Be-Nazeer Amal</p>
+            </div>
+        </div>
+
+        <div class="modern-card" onclick="alert('Shajra-e-Aaliyah will be available in the next update!')">
+            <div class="card-icon-box bg-brown">🌳</div>
+            <div class="card-text-content">
+                <h3>شجرہ عالیہ</h3>
+                <p>Shajra-e-Aaliyah</p>
+            </div>
+        </div>
     </div>
 
-    <div class="home-card" onclick="showLandingScreen()">
-        <div class="card-title-urdu">ختم شریف پڑھیں</div>
-        <div class="card-title-eng">Recite Khatm</div>
+    <div class="floating-nav-container">
+        <div class="floating-nav">
+            <div class="nav-item active">🏠</div>
+            <div class="nav-item">💬</div>
+            <div class="nav-item">🔖</div>
+            <div class="nav-item">👤</div>
+        </div>
     </div>
 </div>
 
-<div class="glass-card fazail-container hidden" id="fazail-screen">
-    <button class="back-btn" onclick="showMainHome()">&larr; Back to Home</button>
+<div id="live-visitor-badge" class="hidden"><div class="live-dot"></div><div class="live-text"><span id="live-count">1</span> Online</div></div>
+
+<div class="glass-card hidden" id="inner-home-screen" style="margin-top: 60px;">
+    <button class="back-btn-modern" onclick="showSuperHome()">&larr; Main Menu</button>
+    <br><br>
+    <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3.5rem; margin-bottom: 5px; color: var(--gold); text-transform: none; letter-spacing: normal;">ختمِ قادریہ</h1>
+    <p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Application</p>
+
+    <div class="home-card-inner" onclick="showFazail()">
+        <div class="card-title-urdu-inner">فضائل و برکات</div>
+        <div class="card-title-eng-inner">Fazail & Method</div>
+    </div>
+
+    <div class="home-card-inner" onclick="showLandingScreen()">
+        <div class="card-title-urdu-inner">ختم شریف پڑھیں</div>
+        <div class="card-title-eng-inner">Recite Khatm</div>
+    </div>
+</div>
+
+<div class="glass-card fazail-container hidden" id="fazail-screen" style="margin-top: 60px;">
+    <button class="back-btn-modern" onclick="showInnerHome()">&larr; Back</button>
+    <br><br>
     <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; margin-bottom: 10px; text-transform: none; letter-spacing: normal;">فضائل و برکات</h1>
     
     <div class="fazail-content">
@@ -149,8 +268,9 @@
     </div>
 </div>
 
-<div class="glass-card hidden" id="landing-screen">
-    <button class="back-btn" onclick="showMainHome()">&larr; Back to Home</button>
+<div class="glass-card hidden" id="landing-screen" style="margin-top: 60px;">
+    <button class="back-btn-modern" onclick="showInnerHome()">&larr; Back</button>
+    <br><br>
     <h1>Session Options</h1>
     <button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button>
     <button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button>
@@ -230,7 +350,8 @@
     let vibrationEnabled = localStorage.getItem('vib') !== 'false';
 
     // Screens
-    const mainHomeScreen = document.getElementById('main-home-screen');
+    const superHomeScreen = document.getElementById('super-home-screen');
+    const innerHomeScreen = document.getElementById('inner-home-screen');
     const fazailScreen = document.getElementById('fazail-screen');
     const landingScreen = document.getElementById('landing-screen');
     const createScreen = document.getElementById('create-screen');
@@ -287,7 +408,7 @@
             if(socket.connected) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
         }
         else {
-            showMainHome();
+            showSuperHome(); 
         }
     });
 
@@ -309,22 +430,24 @@
     socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
     
     function hideAll() { 
-        if(mainHomeScreen) mainHomeScreen.classList.add('hidden');
+        if(superHomeScreen) superHomeScreen.classList.add('hidden');
+        if(innerHomeScreen) innerHomeScreen.classList.add('hidden');
         if(fazailScreen) fazailScreen.classList.add('hidden');
         if(landingScreen) landingScreen.classList.add('hidden'); 
         if(createScreen) createScreen.classList.add('hidden'); 
         if(joinScreen) joinScreen.classList.add('hidden'); 
         if(appScreen) appScreen.classList.add('hidden'); 
+        if(liveVisitorBadge) liveVisitorBadge.classList.add('hidden');
     }
     
-    function showMainHome() { hideAll(); if(mainHomeScreen) mainHomeScreen.classList.remove('hidden'); }
+    function showSuperHome() { hideAll(); if(superHomeScreen) superHomeScreen.classList.remove('hidden'); }
+    function showInnerHome() { hideAll(); if(innerHomeScreen) innerHomeScreen.classList.remove('hidden'); }
     function showFazail() { hideAll(); if(fazailScreen) fazailScreen.classList.remove('hidden'); }
     function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
     function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
     function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
     
     socket.on('connect', () => { 
-        if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
         const storedSession = localStorage.getItem('kq_session');
         const storedAdminToken = localStorage.getItem('kq_admin');
         const params = new URLSearchParams(window.location.search);
@@ -332,8 +455,6 @@
             socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
         }
     });
-    
-    socket.on('disconnect', () => { if(liveVisitorBadge) liveVisitorBadge.classList.add('status-disconnected'); });
     
     socket.on('forceExit', (msg) => { 
         alert(msg); 
@@ -366,6 +487,7 @@
 
         hideAll(); 
         if(appScreen) appScreen.classList.remove('hidden'); 
+        if(liveVisitorBadge) liveVisitorBadge.classList.remove('hidden');
         if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; 
         
         if (data.isAdmin) {
@@ -471,7 +593,7 @@
                 currentSessionId = null;
                 if(userPanel) userPanel.style.display = 'none';
                 if(adminPanel) adminPanel.style.display = 'none';
-                showMainHome();
+                showInnerHome(); 
             }
             closeModal(); 
         }; 
