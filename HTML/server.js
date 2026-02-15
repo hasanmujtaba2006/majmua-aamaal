@@ -74,7 +74,6 @@ io.on('connection', (socket) => {
     io.emit('updateUserCount', io.engine.clientsCount);
     socket.emit('sessionList', getPublicSessionList());
 
-    // FIXED: Removed the 'forcedId' exploit entirely. Links can no longer create admins.
     socket.on('createSession', ({ name, password }) => {
         const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
         const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
@@ -95,7 +94,6 @@ io.on('connection', (socket) => {
         socket.join(sessionId);
         if(!session.users.includes(socket.id)) session.users.push(socket.id);
         
-        // Always false for someone explicitly joining. Only reJoin checks token.
         socket.emit('joinedSession', { sessionId: sessionId, isAdmin: false, state: getSessionState(sessionId) });
     });
 
