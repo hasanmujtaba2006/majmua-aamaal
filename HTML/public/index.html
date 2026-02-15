@@ -32,6 +32,20 @@
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
+        
+        /* NEW HOME CARDS CSS */
+        .home-card { background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 20px; padding: 30px; margin: 15px 0; width: 85%; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .home-card:hover { border-color: var(--gold); transform: translateY(-5px); background: rgba(255,255,255,0.12); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
+        .card-title-urdu { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.8rem; color: #fff; line-height: 1.2; margin-bottom: 5px; }
+        .card-title-eng { font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* FAZAIL CONTENT CSS */
+        .fazail-container { max-width: 800px !important; width: 95%; padding: 30px 15px; }
+        .fazail-content { max-height: 70vh; overflow-y: auto; text-align: right; direction: rtl; padding-right: 15px; font-size: 1.4rem; line-height: 2.2; color: #e0e0e0; font-family: 'Jameel Noori Nastaleeq', serif; }
+        .fazail-h { color: var(--gold); font-size: 1.8rem; margin-top: 25px; margin-bottom: 5px; text-decoration: underline; text-decoration-color: rgba(255,215,0,0.5); font-weight: bold; }
+        .fazail-content ul { list-style-type: arabic-indic; margin-right: 30px; padding: 0; }
+        .fazail-content li { margin-bottom: 10px; }
+
         h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
         .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
         .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
@@ -70,17 +84,13 @@
         .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
         .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
         
-        #custom-modal, #password-modal, #instruction-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        #custom-modal, #password-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
         .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
         .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
         .modal-confirm { background: var(--gold); color: #000; }
         .modal-cancel { background: #4b5563; color: white; }
-        .instr-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .instr-section:last-child { border-bottom: none; }
-        .urdu-text { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.2rem; line-height: 2.0; text-align: right; color: var(--gold); direction: rtl; }
-        .eng-text { font-family: 'Outfit', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: left; color: #e0e0e0; }
-        .instr-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; text-decoration: underline; text-decoration-color: var(--gold); }
+        
         .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .toggle-label { color: white; font-size: 1.1rem; }
@@ -92,7 +102,58 @@
 <body>
 <div id="live-visitor-badge"><div class="live-dot"></div><div class="live-text"><span id="live-count">1</span> Online</div></div>
 <div id="settings-badge" onclick="showSettings()">⚙️</div>
-<div class="glass-card" id="landing-screen"><h1>Khatme Qadirya</h1><p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Session</p><button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button><button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button><button class="home-btn solo" onclick="startSoloMode()">👤 SOLO MODE</button></div>
+
+<div class="glass-card" id="main-home-screen">
+    <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3.5rem; margin-bottom: 5px; color: var(--gold); text-transform: none; letter-spacing: normal;">ختمِ قادریہ</h1>
+    <p style="color:#ccc; margin-bottom:30px;">Live Global Zikr Application</p>
+
+    <div class="home-card" onclick="showFazail()">
+        <div class="card-title-urdu">فضائل و برکات</div>
+        <div class="card-title-eng">Fazail & Method</div>
+    </div>
+
+    <div class="home-card" onclick="showLandingScreen()">
+        <div class="card-title-urdu">ختم شریف پڑھیں</div>
+        <div class="card-title-eng">Recite Khatm</div>
+    </div>
+</div>
+
+<div class="glass-card fazail-container hidden" id="fazail-screen">
+    <button class="back-btn" onclick="showMainHome()">&larr; Back to Home</button>
+    <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; margin-bottom: 10px; text-transform: none; letter-spacing: normal;">فضائل و برکات</h1>
+    
+    <div class="fazail-content">
+        <p>بلاشبہ جس کام کی نسبت کاملین کی طرف ہو اس کو مقبولیت حاصل ہوتی ہے۔ معاملات و معمولات کا دارو مدار اللہ رب العزت کے فضل و کرم ہی پر ہوتا ہے۔ بلاشبہ ختم قادریہ شریف کی نسبت حضور غوث پاک رضی اللہ تعالیٰ عنہ کی طرف ہے، صدیوں سے صالحین کے معمولات میں شامل رہا ہے اور اس کی بے شمار برکتیں ہیں جن میں چند کا تذکرہ کیا جارہا ہے جن کا مشائخ کرام نے اپنی کتابوں میں ذکر فرمایا ہے، اس ورد سے بے نمازیوں کو توبہ کی توفیق نصیب ہو گئی۔ جو نماز تو پڑھتے تھے مگر جماعت سے نہیں، اس ورد کی برکت سے باجماعت نماز کے پابند ہو گئے، اللہ تعالیٰ کی ذات پر توکل اور اعتماد کی توفیق حاصل ہو گئی، نماز تہجد کے پابند ہو گئے، اس کی برکت سے سالہا سال کا لاپتہ شخص مل گیا، آپریشن والے امراض سے شفا نصیب ہو گئی۔ اس کی برکت سے رشتوں کی رکاوٹیں دور ہو جاتی ہیں، روزی میں برکت اور حصول میں آسانی فراہم ہو جاتی ہے، اثرات بد یعنی سحر، آسیب، جادو، ٹونا اور بد نظری کا خاتمہ ہو جاتا ہے۔ حرام روزی سے تائب ہو جاتے ہیں، نیز سودی کاروبار سے نجات حاصل ہو جاتی ہے۔ مسلسل تین ختم شریف میں شریک ہونے والے پڑھنے والے پر بارگاہِ غوثیت سے بے شمار فیوض و برکات کا نزول ہوتا ہے۔ الغرض بیماریوں سے شفا پانے، بلاؤں کو دور کرنے، مشکلوں کے آسان ہونے، قیدیوں کی رہائی کے لئے، قرض سے چھٹکارہ پانے، ہر طرح کی بلا و آفت کے دفعیہ کے لئے ورد کیا جائے۔</p>
+        
+        <div class="fazail-h">پڑھنے کا طریقہ:</div>
+        <p>ہر کام رضائے الہی عزوجل کی نیت سے کرنا ضروری ہے اور مزید جائز مقاصد میں کامیابی اور مشکلات سے نجات کی نیت شامل کر لیں۔ کسی پاک صاف جگہ پر سفید چادر بچھائیں اور تین، پانچ، سات یا گیارہ لوگ مل کر پڑھیں۔ ختم قادریہ شریف پڑھنے سے قبل وضو کرلیں اور اگر ممکن ہو تو غسل کر کے دھلے ہوئے کپڑے پہن کر دنیاوی تفکرات سے ذہن خالی کر لیں، وظیفہ نمبر ۱۰، تا ۱۷، پر خاص تصور قائم کر لیں کہ میں غوث پاک رضی اللہ تعالیٰ عنہ کو بطور وسیلہ پکار رہا ہوں، اللہ تعالیٰ ان کے وسیلے سے میری تمام مشکلات آسان فرمادے گا۔ تمام اوراد پڑھنے سے پہلے بسم اللہ شریف پڑھیں اور تمام اوراد کو ۱۱۱ مرتبہ پڑھیں، سورہ یٰسین شریف اور قصیدہ غوثیہ کو ایک بار پڑھ لیں۔</p>
+        
+        <div class="fazail-h">فاتحہ:</div>
+        <p>ختم شریف کا ورد مکمل کرنے کے بعد کسی سفید چیز مثلاً کھیر، برفی، شربت وغیرہ پر فاتحہ کریں۔ اختتام پر تمام ختم شریف کا ثواب حضور پرنور صلی اللہ تعالیٰ علیہ وسلم اور آپ کے والدین کریمین، تمام انبیائے کرام علیہم السلام، صحابہ علیہم الرضوان، اہل بیت اطہار و صالحین، بالخصوص حضور غوث پاک رضی اللہ تعالیٰ عنہ اور آپ کے والدین کریمین اور تمام مسلمانوں کو پیش کریں پھر اللہ رب العزت سے گڑگڑا کر دعائیں مانگیں، ان شاء اللہ عزوجل قادریہ شریف کے وسیلے سے رب العالمین عزوجل کا خصوصی کرم ہو گا۔</p>
+        
+        <div class="fazail-h">شرائط:</div>
+        <ul>
+            <li>پڑھنے والے سبھی لوگ باوضو اور معطر ہو کر پڑھیں۔</li>
+            <li>پڑھنے والوں میں کوئی فاسق معلن نہ ہو۔</li>
+            <li>دوران ورد کسی طرح کی دنیاوی گفتگو نہ کی جائے۔</li>
+            <li>پڑھنے والوں میں کوئی بد مذہب وہابی دیوبندی نہ ہو۔</li>
+            <li>جس جگہ ورد ہو، وہ جگہ جانداروں کی تصویروں اور نجاست سے پاک ہو۔</li>
+            <li>تصور جتنا قوی ہو گا اسی قدر اثر ہو گا۔</li>
+        </ul>
+        
+        <div class="fazail-h">نوٹ:</div>
+        <p>اگر کوئی شخص تنہا تمام اوراد و وظائف کو ۱۱۱ بار نہیں پڑھ سکتا تو وہ تمام وظائف کو ایک یا چند بار پڑھ لے تو کوئی حرج نہیں لیکن خاص برکات خاص عدد پر موقوف ہیں۔</p>
+    </div>
+</div>
+
+<div class="glass-card hidden" id="landing-screen">
+    <button class="back-btn" onclick="showMainHome()">&larr; Back to Home</button>
+    <h1>Session Options</h1>
+    <button class="home-btn primary" onclick="showCreateScreen()">CREATE GROUP</button>
+    <button class="home-btn" onclick="showJoinScreen()">JOIN GROUP</button>
+    <button class="home-btn solo" onclick="startSoloMode()">👤 SOLO MODE</button>
+</div>
+
 <div class="glass-card hidden" id="create-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Create Group</h1><input type="text" id="create-name" class="input-field" placeholder="Group Name" /><input type="password" id="create-pass" class="input-field" placeholder="Set Password (Optional)" /><button class="home-btn primary" onclick="createSession()">START SESSION</button></div>
 <div class="glass-card hidden" id="join-screen"><button class="back-btn" onclick="showLandingScreen()">&larr; Back</button><h1>Join Group</h1><input type="text" id="search-input" class="input-field" placeholder="Search Groups..." onkeyup="filterSessions()" /><div id="sessions-list" class="session-list"><div style="color:#666;">Searching for active sessions...</div></div></div>
 <div class="glass-card hidden" id="app-screen">
@@ -145,14 +206,12 @@
     </div>
 </div>
 
-<div id="instruction-modal"><div class="modal-content" style="text-align: left;"><div class="instr-section"><div class="urdu-text"><div class="instr-title">ایپ استعمال کرنے کی ہدایات</div>🔹 جو شخص ذکر کی مجلس شروع کرنا چاہے، وہ Create Group پر کلک کرے۔<br>🔹 مجلس کے لیے ایک نام درج کرے اور ایک Password بنائے۔<br>🔹 یہی شخص امیرِ مجلس ہوگا اور ذکر کا آغاز کرے گا۔<br><br>🔹 جو افراد اس مجلس میں شامل ہونا چاہیں، وہ Join Group پر کلک کریں۔<br>🔹 امیرِ مجلس کی طرف سے دیا گیا Password درج کریں۔<br>🔹 Password درست ہونے پر آپ مجلس میں شامل ہو جائیں گے اور سب لوگ ایک ساتھ ذکر و اذکار پڑھ سکیں گے۔</div></div><div class="instr-section"><div class="eng-text"><div class="instr-title">App Usage Instructions</div>🔹 The person who wants to start the Zikr session should tap <b>Create Group</b>.<br>🔹 Enter a Group Name and create a Password for the session.<br>🔹 This person will be the Ameer-e-Majlis and will start the Zikr.<br><br>🔹 Those who want to join the session should tap <b>Join Group</b>.<br>🔹 Enter the Password provided by the Ameer-e-Majlis.<br>🔹 Once the password is verified, you will join the session and everyone can perform Zikr together.</div></div><button class="home-btn primary" onclick="closeInstructions()">I Understand / سمجھ گیا</button></div></div>
 <div id="settings-modal"><div class="modal-content"><h3 style="color:var(--gold); margin-top:0;">Settings</h3><div class="toggle-row"><span class="toggle-label">Vibration</span><button id="vib-toggle-btn" class="modal-btn" onclick="toggleVibration()" style="background:#38ef7d; width:80px;">ON</button></div><button class="home-btn" onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px;">Close</button></div></div>
 <div id="custom-modal"><div class="modal-content"><h3 id="modal-text" style="color:white; margin-top:0;">Confirm?</h3><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-btn modal-confirm" id="modal-confirm-btn">Yes</button></div></div></div>
 <div id="password-modal"><div class="modal-content"><h3 style="color:white; margin-top:0;">Enter Password</h3><input type="password" id="join-pass-input" class="input-field" style="width:90%; font-size:1rem;" /><div class="modal-buttons"><button class="modal-btn modal-cancel" onclick="closePassModal()">Cancel</button><button class="modal-btn modal-confirm" onclick="submitJoin()">Join</button></div></div></div>
 
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script>
-    // --- THIS BLOCK ACTIVELY DESTROYS OLD CACHES ---
     if ('serviceWorker' in navigator) { 
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
             for(let registration of registrations) { registration.unregister(); }
@@ -167,11 +226,15 @@
     let selectedSessionIdForJoin = null;
     let vibrationEnabled = localStorage.getItem('vib') !== 'false';
 
+    // Screens
+    const mainHomeScreen = document.getElementById('main-home-screen');
+    const fazailScreen = document.getElementById('fazail-screen');
     const landingScreen = document.getElementById('landing-screen');
     const createScreen = document.getElementById('create-screen');
     const joinScreen = document.getElementById('join-screen');
     const appScreen = document.getElementById('app-screen');
-    const instructionModal = document.getElementById('instruction-modal'); 
+    
+    // UI Elements
     const liveCountElement = document.getElementById('live-count');
     const liveVisitorBadge = document.getElementById('live-visitor-badge');
     const vibToggleBtn = document.getElementById('vib-toggle-btn');
@@ -213,17 +276,15 @@
 
         if(joinId) {
             localStorage.removeItem('kq_admin'); 
-            if(instructionModal) instructionModal.style.display = 'none'; 
             selectedSessionIdForJoin = joinId;
             currentSessionPass = joinPass || ""; 
             socket.emit('joinSession', { sessionId: joinId, password: joinPass || "" });
         } 
         else if (storedSession) {
-            if(instructionModal) instructionModal.style.display = 'none';
             if(socket.connected) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
         }
         else {
-            if(instructionModal) instructionModal.style.display = 'flex';
+            showMainHome(); // Changed default fallback to the new Main Home Screen
         }
     });
 
@@ -242,18 +303,24 @@
         }
     }
 
-    function closeInstructions() { if(instructionModal) instructionModal.style.display = 'none'; }
     socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
-    function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
-    function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
-    function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
+    
+    // Updated Navigation Logic
     function hideAll() { 
+        if(mainHomeScreen) mainHomeScreen.classList.add('hidden');
+        if(fazailScreen) fazailScreen.classList.add('hidden');
         if(landingScreen) landingScreen.classList.add('hidden'); 
         if(createScreen) createScreen.classList.add('hidden'); 
         if(joinScreen) joinScreen.classList.add('hidden'); 
         if(appScreen) appScreen.classList.add('hidden'); 
     }
-
+    
+    function showMainHome() { hideAll(); if(mainHomeScreen) mainHomeScreen.classList.remove('hidden'); }
+    function showFazail() { hideAll(); if(fazailScreen) fazailScreen.classList.remove('hidden'); }
+    function showLandingScreen() { hideAll(); if(landingScreen) landingScreen.classList.remove('hidden'); }
+    function showCreateScreen() { hideAll(); if(createScreen) createScreen.classList.remove('hidden'); }
+    function showJoinScreen() { hideAll(); if(joinScreen) joinScreen.classList.remove('hidden'); }
+    
     socket.on('connect', () => { 
         if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
         const storedSession = localStorage.getItem('kq_session');
@@ -402,7 +469,7 @@
                 currentSessionId = null;
                 if(userPanel) userPanel.style.display = 'none';
                 if(adminPanel) adminPanel.style.display = 'none';
-                showLandingScreen();
+                showMainHome(); // Return to new home hub instead of landing
             }
             closeModal(); 
         }; 
