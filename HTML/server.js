@@ -74,8 +74,9 @@ io.on('connection', (socket) => {
     io.emit('updateUserCount', io.engine.clientsCount);
     socket.emit('sessionList', getPublicSessionList());
 
-    socket.on('createSession', ({ name, password, forcedId }) => {
-        const sessionId = forcedId || 'sess_' + Math.random().toString(36).substr(2, 9);
+    // FIXED: Removed the 'forcedId' exploit entirely. Links can no longer create admins.
+    socket.on('createSession', ({ name, password }) => {
+        const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
         const adminToken = 'adm_' + Math.random().toString(36).substr(2, 9);
         sessions[sessionId] = {
             id: sessionId, name: name, password: password, adminToken: adminToken, adminId: socket.id,
@@ -83,7 +84,6 @@ io.on('connection', (socket) => {
         };
         socket.join(sessionId);
         
-        // BUG FIX: Only emit 'joinedSession' directly to the creator!
         socket.emit('joinedSession', { sessionId: sessionId, isAdmin: true, adminToken: adminToken, state: getSessionState(sessionId) });
         io.broadcast.emit('sessionList', getPublicSessionList());
     });
@@ -95,7 +95,7 @@ io.on('connection', (socket) => {
         socket.join(sessionId);
         if(!session.users.includes(socket.id)) session.users.push(socket.id);
         
-        // BUG FIX: Emit ONLY to the user joining, with isAdmin strictly false!
+        // Always false for someone explicitly joining. Only reJoin checks token.
         socket.emit('joinedSession', { sessionId: sessionId, isAdmin: false, state: getSessionState(sessionId) });
     });
 
@@ -112,12 +112,10 @@ io.on('connection', (socket) => {
                     session.timeout = null;
                 }
             }
-            // BUG FIX: Emit ONLY to the user rejoining!
             socket.emit('joinedSession', { sessionId: sessionId, isAdmin: isAdmin, state: getSessionState(sessionId) });
         } else { socket.emit('sessionError', 'NOT_FOUND'); }
     });
 
-    // Leave Session logic
     socket.on('leaveSession', (sessionId) => {
         const session = sessions[sessionId];
         if (session) {
@@ -175,7 +173,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => { 
         io.emit('updateUserCount', io.engine.clientsCount); 
         
-        // 10 Minute Admin Auto-Expire Logic
         for (const sessionId in sessions) {
             const session = sessions[sessionId];
             session.users = session.users.filter(id => id !== socket.id);

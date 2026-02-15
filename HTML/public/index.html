@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <title>Khatme Qadirya</title>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0F2027">
@@ -63,7 +64,6 @@
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(56, 239, 125, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); } }
         #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
         
-        #admin-panel, #user-panel { display: none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
         .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
         .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
@@ -128,7 +128,7 @@
     <button id="tap-btn" class="pulsing" onclick="handleUserTap()">TAP</button>
     <div id="status-msg"></div>
 
-    <div id="admin-panel">
+    <div id="admin-panel" style="display:none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
         <div class="admin-controls">
             <button class="admin-btn" style="color:#ff6b6b" onclick="showModal('reset')">Reset</button>
             <button class="admin-btn" style="color:#4ecdc4" onclick="showModal('next')">Next >></button>
@@ -138,9 +138,9 @@
         </div>
     </div>
 
-    <div id="user-panel">
+    <div id="user-panel" style="display:none; margin-top: 20px; width: 100%; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
         <div class="admin-controls">
-            <button class="admin-btn btn-end" onclick="showModal('leave')">🚪 Leave Zikr</button>
+            <button class="admin-btn btn-end" onclick="showModal('leave')" style="background: #e15f41 !important; color: white !important; width: 100%; padding: 15px; border-radius: 10px; font-size: 1.1rem;">🚪 Leave Zikr</button>
         </div>
     </div>
 </div>
@@ -206,6 +206,8 @@
         const joinPass = params.get('pass');
 
         if(joinId) {
+            // FIXED: If joining via a link, we absolutely MUST clear any old admin tokens so they don't spoof admin rights.
+            localStorage.removeItem('kq_admin');
             if(instructionModal) instructionModal.style.display = 'none'; 
             selectedSessionIdForJoin = joinId;
             currentSessionPass = joinPass || ""; 
@@ -251,8 +253,13 @@
         if(liveVisitorBadge) liveVisitorBadge.classList.remove('status-disconnected');
         const storedSession = localStorage.getItem('kq_session');
         const storedAdminToken = localStorage.getItem('kq_admin');
-        if (storedSession) socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
+        const params = new URLSearchParams(window.location.search);
+        // Only rejoin from memory if they AREN'T currently trying to join a link
+        if (storedSession && !params.get('join')) {
+            socket.emit('reJoinSession', { sessionId: storedSession, adminToken: storedAdminToken });
+        }
     });
+    
     socket.on('disconnect', () => { if(liveVisitorBadge) liveVisitorBadge.classList.add('status-disconnected'); });
     
     socket.on('forceExit', (msg) => { 
@@ -265,21 +272,16 @@
     socket.on('sessionError', (msg) => { 
         console.log("Session Error:", msg);
         if (msg === 'NOT_FOUND') {
-            const params = new URLSearchParams(window.location.search);
-            const joinId = params.get('join');
-            if (joinId && selectedSessionIdForJoin === joinId) {
-                socket.emit('createSession', { name: "Restored Session", password: currentSessionPass, forcedId: joinId });
-            } else {
-                localStorage.removeItem('kq_session'); localStorage.removeItem('kq_admin');
-                alert("Session expired. Please create a new one.");
-                if(window.location.search) window.location.href = "/"; else showLandingScreen();
-            }
+            // FIXED: Do not let link joiners magically restore the session as admins.
+            alert("This session has expired, ended, or was not found.");
+            localStorage.removeItem('kq_session'); 
+            localStorage.removeItem('kq_admin');
+            window.location.href = "/";
         } else { alert(msg); }
     });
 
     socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
     
-    // THIS IS WHERE THE PANELS ARE TOGGLED!
     socket.on('joinedSession', (data) => { 
         currentSessionId = data.sessionId; localStorage.setItem('kq_session', currentSessionId);
         if(data.adminToken) localStorage.setItem('kq_admin', data.adminToken);
@@ -287,7 +289,7 @@
         if(appScreen) appScreen.classList.remove('hidden'); 
         if(sessionTitleDisplay) sessionTitleDisplay.innerText = "Session: " + data.state.sessionName; 
         
-        // BUG FIX: Accurate conditional rendering based on isAdmin flag
+        // Ensure accurate display of panels
         if (data.isAdmin) {
             if(adminPanel) adminPanel.style.display = 'block';
             if(userPanel) userPanel.style.display = 'none';
@@ -395,14 +397,11 @@
     function playSound() { if (!audioCtx) return; try { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } catch(e){} }
     document.body.addEventListener('click', initAudio, { once: true }); document.body.addEventListener('touchstart', initAudio, { once: true });
     
-    // NEW LOGIC TO OVERRIDE CACHE (Optional but helpful): Add a random string to your service worker registration to force a skip, or just tell the user to hard refresh.
     if ('serviceWorker' in navigator) { 
         window.addEventListener('load', () => { 
             navigator.serviceWorker.register('/service-worker.js').then(reg => {
-                // Force update on load if changed
-                reg.update();
-                console.log('Service Worker registered');
-            }).catch(err => console.log('Service Worker failed', err)); 
+                reg.update(); // Forces browser to pull newest HTML file
+            }); 
         }); 
     }
 </script>
