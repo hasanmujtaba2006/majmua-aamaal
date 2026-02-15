@@ -216,7 +216,7 @@
         const joinPass = params.get('pass');
 
         if(joinId) {
-            localStorage.removeItem('kq_admin'); // Ensure old tokens are cleared!
+            localStorage.removeItem('kq_admin'); 
             if(instructionModal) instructionModal.style.display = 'none'; 
             selectedSessionIdForJoin = joinId;
             currentSessionPass = joinPass || ""; 
@@ -289,12 +289,10 @@
 
     socket.on('sessionList', (sessions) => { availableSessions = sessions; renderSessions(sessions); });
     
-    // THIS IS THE CRITICAL LOGIC HUB
     socket.on('joinedSession', (data) => { 
         currentSessionId = data.sessionId; 
         localStorage.setItem('kq_session', currentSessionId);
         
-        // FIXED: Actively remove the admin token if they join as a guest!
         if(data.adminToken) {
             localStorage.setItem('kq_admin', data.adminToken);
         } else {
@@ -320,7 +318,17 @@
     function renderSessions(list) { if(!sessionsList) return; sessionsList.innerHTML = ""; if (list.length === 0) { sessionsList.innerHTML = "<div style='color:#999; margin-top:10px;'>No active sessions found.</div>"; return; } list.forEach(s => { const div = document.createElement('div'); div.className = 'session-item'; div.innerHTML = `<span class="session-name">${s.name}</span><span class="join-badge">JOIN</span>`; div.onclick = () => initiateJoin(s.id); sessionsList.appendChild(div); }); }
     function filterSessions() { const query = searchInput.value.toLowerCase(); const filtered = availableSessions.filter(s => s.name.toLowerCase().includes(query)); renderSessions(filtered); }
     function initiateJoin(sessionId) { selectedSessionIdForJoin = sessionId; document.getElementById('password-modal').style.display = 'flex'; if(joinPassInput) { joinPassInput.value = ""; joinPassInput.focus(); } }
-    function submitJoin() { const pass = joinPassInput.value.trim(); socket.emit('joinSession', { sessionId: selectedSessionIdForJoin, password: pass }); closePassModal(); }
+    
+    function submitJoin() { 
+        const pass = joinPassInput.value.trim(); 
+        
+        // --- NEW SAFETY FEATURE: Force clear Admin token when joining via UI List ---
+        localStorage.removeItem('kq_admin'); 
+        
+        socket.emit('joinSession', { sessionId: selectedSessionIdForJoin, password: pass }); 
+        closePassModal(); 
+    }
+    
     function closePassModal() { document.getElementById('password-modal').style.display = 'none'; selectedSessionIdForJoin = null; }
 
     function updateUI(data) { 
