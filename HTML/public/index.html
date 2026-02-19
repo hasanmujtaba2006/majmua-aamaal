@@ -24,7 +24,6 @@
             --text-muted: #cfcfcf;
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
             --danger: #ef4444;
-            --special-bg: rgba(255, 215, 0, 0.1);
         }
         
         @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
@@ -57,7 +56,7 @@
 
         /* --- AWK MENU GRID CSS (Al-Wazifatul Karima) --- */
         .awk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; direction: rtl; margin-top: 20px; padding-bottom: 50px; }
-        .awk-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 25px 10px; text-align: center; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.0rem; color: #fff; line-height: 1.3; box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 60px; }
+        .awk-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 20px 5px; text-align: center; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.8rem; color: #fff; line-height: 1.3; box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 60px; }
         .awk-card:active { transform: scale(0.95); }
         
         .border-green { border-right: 6px solid #2ecc71; border-bottom: 2px solid #2ecc71; }
@@ -74,9 +73,10 @@
 
         /* Verse Blocks for General Text Content */
         .verse-block { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.2); border-radius: 15px; padding: 25px 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .arabic-text { font-family: 'Al Qalam Quran', serif; font-size: 2.3rem; color: #fff; line-height: 2.2; direction: rtl; margin-bottom: 8px; }
+        .arabic-text { font-family: 'Al Qalam Quran', serif; font-size: 2.2rem; color: #fff; line-height: 2.2; direction: rtl; margin-bottom: 8px; }
         .urdu-text { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.3rem; color: #cfcfcf; direction: rtl; line-height: 1.8; }
         .section-heading { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; color: var(--gold); text-align: center; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); border-bottom: 1px dashed rgba(255,215,0,0.3); padding-bottom: 10px; }
+        .sub-heading { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2rem; color: #2ecc71; margin-bottom: 10px; margin-top: 15px; text-align: center; }
 
         /* --- BENAZEER AMAL SECTION STYLES --- */
         .benazeer-title-container { text-align: center; margin-top: 40px; margin-bottom: 40px; }
@@ -92,7 +92,6 @@
         .bn-color-1 { background: linear-gradient(to right, #e67e22, #d35400); }
         .bn-color-2 { background: linear-gradient(to right, #9b59b6, #8e44ad); }
 
-        /* Taweez Grid Styles */
         .taweez-container { display: flex; flex-direction: column; align-items: center; margin: 30px 0; }
         .taweez-table { border-collapse: collapse; border: 2px solid var(--gold); background: rgba(0,0,0,0.4); text-align: center; color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.6rem; box-shadow: 0 5px 15px rgba(0,0,0,0.5); direction: rtl; width: 100%; max-width: 350px; }
         .taweez-table td { border: 1px solid var(--gold); padding: 12px 5px; width: 25%; }
@@ -114,71 +113,21 @@
         .fazail-container { max-width: 800px !important; width: 95%; padding: 30px 15px; }
         .fazail-content { max-height: 75vh; overflow-y: auto; text-align: right; direction: rtl; padding-right: 15px; font-size: 1.4rem; line-height: 2.2; color: #e0e0e0; font-family: 'Jameel Noori Nastaleeq', serif; }
         .fazail-h { color: var(--gold); font-size: 1.8rem; margin-top: 25px; margin-bottom: 5px; text-decoration: underline; text-decoration-color: rgba(255,215,0,0.5); font-weight: bold; }
-        .fazail-content ul { list-style-type: arabic-indic; margin-right: 30px; padding: 0; }
-        .fazail-content li { margin-bottom: 10px; }
-
-        h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
+        
+        .back-btn-modern { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 20px; position: absolute; top: 20px; left: 20px; cursor: pointer; backdrop-filter: blur(5px); z-index: 100; font-family: 'Outfit', sans-serif; font-weight: bold; }
+        
         .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
-        .home-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
-        .home-btn.primary { background: var(--btn-gradient); border: none; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .home-btn.solo { border-color: #38ef7d; color: #38ef7d; }
-        .session-list { width: 100%; margin-top: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
-        .session-item { background: rgba(255,255,255,0.1); padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
-        .session-item:hover { border-color: var(--gold); background: rgba(255,255,255,0.15); }
-        .join-badge { background: var(--btn-gradient); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-        .zikr-header { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
-        .zikr-badge { background: var(--gold); color: #0F2027; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Al Qalam Quran', serif; font-size: 1.6rem; font-weight: bold; margin-bottom: -22px; z-index: 10; border: 3px solid #0F2027; }
-        .title-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 30px 20px 15px 20px; width: 100%; position: relative; }
-        .zikr-title { font-family: 'Gulzar', serif; font-size: 2.0rem; color: #ffffff; line-height: 1.6; margin-bottom: 5px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
-        .zikr-subtitle { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-        
-        #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; text-align: center; }
-        #arabic-body { font-size: 2.0rem; line-height: 1.6; color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-wrap; user-select: text; text-align: center; }
-        #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; user-select: text; }
-        
-        .progress-container { position: relative; width: 160px; height: 160px; margin-bottom: 25px; flex-shrink: 0; }
-        .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
-        .counter-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 700; }
-        .target-label { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #aaa; }
-        #tap-btn { width: 100%; background: var(--btn-gradient); color: white; border: none; padding: 20px; font-size: 1.2rem; font-weight: 700; border-radius: 50px; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2); transition: transform 0.1s; }
-        #tap-btn:active { transform: scale(0.96); }
-        #tap-btn:disabled { background: #4b5563; box-shadow: none; }
-        .pulsing { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(56, 239, 125, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); } }
-        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
-        
-        .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
-        .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
-        .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
-        .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
-        .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
-        
-        #custom-modal, #password-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 9999; }
-        .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
-        .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
-        .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
-        .modal-confirm { background: var(--gold); color: #000; }
-        .modal-cancel { background: #4b5563; color: white; }
-        
-        .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
-        .back-btn-modern { background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 20px; position: absolute; top: 20px; left: 20px; cursor: pointer; backdrop-filter: blur(5px); z-index: 100; font-family: 'Outfit', sans-serif; font-weight: bold; }
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .toggle-label { color: white; font-size: 1.1rem; }
-        
-        #reading-container { display: none; margin-top: 10px; width: 100%; height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,215,0,0.2); }
-        .reading-text { font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; line-height: 2.0; color: #fff; text-align: center; white-space: pre-wrap; direction: rtl; }
+        .home-btn.primary { background: var(--btn-gradient); border: none; color: white; }
+        .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
     </style>
 </head>
 <body>
 
 <div id="super-home-screen" class="modern-screen">
     <div class="modern-body">
-        
         <div style="position: absolute; top: 20px; right: 20px; z-index: 101;" onclick="showSettings()">
             <div style="width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);">⚙️</div>
         </div>
-
         <div style="position: absolute; top: 20px; left: 20px; z-index: 101;">
             <div style="color: white; font-family: 'Outfit', sans-serif;">
                 <span style="font-size: 0.8rem; color: #ccc;">Welcome to</span><br>
@@ -192,42 +141,27 @@
         </div>
         
         <div class="modern-card" onclick="showInnerHome()">
-            <div class="card-icon-box">
-                <img src="khatme qadirya shareef.jpg" alt="Khatme Qadirya" class="card-icon-img">
-            </div>
+            <div class="card-icon-box"><img src="khatme qadirya shareef.jpg" alt="Khatme Qadirya" class="card-icon-img"></div>
             <div class="card-text-content">
-                <h3>ختمِ قادریہ شریف</h3>
-                <p>Khatme Qadirya Shareef</p>
+                <h3>ختمِ قادریہ شریف</h3><p>Khatme Qadirya Shareef</p>
             </div>
         </div>
-
         <div class="modern-card" onclick="showBenazeerHome()">
-            <div class="card-icon-box">
-                <img src="be-nazeer amal.jpeg" alt="Be Nazeer Amal" class="card-icon-img">
-            </div>
+            <div class="card-icon-box"><img src="be-nazeer amal.jpeg" alt="Be Nazeer Amal" class="card-icon-img"></div>
             <div class="card-text-content">
-                <h3>بے نظیر عمل</h3>
-                <p>Be-Nazeer Amal</p>
+                <h3>بے نظیر عمل</h3><p>Be-Nazeer Amal</p>
             </div>
         </div>
-
         <div class="modern-card" onclick="showAwkHome()">
-            <div class="card-icon-box">
-                <img src="al-wazifatul karima.jpeg" alt="Al Wazifatul Karima" class="card-icon-img">
-            </div>
+            <div class="card-icon-box"><img src="al-wazifatul karima.jpeg" alt="Al Wazifatul Karima" class="card-icon-img"></div>
             <div class="card-text-content">
-                <h3>الوَظِيفَةُ الْكَرِيمَة</h3>
-                <p>Al-Wazifatul Karima</p>
+                <h3>الوَظِيفَةُ الْكَرِيمَة</h3><p>Al-Wazifatul Karima</p>
             </div>
         </div>
-
         <div class="modern-card" onclick="alert('Shajra-e-Aaliyah will be available in the next update!')">
-            <div class="card-icon-box">
-                <img src="shajra-e-aaliyah.jpg" alt="Shajra e Aaliyah" class="card-icon-img">
-            </div>
+            <div class="card-icon-box"><img src="shajra-e-aaliyah.jpg" alt="Shajra e Aaliyah" class="card-icon-img"></div>
             <div class="card-text-content">
-                <h3>شجرہ عالیہ</h3>
-                <p>Shajra-e-Aaliyah</p>
+                <h3>شجرہ عالیہ</h3><p>Shajra-e-Aaliyah</p>
             </div>
         </div>
     </div>
@@ -236,7 +170,6 @@
 <div class="modern-screen hidden" id="awk-home-screen">
     <button class="back-btn-modern" onclick="showSuperHome()">&larr; Main Menu</button>
     <div class="modern-body" style="padding-top: 80px;">
-        
         <div style="text-align: center; margin-bottom: 20px;">
             <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 4rem; color: #fff; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">الوَظِيفَةُ الْكَرِيمَة</h1>
         </div>
@@ -244,19 +177,14 @@
         <div class="awk-grid">
             <div class="awk-card border-green" onclick="showAwkContent('awk-intro')">الوَظِيفَةُ الْكَرِيمَة</div>
             <div class="awk-card border-blue" onclick="showAwkContent('awk-subh-sham')">صبح و شام</div>
-
             <div class="awk-card border-yellow" onclick="showAwkContent('awk-sirf-subh')">صرف صبح</div>
             <div class="awk-card border-blue" onclick="showAwkContent('awk-panjwaqta')">پنجوقتہ نماز کے بعد</div>
-
             <div class="awk-card border-pink" onclick="showAwkContent('awk-fajr-asr')">فجر و عصر کے بعد</div>
             <div class="awk-card border-orange" onclick="showAwkContent('awk-fajr')">فجر کے بعد</div>
-
             <div class="awk-card border-grey" onclick="showAwkContent('awk-maghrib')">مغرب کے بعد</div>
             <div class="awk-card border-teal" onclick="showAwkContent('awk-shab')">شب میں</div>
-
             <div class="awk-card border-darkgreen" onclick="showAwkContent('awk-isha')">عشاء کے بعد</div>
             <div class="awk-card border-darkred" onclick="showAwkContent('awk-sote-waqt')">سوتے وقت</div>
-
             <div class="awk-card border-brown" onclick="showAwkContent('awk-uth-kar')">سونے سے اٹھ کر</div>
             <div class="awk-card border-red" onclick="showAwkContent('awk-deegar')">دیگر</div>
         </div>
@@ -272,34 +200,155 @@
         <div id="awk-intro" class="awk-section hidden">
             <h2 class="section-heading">الوَظِيفَةُ الْكَرِيمَة</h2>
             <div class="verse-block">
-                <div class="arabic-text">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ</div>
-                <div class="arabic-text" style="font-size: 1.8rem;">حَامِدًا لِّمَنْ جَعَلَ الدُّعَاءَ عِبَادَةً بَلْ مُخَّ الْعِبَادَةِ، وَأَمَرَ بِادْعُونِي عِبَادَةً، وَأَلْزَمَهُ بِوَعْدِهِ الْإِجَابَةَ، وَمَنْ دَعَا رَبَّهُ لَبَّيْكَ يَا عَبْدِي أَجَابَهُ...</div>
-                <div class="urdu-text">(حمد اس وجہِ کریم کو جس نے ہمیں مولائے عالم، والیِ اعظم محمد رسول اللہ صلی اللہ علیہ وسلم کے بندگانِ بارگاہ عالم پناہ میں کیا، ہمارے ہاتھ میں حضور پرنور سیدنا غوث الاعظم رضی اللہ عنہ کا دامنِ کرم دیا...)</div>
+                <div class="arabic-text">حَامِدًا لِّمَنْ جَعَلَ الدُّعَاءَ عِبَادَةً بَلْ مُخَّ الْعِبَادَةِ وَ أَمَرَ بِادْعُونِي عِبَادَةَ وَالْزَمَةَ بِوَعْدِهِ الْإِجَابَة وَمَنْ دَعَا رَبَّهُ لَبَّيْكَ يَا عَبْدِي أَجَابَهُ...</div>
+                <div class="urdu-text">(حمد اس وجہ کریم کو جس نے ہمیں مولائے عالم والی اعظم محمد رسول اللہ صلی اللہ علیہ وسلم کے بندگانِ بارگاہ عالم پناہ میں کیا ، ہمارے ہاتھ میں حضور پرنورسید نا غوث الاعظم رضی اللہ کا دامن کرم دیا، اپنے اولیاء ہمارے مشائخ سلسلہ خصوصاً ہمارے آقا و مولا حضور سید نا اعلی حضرت کا سایہ رحمت ہم پر دراز کیا...)</div>
             </div>
-            <p style="color: #ccc; font-size: 1.2rem; text-align: right; margin-top: 20px;">یہ مبارک دعائیں اور اذکار و اشغالِ دُرِ مکنون خاندانی عالیہ میں مخزون تھے۔ ان کا عامل دین و دنیا کی نعمتوں سے مالا مال ہوگا اور ہر بلا و آفت سے محفوظ رہے گا۔<br><br><b>ضروری وضاحت:</b> آدھی رات ڈھلنے سے سورج کی کرن چمکنے تک صبح ہے۔ دوپہر ڈھلنے سے غروبِ آفتاب تک شام ہے۔</p>
+            <p style="color: #ccc; font-size: 1.2rem; text-align: right; margin-top: 20px;">یہ مبارک دعائیں اور اذکار و اشغال در مکنون کی طرح خاندان عالیہ میں مخزون تھے، برادران اہل سنت کے لئے شائع کرتے اور دعوے سے کہتے ہیں کہ ان کا عامل دین و دنیا کی نعمتوں سے مالا مال ہوگا، ہر بلا و آفت سے محفوظ رہے گا۔<br><br><span style="color: var(--gold);"><b>ضروری وضاحت:</b> آدھی رات ڈھلنے سے سورج کی کرن چمکنے تک صبح ہے۔ دوپہر ڈھلنے سے غروب آفتاب تک شام ہے۔</span></p>
         </div>
 
         <div id="awk-subh-sham" class="awk-section hidden">
             <h2 class="section-heading">صبح و شام دونوں وقت</h2>
-            <p style="color: var(--gold); margin-bottom: 15px;">ان دعاؤں کو ایک بار صبح اور ایک بار شام پڑھیں:</p>
+            <p style="color: var(--gold); margin-bottom: 15px;">ان دعاؤں کو مقررہ تعداد کے مطابق صبح و شام پڑھیں:</p>
             
             <div class="verse-block">
-                <div class="arabic-text">سُبْحَانَ اللهِ وَبِحَمْدِهِ وَلَا قُوَّةَ إِلَّا بِاللهِ مَا شَاءَ اللهُ كَانَ وَمَا لَمْ يَشَأْ لَمْ يَكُنْ أَعْلَمُ أَنَّ اللهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ وَأَنَّ اللهَ قَدْ أَحَاطَ بِكُلِّ شَيْءٍ عِلْمًا</div>
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">سُبْحَنَ اللهِ وَبِحَمْدِهِ وَلَا قُوَّةَ إِلَّا بِاللهِ مَا شَاءَ اللهُ كَانَ وَمَا لَمْ يَشَأْ لَمْ يَكُنْ أَعْلَمُ أَنَّ اللَّهَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ وَأَنَّ اللهَ قَدْ أَحَاطَ بِكُلِّ شَيْءٍ عِلْماً</div>
             </div>
             
             <div class="verse-block">
-                <div class="arabic-text">بِسْمِ اللهِ مَا شَاءَ اللهُ لَا يَسُوقُ الْخَيْرَ إِلَّا اللهُ، مَا شَاءَ اللهُ لَا يَصْرِفُ السُّوءَ إِلَّا اللهُ، مَا شَاءَ اللهُ مَا كَانَ مِنْ نِّعْمَةٍ فَمِنَ اللهِ، مَا شَاءَ اللهُ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ</div>
-                <div class="urdu-text">(فائدہ: اس کا فائدہ صبح سے شام تک سات چیزوں سے پناہ ہے: جلنا، ڈوبنا، چوری، سانپ، بچھو، شیطان، سلطان۔)</div>
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۲) آیت الکرسی ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">اللهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَوتِ وَ مَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَةً إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَوتِ وَالْأَرْضَ وَلَا يُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ</div>
+                <p style="color: var(--gold); font-size:1.1rem; margin-top: 15px;">پھر ایک بار صبح ، ایک بار شام:</p>
+                <div class="arabic-text">حم تَنْزِيلُ الْكِتَبِ مِنَ اللهِ الْعَزِيزِ الْعَلِيمِ ﴿٢﴾ غَافِرِ الذَّنْبِ وَقَابِلِ التَّوْبِ شَدِيدِ الْعِقَابِ ذِي الطَّوْلِ لَا إِلَهَ إِلَّا هُوَ إِلَيْهِ الْمَصِيرُ</div>
             </div>
 
             <div class="verse-block">
-                <div class="arabic-text">أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ</div>
-                <div class="urdu-text">(فائدہ: سانپ بچھو وغیرہ موذیات سے پناہ ہو۔ تین بار صبح، تین بار شام پڑھے۔)</div>
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۳) سوره اخلاص، فلق، ناس تین بار صبح، تین بار شام</p>
+                <div class="arabic-text">قُلْ هُوَ اللهُ أَحَدٌ...</div>
+                <div class="arabic-text" style="margin-top: 10px;">قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ...</div>
+                <div class="arabic-text" style="margin-top: 10px;">قُلْ أَعُوذُ بِرَبِّ النَّاسِ...</div>
+                <div class="urdu-text">(فائدہ: ان تینوں نمبروں کا فائدہ ہر بلا سے محفوظی ہے صبح پڑھے تو شام تک اور شام پڑھے تو صبح تک۔)</div>
             </div>
 
             <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۴) تین بار صبح ، تین بار شام</p>
+                <div class="arabic-text">بِسْمِ اللهِ مَا شَاءَ اللهُ لا يَسُوقُ الْخَيْرَ إِلَّا اللَّهُ مَا شَاءَ اللَّهُ لَا يَصْرِفُ السُّوءَ إِلَّا اللهُ مَا شَاءَ اللهُ مَا كَانَ مِنْ نِعْمَةٍ فَمِنَ اللَّهِ مَا شَاءَ اللهُ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ</div>
+                <div class="urdu-text">(فائدہ: صبح سے شام تک سات چیزوں سے پناہ: جلنا، ڈوبنا، چوری،سانپ، بچھو، شیطان ، سلطان۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۵) تین بار صبح ، تین بار شام</p>
+                <div class="arabic-text">اعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ</div>
+                <div class="urdu-text">(فائدہ: سانپ بچھو وغیرہ موذیات سے پناہ ہو۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۶) تین بار صبح ، تین بار شام</p>
                 <div class="arabic-text">بِسْمِ اللهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ</div>
-                <div class="urdu-text">(فائدہ: زہر و ضرر سے امان رہے۔ تین بار صبح، تین بار شام پڑھے۔)</div>
+                <div class="urdu-text">(فائدہ: زہر و ضرر سے امان رہے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۷) تین بار صبح ، تین بار شام</p>
+                <div class="arabic-text">رَضِيتُ بِاللهِ رَبَّا وَبِالْإِسْلَامِ ديناً وَ بِسَيِّدِنَا وَمَوْلَانَا مُحَمَّدٍ صَلَّى اللَّهُ تَعَالَى عَلَيْهِ وَسَلَّمَ نَبِيًّا وَ رَسُولاً</div>
+                <div class="urdu-text">(فائدہ: اللہ عز وجل کے کرم پر حق ہے کہ روز قیامت اسے راضی کرے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۸) دس بار صبح ، دس بار شام</p>
+                <div class="arabic-text">حَسْبِيَ اللهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ</div>
+                <div class="urdu-text">(فائدہ: ہر بلا مکر سے محفوظی۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۹) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">فَسُبُحْنَ اللهِ حِينَ تُمْسُونَ وَحِينَ تُصْبِحُونَ ﴿١﴾ وَلَهُ الْحَمْدُ فِي السَّمَوتِ وَالْأَرْضِ وَعَشِيًّا وَحِينَ تُظْهِرُونَ ﴿١٨﴾ يُخْرِجُ الْحَقِّ مِنَ الْمَيِّتِ وَيُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ وَيُحْيِ الْأَرْضَ بَعْدَ مَوْتِهَا وَكَذَلِكَ تُخْرَجُونَ</div>
+                <div class="urdu-text">(فائدہ: جس سے کسی دن سب وظائف رہ جائیں تو یہ تنہا ان سب کی جگہ کافی ہے، نیز رات دن کے ہر نقصان کی تلافی ہے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۰) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">أَفَحَسِبْتُمْ أَنَّمَا خَلَقْتُكُمْ عَبَثًا وَأَنَّكُمْ إِلَيْنَا لَا تُرْجَعُونَ ﴿١٥﴾ فَتَعْلَى اللهُ الْمَلِكُ الْحَقُّ لَا إِلَهَ إِلَّا هُوَ رَبُّ الْعَرْشِ الْكَرِيمِ ﴿١١﴾ وَمَنْ يَدْعُ مَعَ اللهِ إِلهَا أَخَرَ لَا بُرْهُنَ لَهُ بِهِ فَإِنَّمَا حِسَابُهُ عِنْدَ رَبِّهِ إِنَّهُ لَا يُفْلِحُ الْكَفِرُونَ ﴿١١﴾ وَقُل رَّبِّ اغْفِرْ وَارْحَمْ وَأَنْتَ خَيْرُ الرَّحِمِينَ</div>
+                <div class="urdu-text">(فائدہ: شیطان و جن و آفات سے محفوظی ۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۱) تین بار اعوذ باللہ پھر ایک بار سورہ حشر کی آیات</p>
+                <div class="arabic-text">أَعُوذُ بِاللهِ السَّمِيعِ الْعَلِيمِ مِنَ الشَّيْطَنِ الرَّحِيمِ</div>
+                <div class="arabic-text" style="margin-top: 15px;">هُوَ اللهُ الَّذِي لَا إِلَهَ إِلَّا هُوَ عَلِمُ الْغَيْبِ وَالشَّهْدَةِ هُوَ الرَّحْمَنُ الرَّحِيمُ ﴿٢٢﴾ هُوَ اللهُ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْمَلِكُ الْقُدُّوسُ السَّلَمُ الْمُؤْمِنُ الْمُهَيْمِنُ الْعَزِيزُ الْجَبَّارُ الْمُتَكَبِّرُ سُبْحَنَ اللهِ عَمَّا يُشْرِكُونَ هُوَ اللهُ الْخَلِقُ الْبَارِئُ الْمُصَوِّرُ لَهُ الْأَسْمَاءُ الْحُسْنَى يُسَبِّحُ لَهُ مَا فِي السَّمَاتِ وَالْأَرْضِ وَهُوَ الْعَزِيزُ الْحَكِيمُ</div>
+                <div class="urdu-text">(فائدہ: ستر ہزار فرشتے اس کے لیے استغفار کریں اور اس دن مرے تو شہید ہو۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۲) تین بار صبح ، تین بار شام</p>
+                <div class="arabic-text">اللَّهُمَّ إِنَّا نَعُوذُبِكَ مِنْ أَنْ تُشْرِكَ بِكَ شَيْئاً نَّعْلَمُهُ وَنَسْتَغْفِرُكَ لِمَا لَا نَعْلَمُهُ</div>
+                <div class="urdu-text">(فائدہ: خاتمہ ایمان پر ہو۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۳) تین بار صبح ، تین بار شام</p>
+                <div class="arabic-text">بِسْمِ اللهِ عَلَى دِينِي بِسْمِ اللهِ عَلَى نَفْسِي وَوُلْدِي وَأَهْلِي وَمَالِي</div>
+                <div class="urdu-text">(فائده: دین، ایمان ، جان، مال، بال بچے سب محفوظ رہیں ۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۴) ایک بار صبح اور ایک بار شام</p>
+                <p style="color: var(--gold); margin-bottom: 5px;">(صبح)</p>
+                <div class="arabic-text">اللَّهُمَّ مَا أَصْبَحَ لِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكِ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ فَلَكَ الْحَمْدُ وَلَكَ الشُّكُرُ</div>
+                <p style="color: var(--gold); margin-bottom: 5px; margin-top: 15px;">(شام)</p>
+                <div class="arabic-text">اللَّهُمَّ مَا أَمْسَى لِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِّنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ فَلَكَ الْحَمْدُ وَلَكَ الشُّكُرُ</div>
+                <div class="urdu-text">(فائدہ: دن بھر اور شب بھر کی سب نعمتوں کا شکر ادا کیا۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۵) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">بِسْمِ اللَّهِ جَلِيلِ الشَّانِ عَظِيمِ الْبُرْهَانِ شَدِيدِ السُّلْطَنِ مَا شَاءَ اللهُ كَانَ اعُوذُ بِاللَّهِ مِنَ الشَّيْطَنِ الرَّحِيمِ</div>
+                <div class="urdu-text">(فائدہ: شیطان اور اس کے لشکروں سے محفوظ رہے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۶) چار بار صبح اور چار بار شام</p>
+                <p style="color: var(--gold); margin-bottom: 5px;">(صبح)</p>
+                <div class="arabic-text">اللهُمَّ إِنِّي أَصْبَحْتُ أَشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَئِكَتِكَ وَجَمِيعَ خَلْقِكَ إِنَّكَ أَنْتَ اللهُ لَا إِلهَ أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ صَلَّى اللهُ تَعَالَى عَلَيْهِ وَسَلَّمَ</div>
+                <p style="color: var(--gold); margin-bottom: 5px; margin-top: 15px;">(شام)</p>
+                <div class="arabic-text">اللهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَئِكَتِكَ وَجَمِيعَ خَلْقِكَ إِنَّكَ أَنْتَ اللهُ لَا إِلَهَ أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ صَلَّى اللهُ تَعَالَى عَلَيْهِ وَسَلَّمَ</div>
+                <div class="urdu-text">(فائدہ: ہر بار چہارم حصہ بدن دوزخ سے آزاد ہو۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۷) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">اللَّهُمَّ لَكَ الْحَمْدُ حَمْدًا دَائِمًا مَّعَ دَوَامِكَ وَ لَكَ الْحَمْدُ حَمْدًا خَالِدًا وَلَكَ الْحَمْدُ حَمْدًا لَّا مُنْتَهى لَهُ دُونَ مَشِيئَتِكَ وَلَكَ الْحَمْدُ حَمْدًا عِنْدَ كُلِّ طُرُفَةِ عَيْنٍ وَتَنفُسِ كُلِّ نَفْسٍ</div>
+                <div class="urdu-text">(فائدہ: گویا اس نے اس دن رات پوری عبادت کا حق ادا کیا۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۸) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">اللهُمَّ إِنِّي أَعُوذُبِكَ مِنَ الْهَمِّ وَالْحُزْنِ وَأَعُوذُبِكَ مِنَ الْعَجْزِ وَالْكَسْلِ وَأَعُوذُبِكَ مِنَ الْجُبْنِ وَالْبُخْلِ وَأَعُوذُبِكَ مِنَ غَلَبَةِ الدِّيْنِ وَقَهْرِ الرِّجَالِ</div>
+                <div class="urdu-text">(فائدہ: غم والم سے بچے، ادائے قرض کے لیے گیارہ بار پڑھے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۱۹) ایک بار صبح ، ایک بار شام</p>
+                <div class="arabic-text">يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ اسْتَغِيْتُ فَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ وَأَصْلِحْ لِي شَأْنِي كُلَّهُ</div>
+                <div class="urdu-text">(فائدہ: سب کام بنیں ۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۲۰) سات بار صبح، سات بارشام</p>
+                <div class="arabic-text">اللهُمَّ خِرْلِي وَاخْتَرْلِي وَلَا تَكِلْنِي إِلَى اخْتِيَارِي</div>
+                <div class="urdu-text">(فائدہ: دن رات کے ہر کام کے لئے استخارہ ہے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۲۱) سید الاستغفار ایک یا تین بار صبح ، شام</p>
+                <div class="arabic-text">اللهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ اَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُؤُلَكَ بِنِعْمَتِكَ عَلَى وَابُوَلَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div>
+                <div class="urdu-text">(فائدہ: گناہ معاف ہوں اور اس دن رات میں مرے تو شہید ۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); font-size:1.1rem; margin-bottom: 5px;">(۲۲) سو بار صبح ، سو بار شام</p>
+                <div class="arabic-text">لا إِلَهَ إِلَّا اللَّهُ الْمَلِكُ الْحَقُّ الْمُبِينُ</div>
+                <div class="urdu-text">(فائدہ: دنیا میں فاقہ نہ ہو ، قبر میں وحشت نہ ہو، حشر میں گھبراہٹ نہ ہو ۔)</div>
             </div>
         </div>
 
@@ -308,8 +357,14 @@
             
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">ایک بار:</p>
-                <div class="arabic-text">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ الْعَلِيِّ الْعَظِيمِ</div>
+                <div class="arabic-text">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ وَلَا حَوْلَ وَلا قُوَّةَ الَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ</div>
                 <div class="urdu-text">(فائدہ: ہر کام بنے، شیطان سے محفوظ رہے۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); margin-bottom: 5px;">سوره اخلاص گیارہ بار:</p>
+                <div class="arabic-text">قُلْ هُوَ اللهُ أَحَدٌ ۝ اللهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ</div>
+                <div class="urdu-text">(فائدہ: اگر شیطان مع اپنے لشکروں کے کوشش کرے کہ اس سے گناہ کرائے تو نہ کرا سکے۔)</div>
             </div>
 
             <div class="verse-block">
@@ -320,99 +375,133 @@
 
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">تین بار:</p>
-                <div class="arabic-text">سُبْحَانَ اللهِ الْعَظِيمِ وَبِحَمْدِهِ</div>
+                <div class="arabic-text">سُبْحَانَ اللَّهِ الْعَظِيمِ وَبِحَمْدِهِ</div>
                 <div class="urdu-text">(فائدہ: جنون، جذام، برص اور نابینائی سے بچے۔)</div>
+            </div>
+            
+            <div class="verse-block">
+                <h3 class="sub-heading">دیگر معمولاتِ صبح</h3>
+                <div class="urdu-text">
+                    (۵) تلاوت قرآن عظیم کم از کم ایک پاره (حتی الامکان طلوع شمس سے پہلے ہو)<br>
+                    (۶) دلائل خیرات شریف ایک حزب<br>
+                    (۷) شجرہ شریف ایک بار
+                </div>
             </div>
         </div>
 
         <div id="awk-panjwaqta" class="awk-section hidden">
-            <h2 class="section-heading">پنجوقتہ نماز کے بعد</h2>
+            <h2 class="section-heading">پانچوں نمازوں کے بعد</h2>
             
             <div class="verse-block">
-                <p style="color: var(--gold); margin-bottom: 5px;">تین بار استغفار پڑھے:</p>
-                <div class="arabic-text">أَسْتَغْفِرُ اللهَ الَّذِي لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ</div>
+                <p style="color: var(--gold); margin-bottom: 5px;">آیت الکرسی ایک ایک بار:</p>
+                <div class="arabic-text">اللهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...</div>
+                <div class="urdu-text">(فائدہ: مرتے ہی داخل جنت ہو۔)</div>
+            </div>
+
+            <div class="verse-block">
+                <p style="color: var(--gold); margin-bottom: 5px;">تین تین بار استغفار پڑھے:</p>
+                <div class="arabic-text">اسْتَغْفِرُ اللهَ الَّذِي لَا إِلَهَ الأَهْوَ الْحَيُّ الْقَيُّومُ وَاتُوبُ إِلَيْهِ</div>
                 <div class="urdu-text">(فائدہ: گناہ معاف ہوں، اگرچہ سمندر کے جھاگ کے برابر ہوں۔)</div>
             </div>
 
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">تسبیح فاطمہ زہرا (رضی اللہ عنہا):</p>
-                <div class="arabic-text" style="font-size: 1.8rem;">سُبْحَانَ اللهِ (۳۳ بار)، اَلْحَمْدُ لِلّٰهِ (۳۳ بار)، اَللهُ أَكْبَرُ (۳۴ بار)</div>
-                <p style="color: var(--gold); margin-top: 15px;">پھر ایک بار پڑھے:</p>
-                <div class="arabic-text" style="font-size: 1.8rem;">لَا إِلٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ</div>
+                <div class="arabic-text" style="font-size: 1.8rem;">سُبْحَانَ اللهِ (۳۳ بار) ، اَلْحَمْدُ لِلهِ (۳۳ بار) ، اَللهُ أَكْبَرُ (۳۴ بار)</div>
+                <p style="color: var(--gold); margin-top: 15px;">اخیر میں ایک بار پڑھے:</p>
+                <div class="arabic-text" style="font-size: 1.8rem;">لَا إِلَهَ إِلَّا اللهُ وَحْدَةً لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</div>
             </div>
 
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">ماتھے پر داہنا ہاتھ رکھ کر پڑھے:</p>
-                <div class="arabic-text">بِسْمِ اللهِ الَّذِي لَا إِلٰهَ إِلَّا هُوَ الرَّحْمٰنِ الرَّحِيمُ اَللّٰهُمَّ أَذْهِبْ عَنِّي الْهَمَّ وَالْحُزْنَ</div>
+                <div class="arabic-text">بِسْمِ اللهِ الَّذِي لَا إِلَهَ الأَهْوَ الرَّحْمَنِ الرَّحِيمُ اللَّهُمَّ أَذْهِبْ عَنِّي الْهَمَّ وَالْحُزْنَ</div>
                 <div class="urdu-text">(فائدہ: ہر غم و پریشانی سے بچے۔)</div>
             </div>
 
             <div class="verse-block">
                 <h3 style="color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.5rem; margin-bottom: 10px;">پنج گنج قادریہ</h3>
                 <div style="font-family: 'Al Qalam Quran', serif; font-size: 2rem; color: #38ef7d; line-height: 2.0; display: inline-block; text-align: right;">
-                    يَا عَزِيزُ يَا اَللهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز فجر)</span><br>
-                    يَا كَرِيمُ يَا اَللهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز ظہر)</span><br>
-                    يَا جَبَّارُ يَا اَللهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز عصر)</span><br>
-                    يَا سَتَّارُ يَا اَللهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز مغرب)</span><br>
-                    يَا غَفَّارُ يَا اَللهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز عشاء)</span>
+                    يَا عَزِيزُ يَا اللَّهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز فجر)</span><br>
+                    يَا كَرِيمُ يَا الله <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز ظہر)</span><br>
+                    يَا جَبَّارُ يَا الله <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز عصر)</span><br>
+                    يَا سَتَّارُ يَا الله <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز مغرب)</span><br>
+                    يَا غَفَّارُ يَا اللهُ <span style="color:#aaa; font-size: 1.2rem; font-family: 'Jameel Noori Nastaleeq', serif;">(بعد نماز عشاء)</span>
                 </div>
             </div>
         </div>
 
         <div id="awk-fajr-asr" class="awk-section hidden">
-            <h2 class="section-heading">فجر و عصر کے بعد</h2>
-            <p style="color: #ccc; font-size: 1.2rem; text-align: right;">بغیر پاؤں بدلے اور بغیر کلام کئے پڑھے:</p>
+            <h2 class="section-heading">نماز صبح و عصر کے بعد</h2>
+            <p style="color: #ccc; font-size: 1.2rem; text-align: right;">بغیر پاؤں بدلے اور بغیر کلام کئے دس دس بار:</p>
             
             <div class="verse-block">
-                <p style="color: var(--gold); margin-bottom: 5px;">دس بار:</p>
-                <div class="arabic-text">لَا إِلٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ بِيَدِهِ الْخَيْرُ يُحْيِ وَيُمِيتُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ</div>
+                <div class="arabic-text">لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ بِيَدِهِ الْخَيْرُ يُحْيِ وَيُمِيتُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</div>
             </div>
 
             <div class="verse-block">
-                <p style="color: var(--gold); margin-bottom: 5px;">سات بار:</p>
-                <div class="arabic-text">اَللّٰهُمَّ أَجِرْنِي مِنَ النَّارِ</div>
+                <p style="color: var(--gold); margin-bottom: 5px;">سات سات بار:</p>
+                <div class="arabic-text">اللهُمَّ أَجِرْنِي مِنَ النَّارِ</div>
                 <div class="urdu-text">(فائدہ: دوزخ دعا کرے کہ الہٰی اسے مجھ سے بچا۔)</div>
             </div>
         </div>
 
         <div id="awk-fajr" class="awk-section hidden">
-            <h2 class="section-heading">صرف فجر کے بعد</h2>
+            <h2 class="section-heading">صرف نماز صبح کے بعد</h2>
             
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">ایک یا تین بار:</p>
-                <div class="arabic-text">اَللّٰهُمَّ اكْفِنِي كُلَّ مُهِمٍّ مِّنْ حَيْثُ شِئْتَ وَمِنْ أَيْنَ شِئْتَ، حَسْبِيَ اللهُ لِدِينِي، حَسْبِيَ اللهُ لِدُنْيَايَ...</div>
-                <div class="urdu-text">(فائدہ: ہر مشکل آسان ہو، سب پریشانیاں دور ہوں، اللہ ہر جگہ مدد فرمائے۔)</div>
+                <div class="arabic-text">اللهُمَّ اكْفِنِي كُلَّ مُهِمْ مِنْ حَيْثُ شِئْتَ وَمِنْ أَيْنَ شِئْتَ حَسْبِيَ اللهُ لِدِينِي حَسْبِيَ اللهُ لِدُنْيَايَ حَسْبِيَ اللهُ لِمَا أَهَمَّنِي حَسْبِيَ اللَّهُ لِمَنْ بَغَى حَسْبِيَ اللهُ لِمَنْ حَسَدَنِي حَسْبِيَ اللهُ لِمَنْ كَادَنِي بِسُوءٍ حَسْبِيَ اللهُ عِنْدَ الْمَوْتِ حسبِيَ اللهُ عِنْدَ الْمَسْأَلَةِ فِي الْقَبْرِ حَسْبِيَ اللَّهُ عِنْدَ الْمِيزَانِ حَسْبِيَ اللَّهُ عِنْدَ الصِّرَاطِ حَسْبِيَ اللهُ الَّذِي لَا إِلَهَ إِلا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ</div>
+                <div class="urdu-text">(فائدہ: ہر مشکل آسان ہو، سب پریشانیاں دور ہوں، اللہ ہر جگہ مدد فرمائے، دشمن برباد ہوں۔)</div>
+            </div>
+            
+            <div class="verse-block">
+                <h3 class="sub-heading">اشراق</h3>
+                <div class="urdu-text">بغیر پاؤں بدلے بیٹھا ہوا ذکر الہی میں مشغول رہے یہاں تک کہ آفتاب بلند ہو یعنی طلوع کنارہ شمس کو بیس پچیس منٹ گزر جائیں اس وقت دورکعت نماز نفل پڑھے۔</div>
             </div>
         </div>
 
         <div id="awk-maghrib" class="awk-section hidden">
-            <h2 class="section-heading">مغرب کے بعد</h2>
+            <h2 class="section-heading">نماز مغرب کے بعد</h2>
             <div class="verse-block">
-                <div class="urdu-text" style="text-align: right;">فرض پڑھ کر چھ رکعتیں ایک ہی نیت سے، ہر دو رکعت پر التحیات، درود، دعا اور پہلی، تیسری، پانچویں 'سبحانک اللھم' سے شروع ہو۔ ان میں پہلی دو سنتِ مؤکدہ ہوں گی اور باقی چار نفل۔ یہ <b>صلوٰۃ الاوابین</b> ہے اور اللہ اوابین کے لئے غفور ہے۔</div>
+                <h3 class="sub-heading">صلوٰۃ الاوابین</h3>
+                <div class="urdu-text" style="text-align: right;">فرض پڑھ کر چھ رکعتیں ایک ہی نیت سے، ہر دو رکعت پڑھ کر التحیات ، درود، دعا اور پہلی تیسری پانچویں 'سُبْحَنَكَ اللّٰهُمَّ' سے شروع ہو۔ ان میں پہلی دوسنت مؤکدہ ہوں گی باقی چار نفل ، یہ صلوۃ اوابین ہے اور اللہ اوابین کے لئے غفور ہے۔</div>
             </div>
         </div>
 
         <div id="awk-shab" class="awk-section hidden">
-            <h2 class="section-heading">شب میں (رات کے وظائف)</h2>
+            <h2 class="section-heading">شب میں (غروب شمس سے طلوع صبح تک)</h2>
             <div class="verse-block">
-                <h3 style="color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.2rem; margin-bottom: 10px;">سورہ ملک (ایک بار)</h3>
-                <div class="urdu-text">نمازِ عشاء کے بعد یا رات میں سونے سے قبل سورہ ملک کی تلاوت فرمائیں۔<br><br><span style="color: var(--gold);">(فائدہ: عذابِ قبر سے نجات حاصل ہوگی۔)</span></div>
+                <h3 class="sub-heading">سورہ ملک (ایک بار)</h3>
+                <div class="urdu-text">تَبْرَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ ﴾ ... (مکمل سورت)</div>
+                <div class="urdu-text" style="color: var(--gold); margin-top:10px;">(فائدہ: عذاب قبر سے نجات ہے۔)</div>
             </div>
             <div class="verse-block">
-                <h3 style="color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.2rem; margin-bottom: 10px;">سورہ یٰسین (ایک بار)</h3>
-                <div class="urdu-text">رات کے وقت سورہ یٰسین شریف کی تلاوت کریں۔</div>
+                <h3 class="sub-heading">سورہ یٰسین (ایک بار)</h3>
+                <div class="urdu-text">يس ﴿١﴾ وَ الْقُرْآنِ الْحَكِيمِ ﴿٢﴾ ... (مکمل سورت)</div>
             </div>
             <div class="verse-block">
-                <h3 style="color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.2rem; margin-bottom: 10px;">سورہ واقعہ (ایک بار)</h3>
-                <div class="urdu-text">سورہ واقعہ کی تلاوت رزق میں برکت اور فاقہ سے امان کے لئے نہایت مجرب ہے۔</div>
+                <h3 class="sub-heading">سورہ واقعہ (ایک بار)</h3>
+                <div class="urdu-text">إِذَا وَقَعَتِ الْوَاقِعَةُ ﴿١﴾ ... (مکمل سورت)</div>
+                <div class="urdu-text" style="color: var(--gold); margin-top:10px;">(فائدہ: فاقہ سے امان ہے۔)</div>
+            </div>
+            <div class="verse-block">
+                <h3 class="sub-heading">سوره دخان (ایک بار)</h3>
+                <div class="urdu-text">حم ﴿١﴾ وَ الْكِتَبِ الْمُبِينِ ﴿٢﴾ ... (مکمل سورت)</div>
+                <div class="urdu-text" style="color: var(--gold); margin-top:10px;">(فائدہ: صبح اس حال میں اٹھے کہ ستر ہزار فرشتے اس کے لئے استغفار کرتے ہوں۔)</div>
             </div>
         </div>
 
         <div id="awk-isha" class="awk-section hidden">
-            <h2 class="section-heading">عشاء کے بعد</h2>
+            <h2 class="section-heading">بعد نماز عشاء</h2>
+            
+            <div class="verse-block">
+                <p style="color: var(--gold); margin-bottom: 5px;">طاق بار جتنا نبجھ سکے:</p>
+                <div class="arabic-text">اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ كَمَا أَمَرْتَنَا أَنْ تُصَلِّي عَلَيْهِ اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ كَمَا هُوَ اهْلُهُ اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ كَمَا تُحِبُّ وَتَرْضَى لَهُ اللَّهُمَّ صَلِّ عَلَى رُوحِ سَيِّدِنَا مُحَمَّدٍ فِي الْأَرْوَاحِ اللَّهُمَّ صَلِّ عَلَى جَسَدِ سَيِّدِنَا مُحَمَّدٍ فِي الْأَجْسَادِ اللهُمَّ صَلِّ عَلَى قَبْرِ سَيِّدِنَا مُحَمَّدٍ فِي الْقُبُورِ صَلَّى اللهُ عَلَى سَيِّدِنَا وَمَوْلَانَا مُحَمَّدٍ</div>
+                <div class="urdu-text">(فائدہ: حصول زیارت اقدس کے لئے اس سے بہتر صیغہ نہیں)</div>
+            </div>
+            
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">سو (100) مرتبہ پڑھے:</p>
-                <div class="arabic-text">اللهُ لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ، اللهُ لَا إِلٰهَ إِلَّا هُوَ الرَّحْمٰنِ الرَّحِيمُ... يَا غَوْثُ يَا غَوْثُ يَا غَوْثُ يَا غَوْثُ</div>
+                <div class="arabic-text">الله لا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ اللهُ لَا إِلَهَ إِلَّا هُوَ الرَّحْمَنِ الرَّحِيمُ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ سُبْحَنَكَ إِنِّي كُنْتُ مِنَ الظَّلِمِينَ صَلِّ وَسَلَّمْ وَبَارِكْ أَبَدًا عَلَى النَّبِيِّ الْأُمِّيِّ وَآلِهِ وَأَصْحَابِهِ أَجْمَعِينَ اللهُ اللَّهُ اللَّهُ لَا إِلَهَ إِلَّا اللَّهُ مُحَمَّدٌ رَّسُولُ اللهِ صَلَّى اللهُ تَعَالَى عَلَيْهِ وَسَلَّمَ يَا غَوْتُ يَا غَوْتُ يَا غَوْتُ يَا غَوْتُ</div>
                 <div class="urdu-text">(فائدہ: گناہوں کی مغفرت، آفاتِ دنیاوی و اخروی سے نجات اور صفائے قلب حاصل ہو۔)</div>
             </div>
         </div>
@@ -420,16 +509,27 @@
         <div id="awk-sote-waqt" class="awk-section hidden">
             <h2 class="section-heading">سوتے وقت</h2>
             <div class="verse-block">
-                <p style="color: var(--gold); margin-bottom: 5px;">ایک بار پڑھے:</p>
-                <div class="urdu-text">آیۃ الکرسی شریف ایک بار پڑھیں۔ (جب تک سوئے حفاظتِ الہٰی میں رہے، چوری اور آسیب سے پناہ ہو۔)</div>
+                <p style="color: var(--gold); margin-bottom: 5px;">آیۃ الکرسی شریف ایک بار:</p>
+                <div class="urdu-text">جب تک سوئے حفاظتِ الہٰی میں رہے، چوری اور آسیب سے پناہ ہو۔</div>
             </div>
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">تسبیح حضرت زہرا (رضی اللہ عنہا):</p>
-                <div class="arabic-text" style="font-size: 1.8rem;">سُبْحَانَ اللهِ (۳۳ بار)، اَلْحَمْدُ لِلّٰهِ (۳۳ بار)، اَللهُ أَكْبَرُ (۳۴ بار)</div>
-                <div class="urdu-text">(فائدہ: صبح نشاط اور چستی پر اٹھے گا اور فوائد بے شمار ہیں۔)</div>
+                <div class="arabic-text" style="font-size: 1.8rem;">سُبْحَانَ الله (۳۳ بار ) - الْحَمْدُ لِلهِ (۳۳ بار ) - اللهُ أَكْبَرُ (۳۴ بار )</div>
             </div>
             <div class="verse-block">
-                <div class="urdu-text">دونوں کفِ دست پھیلا کر تینوں قُل (سورہ اخلاص، سورہ فلق، سورہ ناس) ایک ایک بار پڑھ کر ان پر دم کرے اور سر، چہرہ، سینے اور جہاں تک ہاتھ پہنچے سارے بدن پر پھیرے (یہ عمل تین بار کرے)۔</div>
+                <p style="color: var(--gold); margin-bottom: 5px;">الحمد و قل ایک ایک بار:</p>
+                <div class="urdu-text">سوره فاتحه، سوره کافرون، سوره اخلاص، سوره فلق، سوره ناس</div>
+            </div>
+            <div class="verse-block">
+                <p style="color: var(--gold); margin-bottom: 5px;">خواتیم بقرہ ایک بار:</p>
+                <div class="arabic-text">امَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَّبِّهِ وَالْمُؤْمِنُونَ...</div>
+            </div>
+            <div class="verse-block">
+                <p style="color: var(--gold); margin-bottom: 5px;">خواتیم کہف ایک بار:</p>
+                <div class="arabic-text">إِنَّ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّلِحَتِ كَانَتْ لَهُمْ جَنَّتُ الْفِرْدَوْسِ نُزُلًا...</div>
+            </div>
+            <div class="verse-block">
+                <div class="urdu-text">دونوں کف دست پھیلا کر تینوں قل ایک ایک بار پڑھ کر ان پر دم کر کے سر اور چہرہ اور سینے اور آگے پیچھے جہاں تک ہاتھ پہونچے سارے بدن پر پھیرے پھر سہ بارہ اسی طرح۔</div>
             </div>
         </div>
 
@@ -437,20 +537,24 @@
             <h2 class="section-heading">سونے سے اٹھ کر</h2>
             <div class="verse-block">
                 <p style="color: var(--gold); margin-bottom: 5px;">ایک بار پڑھے:</p>
-                <div class="arabic-text">اَلْحَمْدُ لِلّٰهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ</div>
+                <div class="arabic-text">الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَا تَنَا وَإِلَيْهِ النُّشُورُ</div>
                 <div class="urdu-text">(فائدہ: قیامت میں بھی ان شاء اللہ تعالیٰ اللہ عزوجل کی حمد کرتا اٹھے گا۔)</div>
             </div>
         </div>
 
         <div id="awk-deegar" class="awk-section hidden">
-            <h2 class="section-heading">دیگر اذکار و تہجد</h2>
+            <h2 class="section-heading">دیگر اذکار و اشغال</h2>
             <div class="verse-block">
-                <h3 style="color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.5rem; margin-bottom: 10px;">تہجد</h3>
-                <div class="urdu-text">فرض عشاء پڑھنے کے بعد کچھ دیر سو رہے، پھر شب میں طلوعِ صبح سے پہلے جس وقت آنکھ کھلے وضو کر کے کم از کم دو رکعت پڑھ لے، تہجد ہو گئی۔ سنت آٹھ رکعت ہیں اور معمولِ مشائخ ۱۲ رکعت ہے۔</div>
+                <h3 class="sub-heading">تہجد</h3>
+                <div class="urdu-text">فرض عشاء پڑھنے کے بعد کچھ دیر سو رہے پھر شب میں طلوع صبح سے پہلے جس وقت آنکھ کھلے... وضوء کر کے کم از کم دو رکعت پڑھ لے تہجد ہوگئی۔ سنت آٹھ رکعت ہیں اور معمول مشائخ ۱۲ رکعت ۔</div>
             </div>
             <div class="verse-block">
-                <h3 style="color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.5rem; margin-bottom: 10px;">پاسِ انفاس</h3>
-                <div class="urdu-text">ہر سانس کی آمد و رفت میں کھڑے، بیٹھے، چلتے پھرتے، باوضو یا بے وضو دل ہی دل میں ذکر اللہ ملحوظ رکھے۔ یہاں تک کہ اس کی عادت پڑ جائے اور تکلف کی حاجت نہ رہے۔ اب سوتے میں بھی ہر سانس کے ساتھ ذکر جاری رہے گا۔</div>
+                <h3 class="sub-heading">پاسِ انفاس</h3>
+                <div class="urdu-text">ہر سانس کی آمد ورفت میں کھڑے بیٹھے، چلتے پھرتے ، وضو بے وضو بلکہ قضائے حاجت کے وقت بھی دل ہی دل میں ملحوظ رکھے یہاں تک کہ اس کی عادت پڑ جائے اور تکلف کی حاجت نہ رہے۔ اب سوتے میں بھی ہر سانس کے ساتھ ذکر جاری رہے گا۔</div>
+            </div>
+            <div class="verse-block">
+                <h3 class="sub-heading">تصور شیخ</h3>
+                <div class="urdu-text">خلوت میں آوازوں سے دور رو بمکان شیخ اور وصال ہو گیا تو جس طرف مزار شیخ ہو ادھر متوجہ بیٹھے محض خاموش با ادب بکمال خشوع صورت شیخ کا تصور کرے...</div>
             </div>
         </div>
         
@@ -482,118 +586,159 @@
 <div class="glass-card fazail-container hidden" id="benazeer-barkaat-screen" style="margin-top: 60px;">
     <button class="back-btn-modern" onclick="showBenazeerHome()">&larr; Back</button>
     <br><br>
+    
     <div class="fazail-content" style="margin-top: 10px;">
         <h2 style="font-family: 'Al Qalam Quran', serif; text-align: center; color: var(--danger); font-size: 2.2rem; margin-bottom: 0;">لَا يَرُدُّ الْقَضَاءَ إِلَّا الدُّعَاءُ (مشکوة)</h2>
         <p style="text-align: center; color: #ccc; font-size: 1.1rem; margin-top: 5px; font-family: 'Jameel Noori Nastaleeq', serif;">(دعا کے سوا کوئی چیز تقدیر کو نہیں پھیر سکتی)</p>
         
         <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; text-align: center; color: #fff; font-size: 4.5rem; margin: 15px 0;">بے نظیر عمل</h1>
+        
         <p style="text-align: center; color: var(--gold); font-size: 1.2rem; margin-top: -15px;">از افادات مبارکہ<br>تاجدار اہلسنت، شہزادہ اعلیٰ حضرت مفتی اعظم ہند<br>حضرت علامہ شاہ مصطفی رضا قادری نوری علیہ الرحمة والرضوان</p>
         
-        <p>یہ دعا تاجدار اہلسنت ، شہزادہ اعلیٰ حضرت آقائے نعمت حضرت سیدی الحاج علامہ محمد مصطفی رضا قادری رضوی نوری سر کار مفتی اعظم ہند علیہ الرحمۃ والرضوان (بریلی شریف) نے تقسیم ہند کے موقع پر اسی طرح شائع فرمائی تھی جو آج بھی کار آمد و مفید ہے۔</p>
-        <p style="color: var(--gold); text-align: center; font-size: 1.6rem; margin: 20px 0;">یا خدا تجھ تک ہے سب کا منتہا<br>اولیاء کو حکم نصرت کیجئے</p>
-        <p>مسلمانو ! تم نے وہ کیا جو نہ کرنا چاہئے تھا۔ اپنے گناہوں سے توبہ کرو اور اس دعا کو صبح و شام باوضو ایک ایک بار پڑھو اور اس کو لکھ کر اپنے گھروں اور دوکانوں میں لگاؤ ، اپنے بچوں کے گلے میں ڈالو ، نماز کی پابندی کرو۔ ان شاء اللہ تعالیٰ تمام آفات ارضی و سماوی، ہر قسم کے اغیار کے حملوں سے محفوظی ، ہر ظاہری و باطنی بلاء کا رد ہو گا اور ہر ذلت و پستی سے بچتے رہو گے ۔</p>
+        <p style="text-align: center; font-size: 1rem; color: #aaa; margin-bottom: 30px;">(پیش کش: مركز الدراسات الاسلامیہ جامعۃ الرضا، بریلی شریف)</p>
         
+        <p>یہ دعا تاجدار اہلسنت ، شہزادہ اعلیٰ حضرت آقائے نعمت حضرت سیدی الحاج علامہ محمد مصطفی رضا قادری رضوی نوری سر کار مفتی اعظم ہند علیہ الرحمۃ والرضوان (بریلی شریف) نے تقسیم ہند کے موقع پر اسی طرح شائع فرمائی تھی جو آج بھی کار آمد و مفید ہے۔</p>
+        
+        <p style="color: var(--gold); text-align: center; font-size: 1.6rem; margin: 20px 0;">یا خدا تجھ تک ہے سب کا منتہا<br>اولیاء کو حکم نصرت کیجئے</p>
+        
+        <p>مسلمانو ! تم نے وہ کیا جو نہ کرنا چاہئے تھا۔ اپنے گناہوں سے توبہ کرو اور اس دعا کو صبح و شام باوضو ایک ایک بار پڑھو اور اس کو لکھ کر اپنے گھروں اور دوکانوں میں لگاؤ ، اپنے بچوں کے گلے میں ڈالو ، نماز کی پابندی کرو۔ ان شاء اللہ تعالیٰ تمام آفات ارضی و سماوی، ہر قسم کے اغیار کے حملوں سے محفوظی ، ہر ظاہری و باطنی بلاء کا رد ہو گا اور ہر ذلت و پستی سے بچتے رہو گے ۔</p>
+        <p style="text-align: left; color: var(--gold); font-size: 1.2rem;">فقیر مصطفی رضا قادری غفرلہ</p>
+
         <h3 class="fazail-h" style="text-align: center;">عمل بے نظیر کیا ہے ؟</h3>
-        <p>یہ عمل بے نظیر بہت ہی مخصوص در مخصوص ہے، اس میں بہت سے اسرار ورموز پوشیدہ ہیں۔ بزرگوں کے سینہ بسینہ یہ عمل چلا آرہا ہے۔ ہندوستان کے بٹوارے کے بعد ہندوستان قبرستان بن گیا تھا، ظلم و ستم کے بازار ایسے گرم ہوئے کہ ہر طرف اندھیرا ہی اندھیرا چھا گیا...</p>
+        
+        <p>یہ عمل بے نظیر بہت ہی مخصوص در مخصوص ہے، اس میں بہت سے اسرار ورموز پوشیدہ ہیں۔ بزرگوں کے سینہ بسینہ یہ عمل چلا آرہا ہے۔ ہندوستان کے بٹوارے کے بعد ہندوستان قبرستان بن گیا تھا، ظلم و ستم کے بازار ایسے گرم ہوئے کہ ہر طرف اندھیرا ہی اندھیرا چھا گیا، کوئی کسی کا پرسان حال نہ تھا، حشر کا سا سماں پیدا ہو گیا تھا، جس کو معاون و مدد گار سمجھا جاتا تھا وہی اسے ذبح کر ڈالتا تھا۔</p>
+        
+        <p>غرض محافظ بھی ڈاکو بن گئے تھے، شہر کے شہر، بستیاں کی بستیاں ویران ہوتی جارہی تھیں، اضلاع کے اضلاع شعلوں کی لپیٹ میں آگئے تھے۔ لوگوں نے گھر بار، کاروبار، دولت سب چھوڑ چھوڑ کر بھاگنا شروع کر دیا تھا۔ یہاں تک درد ناک عالم پیدا ہو گیا تھا کہ بیوی بچوں کی بھی ایک دوسرے کو خبر نہ تھی۔ عورتوں کی گود سے بچہ چھین کر سامنے ہی ذبح کر دیا جاتا، پستانیں کاٹ دی جاتیں، ریل میں مسلمان زندہ بیٹھتا، مردہ ملتا، غرض خون کی ندیاں بہ رہی تھیں، انسانی خون سے ہولی کھیلی جارہی تھی۔ عورتوں کو غیروں نے اپنے گھروں میں لونڈیوں سے بدتر بنا کر رکھا تھا۔ لوگوں نے اپنا نام اور لباس تک بدل دیا تھا۔</p>
+        
+        <p>یہ سب دلدوز ، روح فرسا اور کر بناک منظر بریلی کے تاجدار ، سر کار مفتی اعظم ہند علیہ الرحمۃ والرضوان سے دیکھا نہ گیا، چنانچہ اسی عالم میں آنسوؤں کی روانی کے ساتھ اس عمل بے نظیر کو تحریر کیا اور فرمایا: ”بھگوڑو ! بھا گو نہیں، مساجد و مزارات، دولت و جائیداد دوسروں کے سپرد نہ کرو، اپنے گناہوں سے توبہ کرو، نماز کی پابندی کرو، خدا پر بھروسہ کرو، اس کو لکھ کر اپنے اور بچوں کے گلے میں ڈالو، دوکانوں مکانوں میں لکھ کر لگا دو، اور صبح و شام اس کا ورد کرو“۔</p>
+        
+        <p>آج جبکہ پھر حالات بگڑتے جارہے ہیں، مسلمانوں کے اندر خوف و ہراس بڑھتا جا رہا ہے۔ تاجدار اہلسنت کا مسلمانوں پر کرم یاد آیا اور اسی یاد نے اس عمل بے نظیر کو نشر کرنے پر مجبور کیا تاکہ مسلمان ظاہری تدابیر کے ساتھ اس روحانی ہتھیار کو بھی اپنائیں اور خدا کی قدرت کا تماشہ دیکھیں۔ اس کا ورد ہر جائز مقصد میں کامیابی اور ہر آفت سے نجات کا سبب ہے۔ اس عمل بے نظیر کے فیوض و برکات سے مولی تعالی مسلمانوں کو مالا مال کرے، دارین کی آفتوں، مصیبتوں، پریشانیوں، ہلاکتوں سے بچائے۔ آمین بجاہ سید المرسلین علیہ وآلہ و صحبہ وامته الصلاة والتسليم.</p>
     </div>
 </div>
 
 <div class="glass-card fazail-container hidden" id="benazeer-main-screen" style="margin-top: 60px;">
     <button class="back-btn-modern" onclick="showBenazeerHome()">&larr; Back</button>
     <br><br>
+    
     <div class="fazail-content" style="text-align: center;">
         <div style="margin-bottom: 30px;">
             <p style="color: var(--gold); font-size: 1.2rem; margin-bottom: 10px;">اول و آخر تین بار یہ درود شریف پڑھیں</p>
             <div class="verse-block">
                 <div class="arabic-text">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ</div>
-                <div class="arabic-text" style="margin-top: 15px;">اَلصَّلٰوةُ وَالسَّلَامُ عَلَيْكَ يَا دَافِعَ الْبَلَاءِ وَالْوَبَاءِ وَالْقَحْطِ وَالْمَرَضِ وَالْآلَمِ بِإِذْنِ اللَّهِ وَعَلَىٰ اٰلِكَ وَاَصْحَابِكَ يَا مُحَلِّلُ بِإِذْنِ اللَّهِ</div>
+                <div class="urdu-text">(اللہ کے نام سے شروع جو نہایت مہربان رحم والا)</div>
+                <div class="arabic-text" style="margin-top: 15px;">الصَّلٰوةُ وَالسَّلَامُ عَلَيْكَ يَا دَافِعَ الْبَلَاءِ وَالْوَبَاءِ وَالْقَحْطِ وَالْمَرَضِ وَالْآلَمِ بِإِذْنِ اللَّهِ وَعَلَى اٰلِكَ وَاَصْحَابِكَ يَا مُحَلِّلُ بِإِذْنِ اللَّهِ</div>
+                <div class="urdu-text">(رحمت کاملہ اور سلامتی نازل ہو آپ پر اے بلاء، وباء، خشک سالی، بیماری اور غم کے دور فرمانے والے اللہ کے حکم سے اور صلوٰۃ وسلام ہو آپ کے آل و اصحاب پراے مشکلات کو حل فرمانے والے اللہ کے حکم سے۔)</div>
             </div>
         </div>
 
         <div class="verse-block">
             <div class="arabic-text">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ</div>
         </div>
+
         <div class="verse-block">
-            <div class="arabic-text">اَللَّهُمَّ رَبَّ السَّمٰوَاتِ وَرَبَّ الْعَرْشِ الْعَظِيمِ ، كُنْ لِي جَارًا مِّنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ، وَ شَرِّ الْجِنِّ وَالْإِنْسِ وَ اَتْبَاعِهِمْ أَنْ يُغِيرَ عَلَيْنَا أَحَدٌ مِّنْهُمْ وَيُطْغِيَنِي ، عَزَّ جَارُكَ وَجَلَّ ثَنَاءُكَ وَلَا إِلٰهَ غَيْرُكَ ، لَا إِلٰهَ إِلَّا اللَّهُ الْحَلِيمُ الْكَرِيمُ</div>
+            <div class="arabic-text">اللَّهُمَّ رَبَّ السَّمٰوَاتِ وَرَبَّ الْعَرْشِ الْعَظِيمِ ، كُنْ لِي جَارًا مِّنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ، وَ شَرِّ الْجِنِّ وَالْإِنْسِ وَ اَتْبَاعِهِمْ أَنْ يُغِيرَ عَلَيْنَا أَحَدٌ مِّنْهُمْ وَيُطْغِيَنِي ، عَزَّ جَارُكَ وَجَلَّ ثَنَاءُكَ وَلَا إِلٰهَ غَيْرُكَ ، لَا إِلٰهَ إِلَّا اللَّهُ الْحَلِيمُ الْكَرِيمُ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">سُبْحَانَ رَبِّ السَّمٰوَاتِ السَّبْعِ وَرَبِّ الْعَرْشِ الْعَظِيمِ ، لَا إِلٰهَ إِلَّا أَنْتَ عَزَّ جَارُكَ وَجَلَّ ثَنَاءُكَ وَلَا إِلٰهَ غَيْرُكَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">بِسْمِ اللَّهِ عَلَىٰ نَفْسِي بِسْمِ اللَّهِ عَلَىٰ دِينِي بِسْمِ اللَّهِ عَلَىٰ أَهْلِي وَمَالِي وَوَلَدِي بِسْمِ اللَّهِ عَلَىٰ مَا أَعْطَانِي بِسْمِ اللَّهِ عَلَىٰ جَمِيعِ أَهْلِ السُّـنَّةِ</div>
         </div>
+
         <div class="verse-block">
-            <div class="arabic-text">اَللَّهُ رَبِّي لَا يُشْرِكْ بِهِ شَيْئًا ، اَللَّهُ أَكْبَرُ اَللَّهُ أَكْبَرُ اَللَّهُ اَكْبَرُ ، وَاَعَزُّ وَاَجَلُّ وَاَعْظَمُ مِمَّا أَخَافُ وَاَحْذَرُ ، عَزَّ جَارُكَ وَجَلَّ ثَنَاءُكَ وَلَا إِلٰهَ غَيْرُكَ</div>
+            <div class="arabic-text">اللَّهُ رَبِّي لَا يُشْرِكْ بِهِ شَيْئًا ، اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ اللَّهُ اَكْبَرُ ، وَاَعَزُّ وَاَجَلُّ وَاَعْظَمُ مِمَّا أَخَافُ وَاَحْذَرُ ، عَزَّ جَارُكَ وَجَلَّ ثَنَاءُكَ وَلَا إِلٰهَ غَيْرُكَ</div>
         </div>
+
         <div class="verse-block">
-            <div class="arabic-text">اَللَّهُمَّ إِنِّي اَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ شَيْطَانٍ مَّرِيدٍ وَّ مِنْ شَرِّ كُلِّ جَبَّارٍ عَنِيدٍ</div>
+            <div class="arabic-text">اللَّهُمَّ إِنِّي اَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي وَمِنْ شَرِّ شَيْطَانٍ مَّرِيدٍ وَّ مِنْ شَرِّ كُلِّ جَبَّارٍ عَنِيدٍ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">فَإِنْ تَوَلَّوْا فَقُلْ حَسْبِيَ اللَّهُ لَا إِلٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">إِنَّ وَلِيِّيَ اللَّهُ الَّذِي نَزَّلَ الْكِتَابَ وَهُوَ يَتَوَلَّى الصَّالِحِينَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">بِسْمِ اللَّهِ بَابُنَا ، تَبَارَكَ اللَّهُ حِيطَانُنَا ، يٰسٓ سَقْفُنَا ، حٰمٓعٓسٓقٓ حِمَايَتُنَا ، كٓهٰيٰعٓصٓ كِفَايَتُنَا ، فَسَيَكْفِيكَهُمُ اللَّهُ وَهُوَ السَّمِيعُ الْعَلِيمُ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">سِتْرُ الْعَرْشِ مَسْبُولٌ عَلَيْنَا ، وَكَلِمَاتُ اللَّهِ اَقْفَالُ عَلَيْنَا ، وَعَيْنُ اللَّهِ نَاظِرَةٌ إِلَيْنَا ، وَبِحَوْلِ اللَّهِ لَا يَقْدِرُ اَحَدٌ عَلَيْنَا ، وَاللَّهُ مِنْ وَّرَائِهِمْ مُّحِيطٌ ، بَلْ هُوَ قُرْآنٌ مَّجِيدٌ فِي لَوْحٍ مَّحْفُوظٍ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">إِنْ كُلُّ نَفْسٍ لَّمَّا عَلَيْهَا حَافِظٌ ، لَا إِلٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">وَجَعَلْنَا مِنْ بَيْنِ أَيْدِيهِمْ سَدًّا وَّ مِنْ خَلْفِهِمْ سَدًّا فَاَغْشَيْنَاهُمْ فَهُمْ لَا يُبْصِرُونَ ، صُمٌّ بُكْمٌ عُمْيٌ فَهُمْ لَا يَرْجِعُونَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">هٰذَا يَوْمٌ لَّا يَنْطِقُونَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">يَا مَعْشَرَ الْجِنِّ وَالْإِنْسِ إِنِ اسْتَطَعْتُمُ أَنْ تَنْفُذُوا مِنْ أَقْطَارِ السَّمٰوَاتِ وَالْأَرْضِ فَانْفُذُوا ، لَا تَنْفُذُونَ إِلَّا بِسُلْطَانٍ ، فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">أَفَحَسِبْتُمْ أَنَّمَا خَلَقْنَاكُمْ عَبَثًا وَّاَنَّكُمْ إِلَيْنَا لَا تُرْجَعُونَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">كٓهٰيٰعٓصٓ حٰمٓعٓسٓقٓ ، قُلْ مَنْ يَكْلَؤُكُمْ بِاللَّيْلِ وَالنَّهَارِ مِنْ شَرِّ كُلِّ حَاسِدٍ وَّحَاقِدٍ وَّسَارِقٍ وَّطَارِقٍ وَّحَيَّةٍ وَّمَيْتَةٍ وَّعَقْرَبٍ وَّاَسَدٍ وَّفِيلٍ وَّذِئْبٍ وَّكَلْبٍ</div>
         </div>
+
         <div class="verse-block">
             <p style="color: var(--gold); font-size: 1.1rem; margin-bottom: 5px;">سوره اخلاص سات مرتبہ:</p>
             <div class="arabic-text">اَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ</div>
             <div class="arabic-text" style="margin-top: 15px;">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ</div>
             <div class="arabic-text" style="margin-top: 15px;">قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَّهُ كُفُوًا أَحَدٌ ۝</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">مُحِيطٌ عَلَىٰ كُلِّ شَيْءٍ ، مَا شَاءَ اللَّهُ كَانَ وَمَا لَمْ يَشَأْ لَمْ يَكُنْ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">اَللَّهُمَّ هُوَ الْحَافِظُ ، اَللَّهُمَّ هُوَ الْغَافِرُ ، اَللَّهُمَّ هُوَ الشَّافِى ، اَللَّهُمَّ هُوَ الْوَافِي ، اَللَّهُمَّ هُوَ الْكَافِى ، اَللَّهُمَّ هُوَ الْمَجِيدُ ، اَللَّهُمَّ هُوَ الْأَحَدُ ، اَللَّهُمَّ هُوَ الصَّمَدُ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">اَللَّهُمَّ يَا وَلِيَّ الْوَلَاءِ وَيَا كَاشِفَ الضُّرِّ وَالْبَلَاءِ وَيَا سَامِعَ الدُّعَاءِ ، رُدَّ عَنِّي الْبَلَاءَ وَالْوَبَاءَ وَالْجَلَاءَ وَالْفَجَاءَ بِحُرْمَةِ النَّبِيِّ الْمُصْطَفَىٰ صَلَّى اللَّهُ تَعَالَىٰ عَلَيْهِ وَسَلَّمَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">اَللَّهُمَّ احْفَظْنَا مِنْ جَمِيعِ أَعْدَائِنَا ، اَللَّهُمَّ احْفَظْنَا مِنْ جَمِيعِ بَلَائِنَا</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">اَللَّهُمَّ يَا شَافِي يَا كَافِي يَا مُعَافِي ، يَا دَافِعُ يَا رَافِعُ ، يَا وَاحِدُ يَا أَحَدُ يَا صَمَدُ يَا فَرْدُ يَا وِتْرُ يَا مَنْ لَّمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُنْ لَّهُ كُفُوًا اَحَدٌ ، يَا قُدُّوسُ يَا سَلامُ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">وَصَلَّى اللَّهُ تَعَالَىٰ عَلَىٰ خَيْرِ خَلْقِهِ سَيِّدِنَا مُحَمَّدٍ وَّ عَلَىٰ آلِهِ وَ صَحْبِهِ أَجْمَعِينَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">اَللَّهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ نَّبِيِّكَ الْمُصْطَفَىٰ وَحَبِيبِكَ الْمُجْتَبَىٰ وَرَسُولِكَ الْمُرْتَضَىٰ وَعَلَىٰ اٰلِهِ وَأَصْحَابِهِ وَ ذُرِّيَّاتِهِ وَأَهْلِ بَيْتِهِ وَأَزْوَاجِهِ تَسْلِيمًا كَثِيرًا كَثِيرًا بِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِينَ</div>
         </div>
+
         <div class="verse-block">
             <div class="arabic-text">وَيَا حَيُّ وَيَا قَيُّومُ وَيَا فَرْدُ وَيَا حَكَمُ وَيَا عَدْلُ وَيَا قُدُّوسُ وَيَا وَدُودُ وَيَا هَادِي وَيَا أَكْرَمَ الْأَكْرَمِينَ. آمین</div>
         </div>
 
         <h3 class="fazail-h" style="text-align: center; border-bottom: none; margin-top: 40px;">نقشِ بے نظیر (تعویذ)</h3>
-        
         <div class="taweez-container">
             <div class="taweez-top-num">۹۲۷۸۶</div>
             <table class="taweez-table">
