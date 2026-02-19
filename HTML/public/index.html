@@ -7,7 +7,8 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     
-    <title>Khatme Qadirya</title>
+    <title>Majmua Aamaal</title>
+    
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0F2027">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -63,18 +64,17 @@
         .bn-btn { width: 85%; max-width: 400px; display: flex; align-items: center; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.2); }
         .bn-btn:active { transform: scale(0.96); }
         
-        .bn-btn-num-box { width: 70px; display: flex; justify-content: center; align-items: center; background: #fff; color: #000; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; padding: 15px 0; font-weight: bold; }
+        .bn-btn-num-box { width: 70px; display: flex; justify-content: center; align-items: center; background: #fdf6e3; color: #d35400; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; padding: 15px 0; font-weight: bold; border-right: 2px solid rgba(0,0,0,0.1); }
         .bn-btn-text-box { flex-grow: 1; text-align: center; padding: 15px; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; color: #fff; line-height: 1; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         
-        .bn-color-1 { background: linear-gradient(to right, #d35400, #e67e22); }
-        .bn-color-2 { background: linear-gradient(to right, #8e44ad, #9b59b6); }
+        .bn-color-1 { background: linear-gradient(to right, #e67e22, #d35400); }
+        .bn-color-2 { background: linear-gradient(to right, #9b59b6, #8e44ad); }
 
         /* --- EXISTING APP STYLES --- */
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
         .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
-        #settings-badge { position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; backdrop-filter: blur(5px); }
 
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         
@@ -145,13 +145,20 @@
 <body>
 
 <div id="super-home-screen" class="modern-screen">
-    
     <div class="modern-body">
+        
         <div style="position: absolute; top: 20px; right: 20px; z-index: 101;" onclick="showSettings()">
             <div style="width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);">⚙️</div>
         </div>
+
+        <div style="position: absolute; top: 20px; left: 20px; z-index: 101;">
+            <div style="color: white; font-family: 'Outfit', sans-serif;">
+                <span style="font-size: 0.8rem; color: #ccc;">Welcome to</span><br>
+                <strong style="font-size: 1.2rem;">Majmua Aamaal</strong>
+            </div>
+        </div>
         
-        <div class="header-banner" style="margin-top: 30px;">
+        <div class="header-banner" style="margin-top: 80px;">
             <h2 class="header-main-title">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
             <h3 class="header-sub-title">اَلصَّلٰوۃُ وَالسَّلَامُ عَلَیْكَ یَا رَسُولَ اللّٰهِ</h3>
         </div>
@@ -226,18 +233,23 @@
     
     <div class="fazail-content" style="text-align: right; margin-top: 10px;">
         <h2 style="font-family: 'Al Qalam Quran', serif; text-align: center; color: var(--danger); font-size: 2.2rem; margin-bottom: 0;">لَا يَرُدُّ الْقَضَاءَ إِلَّا الدُّعَاءُ</h2>
-        <p style="text-align: center; color: #ccc; font-size: 1rem; margin-top: 5px; font-family: 'Jameel Noori Nastaleeq', serif;">(دعاء کے سوا کوئی چیز تقدیر کو نہیں پھیر سکتی)</p>
+        <p style="text-align: center; color: #ccc; font-size: 1.1rem; margin-top: 5px; font-family: 'Jameel Noori Nastaleeq', serif;">(دعا کے سوا کوئی چیز تقدیر کو نہیں پھیر سکتی)</p>
         
         <h1 style="font-family: 'Jameel Noori Nastaleeq', serif; text-align: center; color: #fff; font-size: 4rem; margin: 15px 0;">بے نظیر عمل</h1>
+        <p style="text-align: center; color: var(--gold); font-size: 1.2rem; margin-top: -15px;">بحوالہ: مجموعہ وظائف مع دلائل الخیرات (مترجم)</p>
+        
         <h2 class="fazail-h" style="text-align: center; border-bottom: none; font-size: 2.5rem; text-decoration: none;">برکاتِ بے نظیر</h2>
         
-        <p>یہ دعائے بے نظیر حضرت غوث الاعظم، مخدوم اعظم، قطب ربانی، محبوب سبحانی، سیدنا و مولانا حضرت شیخ عبدالقادر جیلانی قدس سرہ النورانی سے منقول ہے۔ اس کے پڑھنے کے بے شمار فوائد اور مجرب مقاصد ہیں۔ یہ عمل مصیبت زدوں، بے سہاروں، پریشان حالوں، بے روزگاروں، بیماریوں کے علاج اور ہر طرح کی سختی کے دفعیہ کے لیے بے حد مفید ہے۔</p>
+        <p>یہ دعائے بے نظیر و مبارک غوثِ اعظم، مخدومِ معظم، سیّدِ سادات، منبعِ سعادات، قطبِ ربانی، محبوبِ سبحانی، غوثِ صمدانی، محی الدین سیّد عبدالقادر جیلانی قدس سرہ النورانی کی تصنیف لطیف ہے۔ جو طرح طرح کے مصائب اور آلام کے دور کرنے میں اکسیر ہے۔</p>
         
         <h3 class="fazail-h">ارشادِ غوث اعظم رحمۃ اللہ علیہ:</h3>
         <p>جو شخص مصیبت میں مجھ سے مدد مانگے، وہ مصیبت دور ہو۔ جو شخص سختی میں میرا نام لے کر پکارے، وہ سختی دور ہو۔ اور جو شخص کسی حاجت کے وقت اللہ تعالیٰ کی بارگاہ میں میرا وسیلہ دے کر دعا مانگے، وہ حاجت پوری ہو۔</p>
+        <p style="color: #aaa; text-align: left; font-size: 0.9rem;">(اقتباس: بہجۃ الاسرار، ص ۱۹۷)</p>
         
         <h3 class="fazail-h">عمل بے نظیر کیا ہے؟</h3>
-        <p>یہ ۱۱۰۰ (گیارہ سو) مرتبہ روزانہ کا مخصوص عمل ہے۔ اس کے پڑھنے کے ہزاروں مجرب مقاصد ہیں۔ جو شخص اسے پابندی سے پڑھتا ہے وہ ہر آفت سے محفوظ رہتا ہے۔ مقدمات میں کامیابی، دشمنوں پر فتح، رزق میں برکت اور دلی مرادیں پوری ہونے کے لیے یہ عمل اکسیر اعظم کا درجہ رکھتا ہے۔ جب بھی کوئی سخت مشکل پیش آئے تو باوضو ہو کر، قبلہ رو بیٹھ کر نہایت عاجزی اور یقین کے ساتھ اس کو پڑھیں۔ اول و آخر ۱۱ مرتبہ درود شریف پڑھنا لازم ہے۔</p>
+        <p>یہ ۱۱۰۰ (گیارہ سو) مرتبہ کا نہایت ہی مختصر و مجرب عمل ہے جس کے بے شمار اور لاجواب فوائد ہیں۔ جو شخص اسے پابندی سے پڑھے وہ ہر آفت سے محفوظ رہے۔ دشمنوں کی عداوت سے بچنے، ظالموں کے شر سے محفوظ رہنے، ہر قسم کے سحر اور جادو ٹونے کے اثرات کو ختم کرنے کے لئے یہ بے نظیر عمل اکسیرِ اعظم کا درجہ رکھتا ہے۔ جب بھی کوئی سخت مشکل پیش آئے تو باوضو ہو کر، قبلہ رو بیٹھ کر نہایت عاجزی اور یقین کے ساتھ اس کو پڑھیں۔ اول و آخر ۱۱ مرتبہ درود شریف پڑھنا لازم ہے۔</p>
+
+        <p style="color: var(--danger); text-align: center; font-weight: bold; margin-top: 20px;">نوٹ: خواتین مخصوص ایام میں اس عمل کو نہ پڑھیں۔</p>
     </div>
 </div>
 
@@ -247,23 +259,63 @@
     
     <div class="fazail-content" style="text-align: center;">
         <h2 style="font-family: 'Al Qalam Quran', serif; font-size: 2.5rem; color: #2ecc71; margin-bottom: 5px;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-        <h2 style="font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; color: #27ae60; margin-top: 0; margin-bottom: 30px;">اَلصَّلٰوۃُ وَالسَّلَامُ عَلَیْكَ یَا رَسُولَ اللّٰهِ</h2>
+        <h2 style="font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; color: #27ae60; margin-top: 0; margin-bottom: 20px;">اَلصَّلٰوۃُ وَالسَّلَامُ عَلَیْكَ یَا رَسُولَ اللّٰهِ</h2>
         
-        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--gold); border-radius: 15px; padding: 25px; margin-bottom: 20px;">
-            <p style="font-family: 'Al Qalam Quran', serif; font-size: 2.2rem; color: #fff; line-height: 2.0; margin: 0;">
-                یَا رَحْمٰنُ یَا رَحِیْمُ بِحَقِّ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ<br>
-                یَا حَیُّ یَا قَیُّوْمُ بِرَحْمَتِكَ اَسْتَغِیْثُ<br>
-                یَا اَرْحَمَ الرَّاحِمِیْنَ<br>
-                یَا قَاضِیَ الْحَاجَاتِ<br>
-                یَا دَافِعَ الْبَلِیَّاتِ<br>
-                یَا مُجِیْبَ الدَّعَوَاتِ<br>
-                اِقْضِ حَاجَتِیْ وَ فَرِّجْ ھَمِّیْ
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--gold); border-radius: 15px; padding: 25px; margin-bottom: 30px; text-align: center; direction: rtl;">
+            <p class="font-arabic" style="font-size: 2.1rem; color: #fff; line-height: 2.2; margin: 0;">
+                اَللّٰھُمَّ اِنِّیْ اَسْئَلُكَ بِحَقِّ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِفَضْلِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِعَظَمَةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِجَلَالِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِجَمَالِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِکَمَالِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِھَیْبَةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِمَنْزِلَةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِمَلَکُوْتِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِجَبَرُوْتِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِکِبْرِیَاءِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِثَنَاءِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِبَھَاءِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِکَرَامَةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِسُلْطَانِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِبَرَکَةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِعِزَّةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِقُوَّةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                وَ بِقُدْرَةِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝<br>
+                اِرْفَعْ قَدْرِیْ وَاشْرَحْ صَدْرِیْ وَ یَسِّرْ اَمْرِیْ ۝<br>
+                وَارْزُقْنِیْ مِنْ حَیْثُ لَا یَحْتَسِبُ ۝<br>
+                بِفَضْلِكَ وَ کَرَمِكَ یَا مَنْ ھُوَ کٓھٰیٰعٓصٓ حٰمٓعٓسٓقٓ ۝<br>
+                وَ اَسْئَلُكَ بِجَلَالِ الْعِزَّةِ وَ جَلَالِ الْھَیْبَةِ وَ جَبَرُوْتِ الْعَظَمَةِ ۝<br>
+                اَنْ تَجْعَلَنِیْ مِنْ عِبَادِكَ الصَّالِحِیْنَ الَّذِیْنَ لَا خَوْفٌ عَلَیْھِمْ وَ لَا ھُمْ یَحْزَنُوْنَ ۝<br>
+                بِرَحْمَتِكَ یَا اَرْحَمَ الرَّاحِمِیْنَ ۝<br>
+                وَ صَلَّی اللّٰهُ عَلٰی سَیِّدِنَا مُحَمَّدٍ وَ عَلٰی اٰلِہٖ وَ صَحْبِہٖ وَ سَلَّمَ ۝
             </p>
         </div>
+
+        <h3 class="fazail-h" style="text-align: center; border-bottom: none;">نقشِ بے نظیر</h3>
         
-        <p style="font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.4rem; color: #e0e0e0; text-align: right; margin-top: 20px;">
-            <strong style="color: var(--gold);">نوٹ:</strong> اس مبارک عمل کو اول و آخر ۱۱ مرتبہ درود شریف کے ساتھ روزانہ ۱۱۰۰ مرتبہ مکمل توجہ، یکسوئی اور عاجزی کے ساتھ پڑھیں۔ اللہ رب العزت حضور غوث پاک رضی اللہ عنہ کے صدقے آپ کی تمام مشکلات حل فرمائے گا۔
-        </p>
+        <div style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 30px;">
+            <table style="border-collapse: collapse; border: 2px solid var(--gold); background: rgba(0,0,0,0.4); text-align: center; color: #fff; font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                <tr>
+                    <td colspan="3" style="border-bottom: 2px solid var(--gold); padding: 5px;">۷۸۶</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦٦</td>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦١</td>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٥٩</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦٠</td>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦٢</td>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦٤</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦٣</td>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٦٥</td>
+                    <td style="border: 1px solid var(--gold); padding: 15px 25px;">٢٥٨</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -475,7 +527,7 @@
         if(!currentSessionId) return;
         const link = `${window.location.origin}/?join=${currentSessionId}&pass=${encodeURIComponent(currentSessionPass)}`;
         if (navigator.share) {
-            navigator.share({ title: 'Join Khatme Qadirya', text: 'Join my Live Zikr Session!', url: link }).catch(console.error);
+            navigator.share({ title: 'Join Majmua Aamaal', text: 'Join my Live Zikr Session!', url: link }).catch(console.error);
         } else {
             navigator.clipboard.writeText(link).then(() => { alert("Link Copied!"); });
         }
