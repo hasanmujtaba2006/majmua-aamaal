@@ -24,6 +24,7 @@
             --text-muted: #cfcfcf;
             --btn-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
             --danger: #ef4444;
+            --special-bg: rgba(255, 215, 0, 0.1);
         }
         
         @font-face { font-family: 'Al Qalam Quran'; src: url('Al Qalam Quran Majeed Web Regular.ttf') format('truetype'); }
@@ -59,7 +60,6 @@
         .awk-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 25px 10px; text-align: center; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.0rem; color: #fff; line-height: 1.3; box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 60px; }
         .awk-card:active { transform: scale(0.95); }
         
-        /* Matching the accent borders from the reference image */
         .border-green { border-right: 6px solid #2ecc71; border-bottom: 2px solid #2ecc71; }
         .border-blue { border-right: 6px solid #3498db; border-bottom: 2px solid #3498db; }
         .border-yellow { border-right: 6px solid #f1c40f; border-bottom: 2px solid #f1c40f; }
@@ -78,30 +78,103 @@
         .urdu-text { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.3rem; color: #cfcfcf; direction: rtl; line-height: 1.8; }
         .section-heading { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; color: var(--gold); text-align: center; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); border-bottom: 1px dashed rgba(255,215,0,0.3); padding-bottom: 10px; }
 
+        /* --- BENAZEER AMAL SECTION STYLES --- */
+        .benazeer-title-container { text-align: center; margin-top: 40px; margin-bottom: 40px; }
+        .benazeer-main-title { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 4.5rem; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 0; line-height: 1; }
+        
+        .bn-btn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%; }
+        .bn-btn { width: 85%; max-width: 400px; display: flex; align-items: center; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.2); }
+        .bn-btn:active { transform: scale(0.96); }
+        
+        .bn-btn-num-box { width: 70px; display: flex; justify-content: center; align-items: center; background: #fdf6e3; color: #d35400; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; padding: 15px 0; font-weight: bold; border-right: 2px solid rgba(0,0,0,0.1); }
+        .bn-btn-text-box { flex-grow: 1; text-align: center; padding: 15px; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 3rem; color: #fff; line-height: 1; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        
+        .bn-color-1 { background: linear-gradient(to right, #e67e22, #d35400); }
+        .bn-color-2 { background: linear-gradient(to right, #9b59b6, #8e44ad); }
+
+        /* Taweez Grid Styles */
+        .taweez-container { display: flex; flex-direction: column; align-items: center; margin: 30px 0; }
+        .taweez-table { border-collapse: collapse; border: 2px solid var(--gold); background: rgba(0,0,0,0.4); text-align: center; color: #fff; font-family: 'Jameel Noori Nastaleeq', serif; font-size: 1.6rem; box-shadow: 0 5px 15px rgba(0,0,0,0.5); direction: rtl; width: 100%; max-width: 350px; }
+        .taweez-table td { border: 1px solid var(--gold); padding: 12px 5px; width: 25%; }
+        .taweez-top-num { font-family: 'Al Qalam Quran', serif; font-size: 1.5rem; margin-bottom: 5px; color: var(--gold); }
+
         /* --- EXISTING APP STYLES --- */
         #live-visitor-badge { position: fixed; top: 20px; left: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(56, 239, 125, 0.3); padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; gap: 8px; z-index: 100; backdrop-filter: blur(5px); }
         .live-dot { width: 8px; height: 8px; background-color: #38ef7d; border-radius: 50%; box-shadow: 0 0 10px #38ef7d; animation: blink 2s infinite; }
         .live-text { font-size: 0.85rem; color: #fff; font-weight: 500; }
-        
+        .status-disconnected .live-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
         .glass-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; margin: 20px auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         
+        .home-card-inner { background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 20px; padding: 30px; margin: 15px 0; width: 85%; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .home-card-inner:hover { border-color: var(--gold); transform: translateY(-5px); background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
+        .card-title-urdu-inner { font-family: 'Jameel Noori Nastaleeq', serif; font-size: 2.8rem; color: #fff; line-height: 1.2; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .card-title-eng-inner { font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+
         .fazail-container { max-width: 800px !important; width: 95%; padding: 30px 15px; }
         .fazail-content { max-height: 75vh; overflow-y: auto; text-align: right; direction: rtl; padding-right: 15px; font-size: 1.4rem; line-height: 2.2; color: #e0e0e0; font-family: 'Jameel Noori Nastaleeq', serif; }
-        
-        .back-btn-modern { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 20px; position: absolute; top: 20px; left: 20px; cursor: pointer; backdrop-filter: blur(5px); z-index: 100; font-family: 'Outfit', sans-serif; font-weight: bold; }
-        
-        /* Reusing common styles for elements */
-        .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
-        .home-btn.primary { background: var(--btn-gradient); border: none; color: white; }
+        .fazail-h { color: var(--gold); font-size: 1.8rem; margin-top: 25px; margin-bottom: 5px; text-decoration: underline; text-decoration-color: rgba(255,215,0,0.5); font-weight: bold; }
+        .fazail-content ul { list-style-type: arabic-indic; margin-right: 30px; padding: 0; }
+        .fazail-content li { margin-bottom: 10px; }
+
+        h1 { margin: 0 0 30px 0; font-size: 1.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
         .input-field { width: 80%; padding: 15px; border-radius: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: white; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
+        .home-btn { width: 100%; padding: 20px; margin: 10px 0; border-radius: 20px; font-size: 1.2rem; font-weight: bold; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.2s; }
+        .home-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        .home-btn.primary { background: var(--btn-gradient); border: none; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .home-btn.solo { border-color: #38ef7d; color: #38ef7d; }
+        .session-list { width: 100%; margin-top: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
+        .session-item { background: rgba(255,255,255,0.1); padding: 15px; margin-bottom: 10px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
+        .session-item:hover { border-color: var(--gold); background: rgba(255,255,255,0.15); }
+        .join-badge { background: var(--btn-gradient); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .zikr-header { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+        .zikr-badge { background: var(--gold); color: #0F2027; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Al Qalam Quran', serif; font-size: 1.6rem; font-weight: bold; margin-bottom: -22px; z-index: 10; border: 3px solid #0F2027; }
+        .title-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 30px 20px 15px 20px; width: 100%; position: relative; }
+        .zikr-title { font-family: 'Gulzar', serif; font-size: 2.0rem; color: #ffffff; line-height: 1.6; margin-bottom: 5px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .zikr-subtitle { font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Modal & Progress hidden for brevity, assumed standard */
+        #zikr-body-container { width: 100%; min-height: 100px; margin-bottom: 20px; padding: 10px; text-align: center; }
+        #arabic-body { font-size: 2.0rem; line-height: 1.6; color: #ffffff; margin-bottom: 15px; direction: rtl; white-space: pre-wrap; user-select: text; text-align: center; }
+        #roman-body { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #e0e0e0; line-height: 1.5; white-space: pre-line; font-style: italic; user-select: text; }
+        
+        .progress-container { position: relative; width: 160px; height: 160px; margin-bottom: 25px; flex-shrink: 0; }
+        .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .counter-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; font-weight: 700; }
+        .target-label { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #aaa; }
+        #tap-btn { width: 100%; background: var(--btn-gradient); color: white; border: none; padding: 20px; font-size: 1.2rem; font-weight: 700; border-radius: 50px; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2); transition: transform 0.1s; }
+        #tap-btn:active { transform: scale(0.96); }
+        #tap-btn:disabled { background: #4b5563; box-shadow: none; }
+        .pulsing { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(56, 239, 125, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); } }
+        #status-msg { margin-top: 15px; min-height: 30px; font-size: 1.1rem; font-weight: bold; color: var(--gold); }
+        
+        .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+        .admin-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: bold; min-width: 120px; }
+        .btn-restart { background: #ff9f43 !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 10px; }
+        .btn-end { background: var(--danger) !important; color: #fff !important; width: 100%; flex: 100%; margin-top: 5px; }
+        .btn-share { background: #0984e3 !important; color: white !important; width: 100%; margin-top: 5px; }
+        
+        #custom-modal, #password-modal, #settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .modal-content { background: #1a262f; border: 1px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
+        .modal-buttons { margin-top: 20px; display: flex; gap: 10px; }
+        .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
+        .modal-confirm { background: var(--gold); color: #000; }
+        .modal-cancel { background: #4b5563; color: white; }
+        
+        .back-btn { background: none; border: none; color: #aaa; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; text-decoration: underline; }
+        .back-btn-modern { background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 20px; position: absolute; top: 20px; left: 20px; cursor: pointer; backdrop-filter: blur(5px); z-index: 100; font-family: 'Outfit', sans-serif; font-weight: bold; }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .toggle-label { color: white; font-size: 1.1rem; }
+        
+        #reading-container { display: none; margin-top: 10px; width: 100%; height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,215,0,0.2); }
+        .reading-text { font-family: 'Al Qalam Quran', serif; font-size: 1.8rem; line-height: 2.0; color: #fff; text-align: center; white-space: pre-wrap; direction: rtl; }
     </style>
 </head>
 <body>
 
 <div id="super-home-screen" class="modern-screen">
     <div class="modern-body">
+        
         <div style="position: absolute; top: 20px; right: 20px; z-index: 101;" onclick="showSettings()">
             <div style="width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);">⚙️</div>
         </div>
@@ -119,7 +192,9 @@
         </div>
         
         <div class="modern-card" onclick="showInnerHome()">
-            <div class="card-icon-box"><img src="khatme qadirya shareef.jpg" alt="Khatme Qadirya" class="card-icon-img"></div>
+            <div class="card-icon-box">
+                <img src="khatme qadirya shareef.jpg" alt="Khatme Qadirya" class="card-icon-img">
+            </div>
             <div class="card-text-content">
                 <h3>ختمِ قادریہ شریف</h3>
                 <p>Khatme Qadirya Shareef</p>
@@ -127,7 +202,9 @@
         </div>
 
         <div class="modern-card" onclick="showBenazeerHome()">
-            <div class="card-icon-box"><img src="be-nazeer amal.jpeg" alt="Be Nazeer Amal" class="card-icon-img"></div>
+            <div class="card-icon-box">
+                <img src="be-nazeer amal.jpeg" alt="Be Nazeer Amal" class="card-icon-img">
+            </div>
             <div class="card-text-content">
                 <h3>بے نظیر عمل</h3>
                 <p>Be-Nazeer Amal</p>
@@ -135,7 +212,9 @@
         </div>
 
         <div class="modern-card" onclick="showAwkHome()">
-            <div class="card-icon-box"><img src="al-wazifatul karima.jpeg" alt="Al Wazifatul Karima" class="card-icon-img"></div>
+            <div class="card-icon-box">
+                <img src="al-wazifatul karima.jpeg" alt="Al Wazifatul Karima" class="card-icon-img">
+            </div>
             <div class="card-text-content">
                 <h3>الوَظِيفَةُ الْكَرِيمَة</h3>
                 <p>Al-Wazifatul Karima</p>
@@ -143,7 +222,9 @@
         </div>
 
         <div class="modern-card" onclick="alert('Shajra-e-Aaliyah will be available in the next update!')">
-            <div class="card-icon-box"><img src="shajra-e-aaliyah.jpg" alt="Shajra e Aaliyah" class="card-icon-img"></div>
+            <div class="card-icon-box">
+                <img src="shajra-e-aaliyah.jpg" alt="Shajra e Aaliyah" class="card-icon-img">
+            </div>
             <div class="card-text-content">
                 <h3>شجرہ عالیہ</h3>
                 <p>Shajra-e-Aaliyah</p>
