@@ -1016,7 +1016,12 @@
     </div>
 </div>
 
-<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    if (typeof io === 'undefined') {
+        document.write('<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"><\/script>');
+    }
+</script>
 <script>
     if ('serviceWorker' in navigator) { 
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
@@ -1117,7 +1122,15 @@
         }
     }
 
-    socket.on('updateUserCount', (count) => { if(liveCountElement) liveCountElement.innerText = count; });
+    socket.on('updateUserCount', (count) => { 
+        if (!currentSessionId && liveCountElement) { 
+            liveCountElement.innerText = count; 
+            const badgeTextEl = document.querySelector('#live-visitor-badge .live-text');
+            if (badgeTextEl) {
+                badgeTextEl.innerHTML = `<span id="live-count">${count}</span> Online`;
+            }
+        } 
+    });
     
     function hideAll() { 
         const screens = [
@@ -1191,8 +1204,7 @@
     socket.on('joinedSession', (data) => { 
         currentSessionId = data.sessionId; 
         localStorage.setItem('kq_session', currentSessionId);
-        if(data.adminToken) localStorage.setItem('kq_admin', data.adminToken);
-        else localStorage.removeItem('kq_admin'); 
+        if(data.adminToken) localStorage.setItem('kq_admin', data.adminToken); 
 
         hideAll(); 
         document.getElementById('app-screen').classList.remove('hidden'); 
@@ -1264,6 +1276,13 @@
             if(tapBtn) { tapBtn.disabled = false; tapBtn.innerText = "TAP"; tapBtn.style.background = "var(--btn-gradient)"; } 
             if(statusMsg) statusMsg.innerText = ""; 
         } 
+        if (data.participantCount !== undefined) {
+            const badgeTextEl = document.querySelector('#live-visitor-badge .live-text');
+            if (badgeTextEl && liveCountElement) {
+                liveCountElement.innerText = data.participantCount;
+                badgeTextEl.innerHTML = `<span id="live-count">${data.participantCount}</span> in Group`;
+            }
+        }
     }
     
     socket.on('updateState', updateUI);
