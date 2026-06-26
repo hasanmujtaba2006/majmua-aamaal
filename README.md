@@ -8,7 +8,7 @@
 
 **Majmua Aamaal** is a comprehensive, mobile-first Progressive Web Application (PWA) designed to digitize classical Islamic literature and facilitate global, synchronized recitation (Zikr) sessions. 
 
-Live Demo: [Majmua Aamaal on Render](https://khatme-qadirya.onrender.com)
+Live Demo: [Majmua Aamaal on Render](https://majmua-aamaal.onrender.com)
 
 ## 🚀 Key Features
 
