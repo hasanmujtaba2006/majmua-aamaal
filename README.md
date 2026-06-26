@@ -8,7 +8,7 @@
 
 **Majmua Aamaal** is a comprehensive, mobile-first Progressive Web Application (PWA) designed to digitize classical Islamic literature and facilitate global, synchronized recitation (Zikr) sessions. 
 
-Live Demo: [Majmua Aamaal on Render](https://majmua-aamaal.onrender.com)
+Live Demo: [Majmua Aamaal on Railway](https://majmua-aamaal.up.railway.app)
 
 ## 🚀 Key Features
 
@@ -27,7 +27,7 @@ Live Demo: [Majmua Aamaal on Render](https://majmua-aamaal.onrender.com)
 * **Frontend:** HTML5, CSS3 (Glassmorphism UI, Flexbox/Grid), Vanilla JavaScript
 * **Backend:** Node.js, Express.js
 * **Networking:** Socket.io (WebSocket protocol for low-latency real-time communication)
-* **Deployment:** Render
+* **Deployment:** Railway
 
 ## 🛠️ Local Installation & Setup
 
