@@ -2,9 +2,9 @@
   "name": "khatme-qadirya",
   "version": "1.0.0",
   "description": "Zikr App",
-  "main": "server.js",
+  "main": "HTML/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node HTML/server.js"
   },
   "dependencies": {
     "express": "^4.18.2",

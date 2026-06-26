@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
         socket.join(sessionId);
         
         socket.emit('joinedSession', { sessionId: sessionId, isAdmin: true, adminToken: adminToken, state: getSessionState(sessionId) });
-        io.broadcast.emit('sessionList', getPublicSessionList());
+        io.emit('sessionList', getPublicSessionList());
     });
 
     socket.on('joinSession', ({ sessionId, password }) => {
